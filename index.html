@@ -206,7 +206,7 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
 <!-- ═══ CONTROL ═══ -->
 <div id="p-control" class="panel">
   <div class="toolbar">
-    <input class="search-input" id="sCtrl" placeholder="Buscar expediente, cliente, nº...">
+    <input class="search-input" id="sCtrl" placeholder="Buscar nº, cliente, difunto, intervinientes, notario...">
     <select class="flt" id="fEst"><option value="">Todo estado</option><option value="pte_firma">Pte. Firma</option><option value="firmado">Firmado</option><option value="retirado">Retirado Notaría</option><option value="impuestos">Impuestos</option><option value="en_registro">En Registro</option><option value="recogido">Recogido</option><option value="entregado">Entregado</option><option value="finalizado">Finalizado</option></select>
     <select class="flt" id="fTip"><option value="">Todos tipos</option><option>COMPRAVENTA</option><option>HERENCIA</option><option>CANCELACION</option><option>DONACION</option><option>PODER</option><option>OBRA NUEVA</option><option>EXCESO</option><option>TESTAMENTO</option></select>
     <button class="btn btn-ghost btn-sm" onclick="exportCSV('control')">📥 Excel</button>
@@ -386,10 +386,6 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
       <div class="fi"><label>Fecha recogida registro</label><input type="date" id="e_fRecogida"></div>
       <div class="fi"><label>Entregado al cliente</label><input type="date" id="e_fEntregaCli"></div>
 
-      <div class="st">🏠 Inmuebles</div>
-      <div id="inmueblesContainer" style="grid-column:1/-1"></div>
-      <div style="grid-column:1/-1"><button class="btn btn-ghost btn-sm" onclick="addInmueble()" type="button">＋ Añadir inmueble</button></div>
-
       <div class="st">📌 Estado y notas</div>
       <div class="fi"><label>Estado</label><select id="e_estado">
         <option value="pte_firma">Pendiente firma</option><option value="firmado">Firmado / En Notaría</option>
@@ -506,6 +502,64 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
   <div class="modal-foot"><button class="btn btn-primary" onclick="copyPlant()">📋 Copiar al portapapeles</button><button class="btn btn-ghost" onclick="closeOv('ovPlant')">Cerrar</button></div>
 </div></div>
 
+<!-- ═══ MODAL INMUEBLE ═══ -->
+<div class="overlay" id="ovInm"><div class="modal" style="max-width:550px">
+  <div class="modal-head"><h2 id="mInmTit">🏠 Añadir Inmueble</h2><button class="modal-x" onclick="closeOv('ovInm')">✕</button></div>
+  <div class="modal-body"><div class="fg">
+    <div class="fi"><label>Tipo *</label><select id="inm_tipo" style="font-size:15px;padding:12px">
+      <option>VIVIENDA</option><option>LOCAL</option><option>GARAJE</option><option>TERRENO</option><option>NAVE</option><option>PARCELA</option><option>TRASTERO</option><option>OTRO</option>
+    </select></div>
+    <div class="fi"><label>Superficie</label><input id="inm_superficie" placeholder="Ej: 126 m²" style="font-size:15px;padding:12px"></div>
+    <div class="fi full"><label>Dirección *</label><input id="inm_dir" placeholder="Ej: Avda. Almería 38, bajo" style="font-size:15px;padding:12px"></div>
+    <div class="fi"><label>Municipio</label><input id="inm_mun" placeholder="Ej: Macael" style="font-size:15px;padding:12px"></div>
+    <div class="fi"><label>Provincia</label><input id="inm_prov" value="ALMERÍA" style="font-size:15px;padding:12px"></div>
+    <div class="fi full"><label>Ref. Catastral</label><input id="inm_refCat" placeholder="Ej: 2023202WG6322S0005RK" style="font-size:15px;padding:12px;font-family:monospace"></div>
+    <div class="fi"><label>Nº Finca Registral</label><input id="inm_finca" placeholder="Ej: 5775" style="font-size:15px;padding:12px"></div>
+    <div class="fi"><label>Registro</label><div class="combo" id="combo_inmReg">
+      <select onchange="toggleCombo(this)" style="font-size:15px;padding:12px"><option value="">—</option><option>PROPIEDAD DE PURCHENA</option><option>MERCANTIL ALMERIA</option><option value="__otro">OTRO</option></select>
+      <input placeholder="Nombre registro..." id="inm_reg_otro" style="font-size:15px;padding:12px">
+    </div></div>
+    <div class="fi"><label>Tomo / Libro / Folio</label><input id="inm_tlf" placeholder="Ej: T.1234 L.567 F.89" style="font-size:15px;padding:12px"></div>
+    <div class="fi"><label>Valor Catastral (€)</label><input type="number" step="0.01" id="inm_valCat" style="font-size:15px;padding:12px"></div>
+    <div class="fi"><label>Valor Referencia (€)</label><input type="number" step="0.01" id="inm_valRef" style="font-size:15px;padding:12px"></div>
+    <div class="fi"><label>Valor Declarado (€)</label><input type="number" step="0.01" id="inm_valDec" style="font-size:15px;padding:12px"></div>
+    <div class="fi"><label>Carácter</label><select id="inm_caracter" style="font-size:15px;padding:12px"><option value="">—</option><option>Ganancial</option><option>Privativo</option><option>Proindiviso</option></select></div>
+    <div class="fi"><label>Adjudicación</label><input id="inm_adjudicacion" placeholder="Ej: Juan Francisco" style="font-size:15px;padding:12px"></div>
+    <div class="fi full"><label>Cargas / Hipotecas</label><input id="inm_cargas" placeholder="Ej: Hipoteca BBVA cancelada" style="font-size:15px;padding:12px"></div>
+    <div class="fi full"><label>Observaciones</label><input id="inm_obs" placeholder="Ej: VPO, pendiente nota simple..." style="font-size:15px;padding:12px"></div>
+  </div></div>
+  <div class="modal-foot">
+    <button class="btn btn-ghost" onclick="closeOv('ovInm')">Cancelar</button>
+    <button class="btn btn-green" onclick="saveInm()" style="font-size:15px;padding:12px 24px">💾 Guardar y añadir otro</button>
+    <button class="btn btn-primary" onclick="saveInm(true)" style="font-size:15px;padding:12px 24px">💾 Guardar y cerrar</button>
+  </div>
+</div></div>
+
+<!-- ═══ MODAL IMPORTAR INMUEBLES EN BLOQUE ═══ -->
+<div class="overlay" id="ovInmBulk"><div class="modal" style="max-width:800px">
+  <div class="modal-head"><h2>📋 Importar Inmuebles desde tabla</h2><button class="modal-x" onclick="closeOv('ovInmBulk')">✕</button></div>
+  <div class="modal-body">
+    <div style="background:var(--accent-l);padding:14px 18px;border-radius:8px;font-size:13px;line-height:1.7;margin-bottom:16px">
+      <strong>Instrucciones:</strong><br>
+      1. Abre tu Excel/tabla con los inmuebles<br>
+      2. Selecciona las filas (sin cabecera) y copia con <strong>Ctrl+C</strong><br>
+      3. Pega aquí abajo con <strong>Ctrl+V</strong><br>
+      4. El orden de columnas debe ser:<br>
+      <strong>Nº | Tipo | Dirección | Superficie | Finca Registral | Ref.Catastral | Valor Total | Valor ISD | Carácter | Adjudicación</strong><br>
+      (El Nº se ignora automáticamente. Si alguna columna está vacía, no pasa nada. Coincide con la plantilla Excel)
+    </div>
+    <div class="fi full"><label>Pega aquí la tabla (desde Excel / Google Sheets):</label>
+      <textarea id="bulkInmData" rows="10" placeholder="Pega aquí las filas copiadas de Excel..." style="font-family:monospace;font-size:13px;width:100%;padding:12px;border:2px dashed var(--accent);border-radius:8px;background:var(--bg)"></textarea>
+    </div>
+    <div id="bulkPreview" style="margin-top:12px"></div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-ghost" onclick="previewBulkInm()">👁️ Vista previa</button>
+    <button class="btn btn-ghost" onclick="closeOv('ovInmBulk')">Cancelar</button>
+    <button class="btn btn-green" onclick="saveBulkInm()" style="font-size:15px;padding:12px 24px">💾 Importar todos</button>
+  </div>
+</div></div>
+
 <script>
 // ════════════ STATE ════════════
 let exps=[],clis=[],contacts=[],curExp=null,curCli=null,editMode=null,editContIdx=null,SURL='';
@@ -611,13 +665,15 @@ function calcVtosForm(){
 }
 
 // ════════════ VENCIMIENTOS CALC ════════════
-function getAlerts(e){
+function getAlerts(e,allFuture){
   const a=[];const hoy=new Date();hoy.setHours(0,0,0,0);
   function chk(label,dateStr){
     if(!dateStr)return;
-    const d=new Date(dateStr);const diff=Math.ceil((d-hoy)/864e5);
+    const d=new Date(dateStr);if(isNaN(d.getTime()))return;
+    const diff=Math.ceil((d-hoy)/864e5);
     if(diff<0)a.push({label,dias:diff,tipo:'exp',fecha:d});
     else if(diff<=10)a.push({label,dias:diff,tipo:'urg',fecha:d});
+    else if(allFuture)a.push({label,dias:diff,tipo:'ok',fecha:d});
   }
   if(e.plusvalia==='SI')chk('Plusvalía',e.vtoPlusvalia);
   if(e.mod600==='SI')chk('Mod. 600',e.vto600);
@@ -680,7 +736,7 @@ function renderCtrl(){
   const fe=document.getElementById('fEst').value;
   const ft=document.getElementById('fTip').value;
   const f=exps.filter(e=>{
-    const ms=!s||[e.numExp,e.cliente,e.gestion,e.otros||''].some(x=>x.toLowerCase().includes(s));
+    const ms=!s||[e.numExp,e.cliente,e.gestion,e.otros||'',e.dni||'',e.notario||'',e.registro||'',e.obs||'',e.protocolo||''].some(x=>x.toLowerCase().includes(s));
     const me=!fe||e.estado===fe;
     const mt=!ft||(e.gestion||'').toUpperCase().includes(ft);
     return ms&&me&&mt;
@@ -698,7 +754,7 @@ function renderCli(){
   const s=document.getElementById('sCli').value.toLowerCase();
   const fp=document.getElementById('fPag').value;
   const f=clis.filter(c=>{
-    const ms=!s||[c.numExp,c.cliente,c.gestion].some(x=>(x||'').toLowerCase().includes(s));
+    const ms=!s||[c.numExp,c.cliente,c.gestion].some(x=>(x||'').toLowerCase().includes(s))||exps.some(e=>e.numExp===c.numExp&&[e.otros||'',e.dni||'',e.obs||''].some(x=>x.toLowerCase().includes(s)));
     const totalPagado=sumPagos(c);const pend=pf(c.totalExp)-totalPagado;
     if(fp==='pend')return ms&&pend>0.01;
     if(fp==='ok')return ms&&(c.finalizado==='FINALIZADO'||pend<=0.01);
@@ -766,8 +822,11 @@ function showCtrl(id){
           ${estBadge(e.estado)}
           <button class="btn btn-green btn-sm" onclick="openDocs('${esc(e.numExp)}')">📂 Documentos</button>
           <button class="btn btn-amber btn-sm" onclick="goCliFromCtrl('${esc(e.numExp)}')">💶 Cliente €</button>
+          <button class="btn btn-primary btn-sm" onclick="openNewInm()">🏠 +1 Inmueble</button>
+          <button class="btn btn-primary btn-sm" onclick="openBulkInm()">📋 Importar tabla</button>
           <button class="btn btn-ghost btn-sm" onclick="openChk('${esc(e.numExp)}')">📋 Checklist</button>
           <button class="btn btn-ghost btn-sm" onclick="openPlant('${esc(e.numExp)}')">📄 Notaría</button>
+          <button class="btn btn-ghost btn-sm" onclick="openModelos()">📝 Modelos</button>
           <button class="btn btn-primary btn-sm" onclick="openEditExp()">✏️ Editar</button>
           <button class="btn btn-ghost btn-sm" onclick="dupExp()">📑 Duplicar</button>
           <button class="btn btn-red btn-sm" onclick="deleteExp()">🗑️</button>
@@ -823,7 +882,7 @@ function showCtrl(id){
 
       ${e.fVto?sec('⏰ Vencimiento manual',[['Fecha vto. actuación',fD(e.fVto)]]):''}
 
-      ${(e.inmuebles&&e.inmuebles.length)?'<div style="margin-top:16px"><div style="font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid var(--accent-l)">🏠 Inmuebles</div>'+e.inmuebles.map(im=>'<div class="detail-grid" style="margin-bottom:8px">'+(im.tipo?'<div class="df"><label>Tipo</label><div class="val">'+esc(im.tipo)+'</div></div>':'')+(im.dir?'<div class="df"><label>Dirección</label><div class="val">'+esc(im.dir)+'</div></div>':'')+(im.mun?'<div class="df"><label>Municipio</label><div class="val">'+esc(im.mun)+'</div></div>':'')+(im.refCat?'<div class="df"><label>Ref. Catastral</label><div class="val">'+esc(im.refCat)+'</div></div>':'')+(im.finca?'<div class="df"><label>Finca Registral</label><div class="val">'+esc(im.finca)+'</div></div>':'')+(im.registro?'<div class="df"><label>Registro</label><div class="val">'+esc(im.registro)+'</div></div>':'')+(im.valor?'<div class="df"><label>Valor</label><div class="val">'+mon(im.valor)+'</div></div>':'')+'</div>').join('')+'</div>':''}
+      ${(e.inmuebles&&e.inmuebles.length)?'<div style="margin-top:16px"><div style="font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid var(--accent-l)">🏠 Inmuebles ('+e.inmuebles.length+')</div><div class="card" style="overflow-x:auto"><table style="min-width:900px"><thead><tr><th>#</th><th>Tipo</th><th>Dirección</th><th>Superficie</th><th>Finca</th><th>Ref. Catastral</th><th>Valor (€)</th><th>Val. Decl.</th><th>Carácter</th><th>Adjudicación</th><th></th></tr></thead><tbody>'+e.inmuebles.map((im,i)=>'<tr><td>'+(i+1)+'</td><td><strong>'+esc(im.tipo)+'</strong></td><td style="white-space:normal;max-width:200px">'+esc(im.dir)+(im.mun&&!im.dir.includes(im.mun)?', '+esc(im.mun):'')+'</td><td>'+esc(im.superficie||'')+'</td><td>'+esc(im.finca)+'</td><td style="font-family:monospace;font-size:11px;white-space:normal;max-width:180px">'+esc(String(im.refCat||'').replace(/<br>/g,' / '))+'</td><td style="text-align:right">'+mon(im.valCat||im.valor||'')+'</td><td style="text-align:right;font-weight:700;color:var(--accent)">'+mon(im.valDec||'')+'</td><td>'+esc(im.caracter||'')+'</td><td style="white-space:normal;max-width:160px;font-size:12px">'+esc(im.adjudicacion||'')+'</td><td style="white-space:nowrap"><button class="btn btn-ghost btn-sm" onclick="editInm('+i+')">✏️</button><button class="btn btn-red btn-sm" onclick="delInm('+i+')">✕</button></td></tr>').join('')+'</tbody></table></div></div>':'<div style="margin-top:16px;padding:16px;background:var(--bg);border-radius:8px;text-align:center;color:var(--dim);font-size:13px">🏠 Sin inmuebles — pulsa <strong>🏠 +1 Inmueble</strong> o <strong>📋 Importar tabla</strong></div>'}
 
       <div class="obs-panel" style="margin-top:16px"><h4>📌 Observaciones / Historial</h4><div class="obs-content">${esc(e.obs||'Sin observaciones.')}</div>
         <div class="quick-add"><input id="qNote" placeholder="Escribe una novedad rápida..."><button class="btn btn-green btn-sm" onclick="addNote()">＋</button></div>
@@ -935,7 +994,6 @@ function openNewExp(){
   document.getElementById('e_estado').value='pte_firma';
   ['fi_fPlusvalia','fi_vtoPlusvalia','fi_f600','fi_vto600','fi_f650','fi_vto650','fi_f660','fi_vto660'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('e_numExp').value=getNextExpNum();
-  document.getElementById('inmueblesContainer').innerHTML='';
   document.getElementById('ovExp').classList.add('open');
 }
 function openEditExp(){
@@ -946,23 +1004,15 @@ function openEditExp(){
   setComboVal('combo_notario',e.notario);
   setComboVal('combo_registro',e.registro);
   togglePlusvalia();toggleImp('600');toggleImp('650');toggleImp('660');
-  // Load inmuebles
-  const cont=document.getElementById('inmueblesContainer');cont.innerHTML='';
-  (e.inmuebles||[]).forEach(()=>addInmueble());
-  (e.inmuebles||[]).forEach((im,i)=>{
-    ['tipo','dir','mun','refCat','finca','registro','valor'].forEach(f=>{
-      const el=document.getElementById('im_'+f+'_'+i);if(el)el.value=im[f]||'';
-    });
-  });
   document.getElementById('ovExp').classList.add('open');
 }
 function saveExp(){
   const d={};
   EF.forEach(f=>{const el=document.getElementById('e_'+f);d[f]=el?el.value.trim():'';});
   d.gestion=getComboVal('combo_gestion');d.notario=getComboVal('combo_notario');d.registro=getComboVal('combo_registro');
-  d.inmuebles=collectInmuebles();
-  // Preserve checklist
-  if(editMode==='edit'){const old=exps.find(e=>e.numExp===curExp);if(old)d.checklist=old.checklist;}
+  // Preserve inmuebles and checklist from existing exp
+  if(editMode==='edit'){const old=exps.find(e=>e.numExp===curExp);if(old){d.inmuebles=old.inmuebles||[];d.checklist=old.checklist;}}
+  else{d.inmuebles=[];d.checklist={};}
   if(!d.numExp||!d.cliente){toast('Rellena Nº Expediente y Cliente','err');return;}
   // Auto estado
   const ae=autoEstado(d);if(d.estado==='pte_firma'||!d.estado)d.estado=ae;
@@ -1181,6 +1231,15 @@ async function downloadPresupuestoWord(){
 }
 function escX(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
+// ════════════ MODELOS (CARPETA RED) ════════════
+const MODELOS_PATH='\\\\PACO-HP\\Users\\usuario\\Documents\\TRABAJOS\\MODELOS';
+function openModelos(){
+  navigator.clipboard.writeText(MODELOS_PATH).then(()=>{
+    toast('📋 Ruta copiada — pégala en el Explorador de Windows','ok');
+  }).catch(()=>{
+    prompt('Copia esta ruta y pégala en el Explorador:',MODELOS_PATH);
+  });
+}
 
 // ════════════ AUTO ESTADO ════════════
 function autoEstado(d){
@@ -1193,20 +1252,167 @@ function autoEstado(d){
   return'pte_firma';
 }
 
-// ════════════ INMUEBLES ════════════
-function addInmueble(){
-  const c=document.getElementById('inmueblesContainer');const i=c.children.length;
-  const d=document.createElement('div');d.className='fg imm-row';d.id='imRow_'+i;
-  d.innerHTML='<div class="fi"><label>Tipo</label><select id="im_tipo_'+i+'"><option>VIVIENDA</option><option>LOCAL</option><option>GARAJE</option><option>TERRENO</option><option>NAVE</option><option>OTRO</option></select></div><div class="fi"><label>Dirección</label><input id="im_dir_'+i+'"></div><div class="fi"><label>Municipio</label><input id="im_mun_'+i+'"></div><div class="fi"><label>Ref. Catastral</label><input id="im_refCat_'+i+'"></div><div class="fi"><label>Finca Registral</label><input id="im_finca_'+i+'"></div><div class="fi"><label>Registro</label><input id="im_registro_'+i+'"></div><div class="fi"><label>Valor (€)</label><input type="number" step="0.01" id="im_valor_'+i+'"></div><div class="fi"><button class="btn btn-red btn-sm" onclick="this.closest(\'.imm-row\').remove()" type="button">✕ Quitar</button></div>';
-  c.appendChild(d);
+// ════════════ INMUEBLES (MODAL DEDICADO) ════════════
+// Auto-clean inmuebles with pipe/br format from old imports
+function cleanAllInmuebles(){
+  let fixed=0;
+  exps.forEach(e=>{
+    if(!e.inmuebles)return;
+    e.inmuebles=e.inmuebles.map(im=>{
+      // If dir contains pipes → it's a pipe-formatted row, parse it
+      const dirStr=String(im.dir||'');
+      if(dirStr.includes('|')){
+        const parts=dirStr.split('|').map(s=>s.replace(/<br>/g,' ').trim());
+        // Try to map: might be "Tipo | Ubicación | Superficie | Finca | RefCat | ValorTotal | ValorISD | Carácter | Adjudicación"
+        const newIm={tipo:im.tipo||'',dir:'',mun:im.mun||'',prov:im.prov||'ALMERÍA',
+          refCat:im.refCat||'',finca:im.finca||'',registro:im.registro||'',
+          superficie:im.superficie||'',tlf:'',valCat:'',valRef:'',valDec:'',cargas:'',obs:''};
+        if(parts.length>=3){newIm.dir=parts[0]||'';newIm.mun=newIm.mun||parts[1]||'';newIm.superficie=parts[2]||'';}
+        if(parts.length>=4)newIm.finca=newIm.finca||parts[3]||'';
+        if(parts.length>=5)newIm.refCat=newIm.refCat||parts[4]||'';
+        if(parts.length>=6)newIm.valCat=parts[5]||'';
+        if(parts.length>=7)newIm.valDec=parts[6]||'';
+        if(parts.length>=8)newIm.obs=(parts.slice(7).join(', ')).trim();
+        fixed++;
+        return newIm;
+      }
+      // Clean any <br> tags in any field
+      let changed=false;
+      const cleaned={...im};
+      Object.keys(cleaned).forEach(k=>{
+        if(typeof cleaned[k]==='string'&&cleaned[k].includes('<br>')){
+          cleaned[k]=cleaned[k].replace(/<br>/g,', ');changed=true;
+        }
+      });
+      if(changed)fixed++;
+      return cleaned;
+    });
+  });
+  if(fixed>0){saveLocal();console.log('Limpiados '+fixed+' inmuebles con formato antiguo');}
 }
-function collectInmuebles(){
-  const c=document.getElementById('inmueblesContainer');const inms=[];
-  c.querySelectorAll('.imm-row').forEach(row=>{
-    const i=row.id.split('_')[1];const im={};
-    ['tipo','dir','mun','refCat','finca','registro','valor'].forEach(f=>{im[f]=(document.getElementById('im_'+f+'_'+i)?.value||'').trim();});
-    if(im.dir||im.refCat||im.finca)inms.push(im);
-  });return inms;
+cleanAllInmuebles();
+// Clean dates: convert Date objects or long strings to YYYY-MM-DD
+(function cleanDates(){
+  const dateFields=['fechaFirma','fFallecimiento','f600','vto600','f650','vto650','f660','vto660','fEntregaReg','fRecogida','fRetirada','fEntregaCli','fPrevFirma'];
+  let fixed=0;
+  exps.forEach(e=>{
+    dateFields.forEach(f=>{
+      if(!e[f]||typeof e[f]!=='string')return;
+      const s=e[f];
+      if(/^\d{4}-\d{2}-\d{2}$/.test(s))return; // already clean
+      if(/^\d{4}-\d{2}-\d{2}T/.test(s)){e[f]=s.split('T')[0];fixed++;return;}
+      try{
+        const dt=new Date(s);
+        if(!isNaN(dt.getTime())){
+          e[f]=dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
+          fixed++;
+        }
+      }catch(x){}
+    });
+  });
+  if(fixed>0){saveLocal();console.log('Normalizadas '+fixed+' fechas');}
+})();
+let editInmIdx=null;
+const INM_FIELDS=['tipo','dir','mun','prov','refCat','finca','registro','superficie','tlf','valCat','valRef','valDec','cargas','obs','caracter','adjudicacion'];
+function clearInmForm(){
+  INM_FIELDS.forEach(f=>{const el=document.getElementById('inm_'+f);if(el)el.value='';});
+  document.getElementById('inm_tipo').value='VIVIENDA';
+  document.getElementById('inm_prov').value='ALMERÍA';
+  setComboVal('combo_inmReg','');
+  editInmIdx=null;
+}
+function openNewInm(){
+  if(!curExp)return;
+  clearInmForm();
+  document.getElementById('mInmTit').textContent='🏠 Añadir Inmueble — '+curExp;
+  document.getElementById('ovInm').classList.add('open');
+}
+function editInm(i){
+  if(!curExp)return;
+  const e=exps.find(x=>x.numExp===curExp);if(!e||!e.inmuebles[i])return;
+  const im=e.inmuebles[i];editInmIdx=i;
+  document.getElementById('mInmTit').textContent='🏠 Editar Inmueble '+(i+1);
+  INM_FIELDS.forEach(f=>{const el=document.getElementById('inm_'+f);if(el)el.value=im[f]||'';});
+  setComboVal('combo_inmReg',im.registro||'');
+  document.getElementById('ovInm').classList.add('open');
+}
+function saveInm(andClose){
+  if(!curExp)return;
+  const e=exps.find(x=>x.numExp===curExp);if(!e)return;
+  if(!e.inmuebles)e.inmuebles=[];
+  const im={};
+  INM_FIELDS.forEach(f=>{im[f]=(document.getElementById('inm_'+f)?.value||'').trim();});
+  im.registro=getComboVal('combo_inmReg');
+  if(!im.dir&&!im.refCat){toast('Pon al menos dirección o ref.catastral','err');return;}
+  if(editInmIdx!==null){
+    e.inmuebles[editInmIdx]=im;
+    toast('✅ Inmueble actualizado','ok');
+  }else{
+    e.inmuebles.push(im);
+    toast('✅ Inmueble '+(e.inmuebles.length)+' añadido','ok');
+  }
+  saveLocal();
+  if(andClose){closeOv('ovInm');showCtrl(curExp);}
+  else{clearInmForm();document.getElementById('mInmTit').textContent='🏠 Añadir Inmueble '+(e.inmuebles.length+1)+' — '+curExp;}
+}
+function delInm(i){
+  if(!curExp||!confirm('¿Eliminar inmueble '+(i+1)+'?'))return;
+  const e=exps.find(x=>x.numExp===curExp);if(!e)return;
+  e.inmuebles.splice(i,1);saveLocal();showCtrl(curExp);toast('Inmueble eliminado','info');
+}
+
+// ════════════ IMPORTAR INMUEBLES EN BLOQUE ════════════
+function openBulkInm(){
+  if(!curExp)return;
+  document.getElementById('bulkInmData').value='';
+  document.getElementById('bulkPreview').innerHTML='';
+  document.getElementById('ovInmBulk').classList.add('open');
+}
+function parseBulkInm(){
+  const raw=document.getElementById('bulkInmData').value.trim();
+  if(!raw)return[];
+  const lines=raw.split('\n').filter(l=>l.trim());
+  return lines.map(line=>{
+    const cols=line.split('\t');
+    let c=cols.map(x=>x.trim());
+    // If first column is a number (row number), skip it
+    if(c.length>0&&/^\d+$/.test(c[0]))c=c.slice(1);
+    // Skip header row if detected
+    if(c[0]&&/^tipo$/i.test(c[0]))return null;
+    // Columns: Tipo | Dirección | Superficie | Finca | Ref.Catastral | Valor Total | Valor ISD | Carácter | Adjudicación
+    return{
+      tipo:c[0]||'',
+      dir:c[1]||'',
+      mun:'',
+      superficie:c[2]||'',
+      finca:c[3]||'',
+      refCat:c[4]||'',
+      valCat:c[5]||'',
+      valDec:c[6]||'',
+      caracter:c[7]||'',
+      adjudicacion:c[8]||'',
+      registro:'',prov:'ALMERÍA',tlf:'',valRef:'',cargas:'',obs:''
+    };
+  }).filter(im=>im&&(im.tipo||im.dir||im.refCat));
+}
+function previewBulkInm(){
+  const items=parseBulkInm();
+  if(!items.length){document.getElementById('bulkPreview').innerHTML='<div style="color:var(--red);padding:10px">No se han detectado datos. Asegúrate de pegar desde Excel.</div>';return;}
+  let h='<div style="margin-top:8px;font-weight:700;color:var(--green)">✅ '+items.length+' inmuebles detectados:</div><div class="card" style="margin-top:8px;overflow-x:auto"><table style="min-width:700px"><thead><tr><th>#</th><th>Tipo</th><th>Dirección</th><th>Superficie</th><th>Finca</th><th>Ref.Cat.</th><th>Valor</th><th>Val.Decl.</th><th>Carácter</th><th>Adjudicación</th></tr></thead><tbody>';
+  items.forEach((im,i)=>{
+    h+='<tr><td>'+(i+1)+'</td><td>'+esc(im.tipo)+'</td><td>'+esc(im.dir)+'</td><td>'+esc(im.superficie||im.mun)+'</td><td>'+esc(im.finca)+'</td><td style="font-size:11px">'+esc(im.refCat)+'</td><td>'+esc(im.valCat)+'</td><td>'+esc(im.valDec)+'</td><td>'+esc(im.caracter||'')+'</td><td>'+esc(im.adjudicacion||'')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  document.getElementById('bulkPreview').innerHTML=h;
+}
+function saveBulkInm(){
+  const items=parseBulkInm();
+  if(!items.length){toast('No hay datos para importar','err');return;}
+  const e=exps.find(x=>x.numExp===curExp);if(!e)return;
+  if(!e.inmuebles)e.inmuebles=[];
+  items.forEach(im=>e.inmuebles.push(im));
+  saveLocal();closeOv('ovInmBulk');showCtrl(curExp);
+  toast('✅ '+items.length+' inmuebles importados','ok');
 }
 
 // ════════════ DOCUMENTOS (CARPETA RED) ════════════
@@ -1301,10 +1507,14 @@ function openPlant(id){
       if(im.tipo)h+='Tipo: '+esc(im.tipo)+'<br>';
       if(im.dir)h+='Dirección: '+esc(im.dir)+'<br>';
       if(im.mun)h+='Municipio: '+esc(im.mun)+'<br>';
+      if(im.superficie)h+='Superficie: '+esc(im.superficie)+'<br>';
       if(im.refCat)h+='Ref. Catastral: '+esc(im.refCat)+'<br>';
       if(im.finca)h+='Finca Registral: '+esc(im.finca)+'<br>';
       if(im.registro)h+='Registro: '+esc(im.registro)+'<br>';
-      if(im.valor)h+='Valor: '+mon(im.valor)+'<br>';
+      if(im.valCat||im.valor)h+='Valor Total: '+mon(im.valCat||im.valor)+'<br>';
+      if(im.valDec)h+='Valor Declarado: '+mon(im.valDec)+'<br>';
+      if(im.caracter)h+='Carácter: '+esc(im.caracter)+'<br>';
+      if(im.adjudicacion)h+='<strong>Adjudicación: '+esc(im.adjudicacion)+'</strong><br>';
     });
   }
   if(e.obs)h+='<br><strong>Observaciones:</strong><br>'+esc(e.obs);
@@ -1329,7 +1539,7 @@ function renderCal(){
   exps.forEach(e=>{
     if(e.fhPrevista){const d=new Date(e.fhPrevista);const k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(!events[k])events[k]=[];events[k].push({type:'firma',text:'✍️ '+e.numExp+' '+e.cliente});}
     if(e.fechaFirma){const d=new Date(e.fechaFirma);const k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(!events[k])events[k]=[];events[k].push({type:'firma',text:'✅ '+e.numExp});}
-    getAlerts(e).forEach(a=>{const k=a.fecha.getFullYear()+'-'+(a.fecha.getMonth()+1)+'-'+a.fecha.getDate();if(!events[k])events[k]=[];events[k].push({type:a.tipo==='exp'?'vto':'vto-ok',text:'⏰ '+e.numExp+' '+a.label});});
+    getAlerts(e,true).forEach(a=>{const k=a.fecha.getFullYear()+'-'+(a.fecha.getMonth()+1)+'-'+a.fecha.getDate();if(!events[k])events[k]=[];events[k].push({type:a.tipo==='exp'?'vto':a.tipo==='urg'?'vto-ok':'firma',text:'⏰ '+e.numExp+' '+a.label});});
   });
   for(let i=0;i<startDay;i++){const d=new Date(calYear,calMonth,-startDay+i+1);g.innerHTML+='<div class="cal-day other"><div class="cal-num">'+d.getDate()+'</div></div>';}
   for(let d=1;d<=last.getDate();d++){
@@ -1388,10 +1598,10 @@ function saveCont(){
   const c={nombre:document.getElementById('ct_nombre').value.trim(),tipo:document.getElementById('ct_tipo').value,tel:document.getElementById('ct_tel').value.trim(),email:document.getElementById('ct_email').value.trim(),dir:document.getElementById('ct_dir').value.trim(),notas:document.getElementById('ct_notas').value.trim()};
   if(!c.nombre){toast('Escribe un nombre','err');return;}
   if(editContIdx!==null)contacts[editContIdx]=c;else contacts.push(c);
-  localStorage.setItem('contacts',JSON.stringify(contacts));
+  saveLocal();
   closeOv('ovCont');renderContacts();toast('✅ Contacto guardado','ok');
 }
-function deleteCont(i){if(!confirm('¿Eliminar contacto?'))return;contacts.splice(i,1);localStorage.setItem('contacts',JSON.stringify(contacts));renderContacts();toast('Eliminado','info');}
+function deleteCont(i){if(!confirm('¿Eliminar contacto?'))return;contacts.splice(i,1);saveLocal();renderContacts();toast('Eliminado','info');}
 function renderContacts(){
   const s=(document.getElementById('sCont')?.value||'').toLowerCase();
   const ft=document.getElementById('fContTipo')?.value||'';
@@ -1460,6 +1670,9 @@ async function loadFromSheet(){
         });
         clis=d.clis;localStorage.setItem('clis',JSON.stringify(clis));
       }
+      if(d.contacts&&d.contacts.length){
+        contacts=d.contacts;localStorage.setItem('contacts',JSON.stringify(contacts));
+      }
       renderAll();toast('📥 Datos cargados de Sheets','ok');
     }
   }catch(e){console.log('Load error:',e);}
@@ -1481,7 +1694,7 @@ async function syncToSheet(){
       delete copy.pagos;
       return copy;
     });
-    await fetch(SURL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({exps:expsToSend,clis:clisToSend})});
+    await fetch(SURL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({exps:expsToSend,clis:clisToSend,contacts:contacts})});
   }catch(e){console.log('Sync error:',e);}
 }
 function updateConn(){const b=document.getElementById('connBadge');if(SURL){b.className='conn-badge conn-ok';b.innerHTML='<div class="conn-dot"></div><span>Google Sheets ✓</span>';}else{b.className='conn-badge conn-no';b.innerHTML='<div class="conn-dot"></div><span>Sin conectar</span>';}}
@@ -1496,8 +1709,24 @@ function sumPagos(c){return(c.pagos||[]).reduce((s,p)=>s+pf(p.importe),0);}
 
 function fD(d){
   if(!d||d==='—')return'—';
-  try{const p=String(d).split('T')[0].split('-');if(p.length===3)return p[2]+'/'+p[1]+'/'+p[0].slice(-2);
-  }catch(e){}return d;
+  try{
+    const s=String(d);
+    // Already dd/mm/yy format
+    if(/^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(s))return s;
+    // ISO YYYY-MM-DD or YYYY-MM-DDT...
+    const iso=s.split('T')[0];
+    const p=iso.split('-');
+    if(p.length===3&&p[0].length===4)return p[2]+'/'+p[1]+'/'+p[0].slice(-2);
+    // Date object or long string like "Thu May 23 2024..."
+    const dt=new Date(d);
+    if(!isNaN(dt.getTime())){
+      const dd=String(dt.getDate()).padStart(2,'0');
+      const mm=String(dt.getMonth()+1).padStart(2,'0');
+      const yy=String(dt.getFullYear()).slice(-2);
+      return dd+'/'+mm+'/'+yy;
+    }
+  }catch(e){}
+  return d;
 }
 function fDH(d){
   if(!d)return'—';
