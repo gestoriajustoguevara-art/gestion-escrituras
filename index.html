@@ -141,10 +141,11 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
 @media(max-width:768px){.fg{grid-template-columns:1fr}.stats-row{grid-template-columns:repeat(2,1fr)}.detail-grid{grid-template-columns:1fr 1fr}.header{padding:10px 14px}.main{padding:0 14px 40px}.cal-day{min-height:50px}}
 @media print{body *{visibility:hidden}.recibo-box,.recibo-box *{visibility:visible}.recibo-box{position:absolute;left:0;top:0;border:2px solid #000}}
 .cal-head{text-align:center;font-size:11px;font-weight:700;color:var(--dim);padding:6px 0;text-transform:uppercase}
-.cal-day{min-height:80px;background:var(--white);border:1px solid var(--border-l);border-radius:4px;padding:4px 6px;font-size:12px;cursor:pointer;transition:background .1s}
+.cal-day{min-height:90px;background:var(--white);border:1px solid var(--border-l);border-radius:4px;padding:4px 6px;font-size:12px;transition:background .1s}
 .cal-day:hover{background:var(--accent-l)}.cal-day.today{border-color:var(--accent);border-width:2px}.cal-day.other{opacity:.3}
 .cal-num{font-weight:700;font-size:13px;margin-bottom:2px}
-.cal-ev{font-size:10px;padding:1px 4px;border-radius:3px;margin-bottom:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cal-ev{font-size:11px;font-weight:600;padding:2px 6px;border-radius:3px;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;transition:opacity .15s}
+.cal-ev:hover{opacity:.75}
 .cal-ev.firma{background:var(--accent-l);color:var(--accent)}.cal-ev.vto{background:var(--red-l);color:var(--red)}.cal-ev.vto-ok{background:var(--amber-l);color:var(--amber)}
 .contact-card{padding:12px 16px;background:var(--white);border:1px solid var(--border-l);border-radius:8px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
 .contact-card .cn{font-weight:700;font-size:14px}.contact-card .ct{font-size:12px;color:var(--dim)}
@@ -1567,17 +1568,33 @@ function renderCal(){
   const today=new Date();today.setHours(0,0,0,0);
   const events={};
   exps.forEach(e=>{
-    if(e.fhPrevista){const d=new Date(e.fhPrevista);const k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(!events[k])events[k]=[];events[k].push({type:'firma',text:'✍️ '+e.numExp+' '+e.cliente});}
-    if(e.fechaFirma){const d=new Date(e.fechaFirma);const k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(!events[k])events[k]=[];events[k].push({type:'firma',text:'✅ '+e.numExp});}
-    getAlerts(e,true).forEach(a=>{const k=a.fecha.getFullYear()+'-'+(a.fecha.getMonth()+1)+'-'+a.fecha.getDate();if(!events[k])events[k]=[];events[k].push({type:a.tipo==='exp'?'vto':a.tipo==='urg'?'vto-ok':'firma',text:'⏰ '+e.numExp+' '+a.label});});
+    if(e.fhPrevista){
+      const d=new Date(e.fhPrevista);
+      const k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+      if(!events[k])events[k]=[];
+      events[k].push({type:'firma',text:'✍️ '+e.numExp+' '+e.cliente,numExp:e.numExp});
+    }
+    if(e.fechaFirma){
+      const d=new Date(e.fechaFirma);
+      const k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+      if(!events[k])events[k]=[];
+      events[k].push({type:'firma',text:'✅ '+e.numExp+' '+e.cliente,numExp:e.numExp});
+    }
+    getAlerts(e,true).forEach(a=>{
+      const k=a.fecha.getFullYear()+'-'+(a.fecha.getMonth()+1)+'-'+a.fecha.getDate();
+      if(!events[k])events[k]=[];
+      events[k].push({type:a.tipo==='exp'?'vto':a.tipo==='urg'?'vto-ok':'firma',text:'⏰ '+e.numExp+' '+a.label,numExp:e.numExp});
+    });
   });
   for(let i=0;i<startDay;i++){const d=new Date(calYear,calMonth,-startDay+i+1);g.innerHTML+='<div class="cal-day other"><div class="cal-num">'+d.getDate()+'</div></div>';}
   for(let d=1;d<=last.getDate();d++){
     const dt=new Date(calYear,calMonth,d);const isToday=dt.getTime()===today.getTime();
     const k=calYear+'-'+(calMonth+1)+'-'+d;const evs=events[k]||[];
-    let html='<div class="cal-day'+(isToday?' today':'')+'"'+(evs.length?' onclick="calDayClick('+calYear+','+(calMonth+1)+','+d+')"':'')+'><div class="cal-num">'+d+'</div>';
-    evs.slice(0,3).forEach(ev=>html+='<div class="cal-ev '+ev.type+'">'+esc(ev.text)+'</div>');
-    if(evs.length>3)html+='<div class="cal-ev" style="color:var(--dim)">+'+(evs.length-3)+' más</div>';
+    let html='<div class="cal-day'+(isToday?' today':'')+'"><div class="cal-num">'+d+'</div>';
+    evs.slice(0,3).forEach(ev=>{
+      html+='<div class="cal-ev '+ev.type+'" onclick="irAExpediente(\''+ev.numExp+'\')" title="'+esc(ev.text)+'">'+esc(ev.text)+'</div>';
+    });
+    if(evs.length>3)html+='<div class="cal-ev" style="color:var(--dim);cursor:default">+'+(evs.length-3)+' más</div>';
     html+='</div>';g.innerHTML+=html;
   }
   const totalCells=startDay+last.getDate();const rem=7-(totalCells%7);
@@ -1585,7 +1602,11 @@ function renderCal(){
 }
 function calMove(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}renderCal();}
 function calToday(){calMonth=new Date().getMonth();calYear=new Date().getFullYear();renderCal();}
-function calDayClick(y,m,d){/* could show day detail - for now just toast */toast('Día '+d+'/'+m+'/'+y,'info');}
+function calDayClick(y,m,d){}
+function irAExpediente(numExp){
+  goTab('control');
+  setTimeout(()=>showCtrl(numExp),50);
+}
 
 // ════════════ FACTURACIÓN ════════════
 function buildFacMeses(){
