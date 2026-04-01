@@ -577,16 +577,23 @@ const CHECKLISTS={
   'DEFAULT':['DNI / NIE intervinientes','Escrituras previas','Nota simple registral','Certificado catastral','Documentación específica']
 };
 
+// ════════════ BANNER CARGA ════════════
+function mostrarBanner(msg){
+  let b=document.getElementById('_banner_carga');
+  if(!b){b=document.createElement('div');b.id='_banner_carga';
+    b.style.cssText='position:fixed;top:0;left:0;right:0;z-index:9999;background:var(--accent);color:#fff;text-align:center;padding:11px;font-size:13px;font-weight:600;font-family:inherit';
+    document.body.prepend(b);}
+  b.textContent=msg;
+}
+function ocultarBanner(){const b=document.getElementById('_banner_carga');if(b)b.remove();}
+
 // ════════════ INIT ════════════
-document.addEventListener('DOMContentLoaded',()=>{
+document.addEventListener('DOMContentLoaded',async ()=>{
   SURL=localStorage.getItem('surl')||'';
   document.getElementById('sheetUrl').value=SURL;
   updateConn();
-  exps=JSON.parse(localStorage.getItem('exps')||'[]');
-  clis=JSON.parse(localStorage.getItem('clis')||'[]');
-  contacts=JSON.parse(localStorage.getItem('contacts')||'[]');
-  if(SURL)loadFromSheet();
-  renderAll();buildFacMeses();
+
+  // Registrar eventos primero
   document.querySelectorAll('.tab-btn').forEach(t=>t.addEventListener('click',()=>goTab(t.dataset.tab)));
   ['sCtrl','fEst','fTip'].forEach(id=>document.getElementById(id).addEventListener('input',renderCtrl));
   ['sCli','fPag'].forEach(id=>document.getElementById(id).addEventListener('input',renderCli));
@@ -594,6 +601,29 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('fFacMes').addEventListener('change',renderFac);
   ['e_fechaFirma','e_fFallecimiento'].forEach(id=>document.getElementById(id).addEventListener('change',calcVtosForm));
   ['e_plusvalia','e_mod600','e_mod650','e_mod660'].forEach(id=>document.getElementById(id).addEventListener('change',calcVtosForm));
+
+  if(SURL){
+    // Siempre cargar de Sheets primero
+    mostrarBanner('⏳ Cargando datos desde Google Sheets...');
+    try{
+      await loadFromSheet();
+      ocultarBanner();
+    }catch(e){
+      ocultarBanner();
+      // Fallback a localStorage si falla la conexión
+      exps=JSON.parse(localStorage.getItem('exps')||'[]');
+      clis=JSON.parse(localStorage.getItem('clis')||'[]');
+      contacts=JSON.parse(localStorage.getItem('contacts')||'[]');
+      toast('⚠️ Sin conexión. Usando datos locales.','err');
+      renderAll();buildFacMeses();
+    }
+  } else {
+    // Sin URL configurada, usar localStorage
+    exps=JSON.parse(localStorage.getItem('exps')||'[]');
+    clis=JSON.parse(localStorage.getItem('clis')||'[]');
+    contacts=JSON.parse(localStorage.getItem('contacts')||'[]');
+    renderAll();buildFacMeses();
+  }
 });
 
 function goTab(tab){
@@ -1655,7 +1685,6 @@ async function loadFromSheet(){
     const r=await fetch(SURL);const d=await r.json();
     if(d.status==='ok'){
       if(d.exps&&d.exps.length){
-        // Reconstruct inmuebles and checklist from JSON if stored
         d.exps.forEach(e=>{
           if(typeof e.inmuebles_json==='string'&&e.inmuebles_json){try{e.inmuebles=JSON.parse(e.inmuebles_json);}catch(x){}}
           if(typeof e.checklist_json==='string'&&e.checklist_json){try{e.checklist=JSON.parse(e.checklist_json);}catch(x){}}
@@ -1673,14 +1702,19 @@ async function loadFromSheet(){
       if(d.contacts&&d.contacts.length){
         contacts=d.contacts;localStorage.setItem('contacts',JSON.stringify(contacts));
       }
-      renderAll();toast('📥 Datos cargados de Sheets','ok');
+      renderAll();buildFacMeses();
+      toast('📥 Datos cargados de Sheets','ok');
     }
-  }catch(e){console.log('Load error:',e);}
+  }catch(e){console.log('Load error:',e);throw e;}
 }
 async function syncToSheet(){
   if(!SURL)return;
+  // ⛔ Protección anti-borrado: no subir si todo está vacío
+  if(exps.length===0 && clis.length===0 && contacts.length===0){
+    console.warn('⛔ Subida cancelada: datos vacíos en memoria.');
+    return;
+  }
   try{
-    // Prepare exps with JSON fields for complex data
     const expsToSend=exps.map(e=>{
       const copy=Object.assign({},e);
       copy.inmuebles_json=JSON.stringify(e.inmuebles||[]);
