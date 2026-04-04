@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Instancia Privada - Sucesiones</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        .card {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #2d5016 0%, #4a7c23 100%);
+            padding: 30px;
+            color: white;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+        }
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
+        }
+        .progress {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .progress-step {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #e9ecef;
+            color: #6c757d;
+            border: none;
+        }
+        .progress-step.active {
+            background: linear-gradient(135deg, #2d5016 0%, #4a7c23 100%);
+            color: white;
+        }
+        .progress-step.completed {
+            background: #28a745;
+            color: white;
+        }
+        .content {
+            padding: 25px;
+        }
+        .content h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+        .input-group {
+            margin-bottom: 18px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 13px;
+        }
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            outline: none;
+            font-family: inherit;
+        }
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            border-color: #4a7c23;
+        }
+        .input-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .input-group select {
+            appearance: none;
+            background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a7c23' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 14px center;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .checkbox-container input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+        .checkbox-container label {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #2d5016 0%, #4a7c23 100%);
+            color: white;
+        }
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        .btn-add {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            margin-top: 10px;
+        }
+        .btn-urbana {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-rustica {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+        }
+        .bien-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 15px;
+            border: 2px solid #e9ecef;
+        }
+        .bien-card.urbana {
+            border-left: 4px solid #667eea;
+        }
+        .bien-card.rustica {
+            border-left: 4px solid #f5576c;
+        }
+        .bien-card.auto {
+            border-left: 4px solid #28a745;
+        }
+        .bien-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .bien-card-header h4 {
+            color: #2d3748;
+            font-size: 14px;
+            margin: 0;
+        }
+        .info-box {
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #2e7d32;
+        }
+        .section-box {
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .section-box.blue {
+            background: #e3f2fd;
+        }
+        .section-box.orange {
+            background: #fff3e0;
+        }
+        .section-box.green {
+            background: #e8f5e9;
+        }
+        .section-box.yellow {
+            background: #fff8e1;
+        }
+        .section-box.purple {
+            background: #f3e5f5;
+        }
+        .section-box h4 {
+            margin: 0 0 12px 0;
+            font-size: 14px;
+        }
+        .section-box.blue h4 { color: #1565c0; }
+        .section-box.orange h4 { color: #e65100; }
+        .section-box.green h4 { color: #2e7d32; }
+        .section-box.yellow h4 { color: #f57f17; }
+        .section-box.purple h4 { color: #7b1fa2; }
+        .preview {
+            background: #fffef5;
+            padding: 25px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            max-height: 450px;
+            overflow: auto;
+            border: 2px solid #d4d4d4;
+            color: #333;
+        }
+        .mensaje {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+            display: none;
+        }
+        .mensaje.success {
+            background: #28a745;
+            color: white;
+        }
+        .mensaje.warning {
+            background: #ffc107;
+            color: black;
+        }
+        .mensaje.error {
+            background: #dc3545;
+            color: white;
+        }
+        .mensaje.show {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .paso { display: none; }
+        .paso.active { display: block; }
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #6c757d;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .auto-tag {
+            font-size: 11px;
+            color: #28a745;
+            margin-left: 8px;
+        }
+        input[readonly] {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="mensaje" id="mensaje"></div>
+    
+    <div class="card">
+        <div class="header">
+            <h1>📜 Generador de Instancia Privada</h1>
+            <p>Impuesto de Sucesiones - Gestoría Justo Guevara</p>
+        </div>
+        
+        <div class="progress" id="progress"></div>
+        
+        <div class="content">
+            <!-- Paso 0: Oficina Liquidadora -->
+            <div class="paso" id="paso0">
+                <h2>📍 Oficina Liquidadora</h2>
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Oficina Liquidadora</label>
+                        <input type="text" id="oficina" value="PURCHENA" placeholder="Ej: PURCHENA">
+                    </div>
+                    <div class="input-group">
+                        <label>Provincia</label>
+                        <input type="text" id="provincia" value="ALMERIA" placeholder="Ej: ALMERIA">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Paso 1: Datos del Causante -->
+            <div class="paso" id="paso1">
+                <h2>👤 Datos del Causante</h2>
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Nombre completo del causante *</label>
+                        <input type="text" id="causanteNombre" placeholder="Ej: DOÑA MARÍA GARCÍA LÓPEZ">
+                    </div>
+                    <div class="input-group">
+                        <label>DNI del causante *</label>
+                        <input type="text" id="causanteDNI" placeholder="Ej: 12.345.678-A">
+                    </div>
+                    <div class="input-group">
+                        <label>Fecha de fallecimiento *</label>
+                        <input type="text" id="causanteFechaFallecimiento" placeholder="Ej: 15/03/2024">
+                    </div>
+                    <div class="input-group">
+                        <label>Lugar de fallecimiento *</label>
+                        <input type="text" id="causanteLugarFallecimiento" placeholder="Ej: Olula del Río (Almería)">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Último domicilio y vivienda habitual *</label>
+                    <input type="text" id="causanteUltimoDomicilio" placeholder="Ej: Olula del Río (Almería), Calle Mayor, nº 5">
+                </div>
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Estado civil</label>
+                        <select id="causanteEstadoCivil" onchange="toggleConyuge()">
+                            <option value="casado">Casado/a</option>
+                            <option value="viudo">Viudo/a</option>
+                            <option value="soltero">Soltero/a</option>
+                            <option value="divorciado">Divorciado/a</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="section-box blue" id="conyugeSection">
+                    <h4>💍 Datos del Cónyuge</h4>
+                    <div class="info-box">ℹ️ El cónyuge se añadirá automáticamente como heredero</div>
+                    <div class="grid">
+                        <div class="input-group">
+                            <label>Nombre del cónyuge</label>
+                            <input type="text" id="conyugeNombre" placeholder="Ej: DON PEDRO MARTÍNEZ RUIZ" onchange="actualizarHerederos()">
+                        </div>
+                        <div class="input-group">
+                            <label>DNI del cónyuge</label>
+                            <input type="text" id="conyugeDNI" placeholder="Ej: 12.345.679-B" onchange="actualizarHerederos()">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="tieneHijos" checked onchange="toggleHijos()">
+                    <label for="tieneHijos">¿Tiene hijos?</label>
+                </div>
+                
+                <div class="section-box orange" id="hijosSection">
+                    <h4>👶 Hijos</h4>
+                    <div class="info-box">ℹ️ Los hijos vivos se añadirán automáticamente como herederos</div>
+                    <div id="hijosContainer"></div>
+                    <button class="btn btn-add" onclick="agregarHijo()">➕ Añadir otro hijo/a</button>
+                </div>
+            </div>
+            
+            <!-- Paso 2: Testamento -->
+            <div class="paso" id="paso2">
+                <h2>📜 Testamento / Declaración de Herederos</h2>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="tieneTestamento" onchange="toggleTestamento()">
+                    <label for="tieneTestamento">¿El causante otorgó testamento?</label>
+                </div>
+                
+                <div class="section-box green" id="testamentoSection" style="display: none;">
+                    <h4>📗 Datos del Testamento</h4>
+                    <div class="grid">
+                        <div class="input-group">
+                            <label>Fecha del testamento</label>
+                            <input type="text" id="testamentoFecha" placeholder="Ej: 15 de julio de 1971">
+                        </div>
+                        <div class="input-group">
+                            <label>Lugar</label>
+                            <input type="text" id="testamentoLugar" placeholder="Ej: Purchena (Almería)">
+                        </div>
+                        <div class="input-group">
+                            <label>Notario</label>
+                            <input type="text" id="testamentoNotario" placeholder="Ej: D. Salvador Montesinos Busutil">
+                        </div>
+                        <div class="input-group">
+                            <label>Número de protocolo</label>
+                            <input type="text" id="testamentoNumero" placeholder="Ej: 493">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section-box orange" id="declaracionSection">
+                    <h4>📙 Acta de Declaración de Herederos</h4>
+                    <div class="grid">
+                        <div class="input-group">
+                            <label>Fecha del Acta</label>
+                            <input type="text" id="declaracionFecha" placeholder="Ej: 19 de septiembre de 2012">
+                        </div>
+                        <div class="input-group">
+                            <label>Lugar</label>
+                            <input type="text" id="declaracionLugar" placeholder="Ej: Olula del Río">
+                        </div>
+                        <div class="input-group">
+                            <label>Notario</label>
+                            <input type="text" id="declaracionNotario" placeholder="Ej: Dña. Purificación Díaz Martínez">
+                        </div>
+                        <div class="input-group">
+                            <label>Número del Acta</label>
+                            <input type="text" id="declaracionNumero" placeholder="Ej: 1153">
+                        </div>
+                        <div class="input-group">
+                            <label>Fecha protocolización</label>
+                            <input type="text" id="protocoloFecha" placeholder="Ej: 19 de octubre de 2012">
+                        </div>
+                        <div class="input-group">
+                            <label>Número de protocolo</label>
+                            <input type="text" id="protocoloNumero" placeholder="Ej: 1305">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Paso 3: Herederos -->
+            <div class="paso" id="paso3">
+                <h2>👥 Herederos</h2>
+                <div class="info-box" id="herederosInfo"></div>
+                <div id="herederosContainer"></div>
+                <button class="btn btn-add" onclick="agregarHerederoManual()">➕ Añadir otro heredero/legatario</button>
+            </div>
+            
+            <!-- Paso 4: Bienes Inmuebles -->
+            <div class="paso" id="paso4">
+                <h2>🏠 Bienes Inmuebles</h2>
+                <div class="btn-group">
+                    <button class="btn btn-urbana" onclick="agregarBien('urbana')">🏢 Añadir Urbana</button>
+                    <button class="btn btn-rustica" onclick="agregarBien('rustica')">🌾 Añadir Rústica</button>
+                </div>
+                <div id="bienesContainer"></div>
+                <div class="empty-state" id="bienesEmpty">
+                    <p>No hay bienes inmuebles añadidos.</p>
+                </div>
+            </div>
+            
+            <!-- Paso 5: Cuentas Bancarias -->
+            <div class="paso" id="paso5">
+                <h2>🏦 Cuentas Bancarias</h2>
+                <div id="cuentasContainer"></div>
+                <button class="btn btn-add" onclick="agregarCuenta()">➕ Añadir cuenta bancaria</button>
+                <div class="empty-state" id="cuentasEmpty">
+                    <p>No hay cuentas bancarias añadidas.</p>
+                </div>
+            </div>
+            
+            <!-- Paso 6: Vehículos -->
+            <div class="paso" id="paso6">
+                <h2>🚗 Vehículos</h2>
+                <div id="vehiculosContainer"></div>
+                <button class="btn btn-add" onclick="agregarVehiculo()">➕ Añadir vehículo</button>
+                <div class="empty-state" id="vehiculosEmpty">
+                    <p>No hay vehículos añadidos.</p>
+                </div>
+            </div>
+            
+            <!-- Paso 7: Seguros y Final -->
+            <div class="paso" id="paso7">
+                <h2>📋 Seguros y Datos Finales</h2>
+                
+                <div class="section-box blue">
+                    <h4>🛡️ Seguros de fallecimiento</h4>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="tieneSeguros" onchange="toggleSeguros()">
+                        <label for="tieneSeguros">¿El causante tenía seguros?</label>
+                    </div>
+                    <div class="input-group" id="segurosInfo" style="display: none;">
+                        <label>Información del seguro</label>
+                        <textarea id="segurosInfoTexto" placeholder="Ej: en el mismo consta que el causante tenía una póliza de la entidad aseguradora Ocaso, SA..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="section-box yellow">
+                    <h4>💰 Patrimonio preexistente</h4>
+                    <div class="input-group">
+                        <label>Patrimonio máximo de herederos</label>
+                        <input type="text" id="patrimonioPreexistente" value="402.678,11" placeholder="Ej: 402.678,11">
+                    </div>
+                </div>
+                
+                <div class="section-box purple">
+                    <h4>📅 Fecha de presentación</h4>
+                    <div class="input-group">
+                        <label>Fecha</label>
+                        <input type="text" id="fechaPresentacion" placeholder="Ej: 19 de marzo de 2015">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Paso 8: Vista Previa -->
+            <div class="paso" id="paso8">
+                <h2>📄 Vista Previa del Documento</h2>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="copiarAlPortapapeles()">📋 Copiar al portapapeles</button>
+                    <button class="btn btn-success" onclick="descargarTXT()">💾 Descargar TXT</button>
+                </div>
+                <div class="preview" id="preview"></div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" id="btnAnterior" onclick="pasoAnterior()">⬅️ Anterior</button>
+                <button class="btn btn-primary" id="btnSiguiente" onclick="pasoSiguiente()">Siguiente ➡️</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Estado de la aplicación
+        let pasoActual = 0;
+        const totalPasos = 9;
+        const pasos = [
+            'Oficina Liquidadora',
+            'Datos del Causante',
+            'Testamento / Declaración',
+            'Herederos',
+            'Bienes Inmuebles',
+            'Cuentas Bancarias',
+            'Vehículos',
+            'Seguros y Final',
+            'Vista Previa'
+        ];
+        
+        let hijos = [{ nombre: '', dni: '', fallecido: false, fechaFallecimiento: '', sinDescendencia: true }];
+        let herederos = [];
+        let bienes = [];
+        let cuentas = [];
+        let vehiculos = [];
+        let documentoGenerado = '';
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProgress();
+            mostrarPaso(0);
+            renderHijos();
+            
+            // Fecha por defecto
+            const hoy = new Date();
+            const opciones = { day: 'numeric', month: 'long', year: 'numeric' };
+            document.getElementById('fechaPresentacion').value = hoy.toLocaleDateString('es-ES', opciones);
+        });
+
+        function renderProgress() {
+            const progressEl = document.getElementById('progress');
+            progressEl.innerHTML = pasos.map((nombre, idx) => {
+                let clase = 'progress-step';
+                if (idx === pasoActual) clase += ' active';
+                else if (idx < pasoActual) clase += ' completed';
+                return `<button class="${clase}" onclick="irAPaso(${idx})">${idx + 1}. ${nombre}</button>`;
+            }).join('');
+        }
+
+        function mostrarPaso(num) {
+            document.querySelectorAll('.paso').forEach((el, idx) => {
+                el.classList.toggle('active', idx === num);
+            });
+            
+            document.getElementById('btnAnterior').style.opacity = num === 0 ? '0.5' : '1';
+            document.getElementById('btnAnterior').disabled = num === 0;
+            
+            const btnSiguiente = document.getElementById('btnSiguiente');
+            if (num < 7) {
+                btnSiguiente.textContent = 'Siguiente ➡️';
+                btnSiguiente.className = 'btn btn-primary';
+                btnSiguiente.onclick = pasoSiguiente;
+            } else if (num === 7) {
+                btnSiguiente.textContent = '✨ Generar Documento';
+                btnSiguiente.className = 'btn btn-success';
+                btnSiguiente.onclick = generarDocumento;
+            } else {
+                btnSiguiente.textContent = '🔄 Empezar de nuevo';
+                btnSiguiente.className = 'btn btn-secondary';
+                btnSiguiente.onclick = reiniciar;
+            }
+            
+            renderProgress();
+        }
+
+        function pasoSiguiente() {
+            if (pasoActual < totalPasos - 1) {
+                pasoActual++;
+                mostrarPaso(pasoActual);
+                if (pasoActual === 3) actualizarHerederos();
+            }
+        }
+
+        function pasoAnterior() {
+            if (pasoActual > 0) {
+                pasoActual--;
+                mostrarPaso(pasoActual);
+            }
+        }
+
+        function irAPaso(num) {
+            if (num < pasoActual) {
+                pasoActual = num;
+                mostrarPaso(pasoActual);
+            }
+        }
+
+        function reiniciar() {
+            if (confirm('¿Seguro que quieres empezar de nuevo? Se borrarán todos los datos.')) {
+                location.reload();
+            }
+        }
+
+        // Toggle funciones
+        function toggleConyuge() {
+            const estado = document.getElementById('causanteEstadoCivil').value;
+            document.getElementById('conyugeSection').style.display = 
+                (estado === 'casado' || estado === 'viudo') ? 'block' : 'none';
+            actualizarHerederos();
+        }
+
+        function toggleHijos() {
+            document.getElementById('hijosSection').style.display = 
+                document.getElementById('tieneHijos').checked ? 'block' : 'none';
+            actualizarHerederos();
+        }
+
+        function toggleTestamento() {
+            const tiene = document.getElementById('tieneTestamento').checked;
+            document.getElementById('testamentoSection').style.display = tiene ? 'block' : 'none';
+            document.getElementById('declaracionSection').style.display = tiene ? 'none' : 'block';
+        }
+
+        function toggleSeguros() {
+            document.getElementById('segurosInfo').style.display = 
+                document.getElementById('tieneSeguros').checked ? 'block' : 'none';
+        }
+
+        // Hijos
+        function renderHijos() {
+            const container = document.getElementById('hijosContainer');
+            container.innerHTML = hijos.map((hijo, idx) => `
+                <div class="bien-card" style="background: white;">
+                    <div class="bien-card-header">
+                        <span style="font-weight: 600; color: #2d3748;">Hijo/a ${idx + 1}</span>
+                        ${hijos.length > 1 ? `<button class="btn btn-danger" onclick="eliminarHijo(${idx})">🗑️</button>` : ''}
+                    </div>
+                    <div class="grid">
+                        <div class="input-group">
+                            <label>Nombre</label>
+                            <input type="text" value="${hijo.nombre}" onchange="actualizarHijoData(${idx}, 'nombre', this.value)" placeholder="Ej: DON JUAN GARCÍA LÓPEZ">
+                        </div>
+                        <div class="input-group">
+                            <label>DNI</label>
+                            <input type="text" value="${hijo.dni}" onchange="actualizarHijoData(${idx}, 'dni', this.value)" placeholder="Ej: 12.345.678-B">
+                        </div>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" ${hijo.fallecido ? 'checked' : ''} onchange="actualizarHijoData(${idx}, 'fallecido', this.checked)">
+                        <label style="font-weight: normal; font-size: 13px;">¿Ha fallecido (premoriencia)?</label>
+                    </div>
+                    ${hijo.fallecido ? `
+                        <div class="grid">
+                            <div class="input-group">
+                                <label>Fecha fallecimiento</label>
+                                <input type="text" value="${hijo.fechaFallecimiento}" onchange="actualizarHijoData(${idx}, 'fechaFallecimiento', this.value)" placeholder="Ej: 10 de enero de 1989">
+                            </div>
+                            <div class="checkbox-container">
+                                <input type="checkbox" ${hijo.sinDescendencia ? 'checked' : ''} onchange="actualizarHijoData(${idx}, 'sinDescendencia', this.checked)">
+                                <label style="font-weight: normal; font-size: 13px;">Soltero/a y sin descendencia</label>
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function agregarHijo() {
+            hijos.push({ nombre: '', dni: '', fallecido: false, fechaFallecimiento: '', sinDescendencia: true });
+            renderHijos();
+        }
+
+        function eliminarHijo(idx) {
+            hijos.splice(idx, 1);
+            renderHijos();
+            actualizarHerederos();
+        }
+
+        function actualizarHijoData(idx, campo, valor) {
+            hijos[idx][campo] = valor;
+            if (campo === 'fallecido') renderHijos();
+            actualizarHerederos();
+        }
+
+        // Herederos
+        function actualizarHerederos() {
+            const nuevosHerederos = [];
+            
+            const conyugeNombre = document.getElementById('conyugeNombre').value;
+            const conyugeDNI = document.getElementById('conyugeDNI').value;
+            const estadoCivil = document.getElementById('causanteEstadoCivil').value;
+            
+            if ((estadoCivil === 'casado' || estadoCivil === 'viudo') && conyugeNombre.trim()) {
+                nuevosHerederos.push({
+                    nombre: conyugeNombre,
+                    dni: conyugeDNI,
+                    parentesco: 'Cónyuge',
+                    tipo: 'usufructuario',
+                    auto: true
+                });
+            }
+            
+            if (document.getElementById('tieneHijos').checked) {
+                hijos.forEach(hijo => {
+                    if (hijo.nombre.trim() && !hijo.fallecido) {
+                        nuevosHerederos.push({
+                            nombre: hijo.nombre,
+                            dni: hijo.dni,
+                            parentesco: 'Hijo/a',
+                            tipo: 'nudo propietario',
+                            auto: true
+                        });
+                    }
+                });
+            }
+            
+            const manuales = herederos.filter(h => !h.auto);
+            herederos = [...nuevosHerederos, ...manuales];
+            
+            renderHerederos();
+        }
+
+        function renderHerederos() {
+            const container = document.getElementById('herederosContainer');
+            const autoCount = herederos.filter(h => h.auto).length;
+            
+            document.getElementById('herederosInfo').innerHTML = autoCount > 0 
+                ? `✅ Se han añadido automáticamente ${autoCount} heredero(s) desde los datos del causante.`
+                : 'Añade los herederos manualmente.';
+            
+            container.innerHTML = herederos.map((h, idx) => `
+                <div class="bien-card ${h.auto ? 'auto' : ''}">
+                    <div class="bien-card-header">
+                        <div>
+                            <span style="font-weight: 600;">${h.auto ? '🔗 ' : '➕ '}Heredero ${idx + 1}</span>
+                            ${h.auto ? '<span class="auto-tag">(auto)</span>' : ''}
+                        </div>
+                        ${!h.auto ? `<button class="btn btn-danger" onclick="eliminarHeredero(${idx})">🗑️</button>` : ''}
+                    </div>
+                    <div class="grid">
+                        <div class="input-group">
+                            <label>Nombre completo</label>
+                            <input type="text" value="${h.nombre}" ${h.auto ? 'readonly' : ''} onchange="actualizarHerederoData(${idx}, 'nombre', this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label>DNI</label>
+                            <input type="text" value="${h.dni}" ${h.auto ? 'readonly' : ''} onchange="actualizarHerederoData(${idx}, 'dni', this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label>Parentesco</label>
+                            <select onchange="actualizarHerederoData(${idx}, 'parentesco', this.value)">
+                                <option value="Cónyuge" ${h.parentesco === 'Cónyuge' ? 'selected' : ''}>Cónyuge</option>
+                                <option value="Hijo/a" ${h.parentesco === 'Hijo/a' ? 'selected' : ''}>Hijo/a</option>
+                                <option value="Nieto/a" ${h.parentesco === 'Nieto/a' ? 'selected' : ''}>Nieto/a</option>
+                                <option value="Padre/Madre" ${h.parentesco === 'Padre/Madre' ? 'selected' : ''}>Padre/Madre</option>
+                                <option value="Hermano/a" ${h.parentesco === 'Hermano/a' ? 'selected' : ''}>Hermano/a</option>
+                                <option value="Sobrino/a" ${h.parentesco === 'Sobrino/a' ? 'selected' : ''}>Sobrino/a</option>
+                                <option value="Otro" ${h.parentesco === 'Otro' ? 'selected' : ''}>Otro</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Tipo de derecho</label>
+                            <select onchange="actualizarHerederoData(${idx}, 'tipo', this.value)">
+                                <option value="heredero" ${h.tipo === 'heredero' ? 'selected' : ''}>Heredero</option>
+                                <option value="usufructuario" ${h.tipo === 'usufructuario' ? 'selected' : ''}>Usufructuario</option>
+                                <option value="nudo propietario" ${h.tipo === 'nudo propietario' ? 'selected' : ''}>Nudo propietario</option>
+                                <option value="legatario" ${h.tipo === 'legatario' ? 'selected' : ''}>Legatario</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function agregarHerederoManual() {
+            herederos.push({ nombre: '', dni: '', parentesco: 'Otro', tipo: 'legatario', auto: false });
+            renderHerederos();
+        }
+
+        function eliminarHeredero(idx) {
+            if (!herederos[idx].auto) {
+                herederos.splice(idx, 1);
+                renderHerederos();
+            }
+        }
+
+        function actualizarHerederoData(idx, campo, valor) {
+            herederos[idx][campo] = valor;
+        }
+
+        // Bienes
+        function agregarBien(tipo) {
+            const nuevoBien = tipo === 'urbana' 
+                ? { tipo: 'URBANA', subtipo: 'VIVIENDA', descripcion: '', direccion: '', termino: '', superficie: '', linderos: '', inscripcion: '', titulo: '', refCatastral: '', valor: '', caracter: 'ganancial', esViviendaHabitual: false }
+                : { tipo: 'RUSTICA', parcela: '', poligono: '', paraje: '', termino: '', superficie: '', cultivo: '', subparcelas: '', inscripcion: '', titulo: '', refCatastral: '', valor: '', caracter: 'privativo' };
+            bienes.push(nuevoBien);
+            renderBienes();
+        }
+
+        function renderBienes() {
+            const container = document.getElementById('bienesContainer');
+            document.getElementById('bienesEmpty').style.display = bienes.length === 0 ? 'block' : 'none';
+            
+            container.innerHTML = bienes.map((b, idx) => `
+                <div class="bien-card ${b.tipo.toLowerCase()}">
+                    <div class="bien-card-header">
+                        <h4>${b.tipo === 'URBANA' ? '🏢' : '🌾'} ${b.tipo} #${idx + 1}</h4>
+                        <button class="btn btn-danger" onclick="eliminarBien(${idx})">🗑️</button>
+                    </div>
+                    ${b.tipo === 'URBANA' ? `
+                        <div class="grid">
+                            <div class="input-group">
+                                <label>Subtipo</label>
+                                <select onchange="actualizarBienData(${idx}, 'subtipo', this.value)">
+                                    <option value="VIVIENDA" ${b.subtipo === 'VIVIENDA' ? 'selected' : ''}>Vivienda</option>
+                                    <option value="LOCAL" ${b.subtipo === 'LOCAL' ? 'selected' : ''}>Local</option>
+                                    <option value="GARAJE" ${b.subtipo === 'GARAJE' ? 'selected' : ''}>Garaje</option>
+                                    <option value="TRASTERO" ${b.subtipo === 'TRASTERO' ? 'selected' : ''}>Trastero</option>
+                                    <option value="SOLAR" ${b.subtipo === 'SOLAR' ? 'selected' : ''}>Solar</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Dirección</label>
+                                <input type="text" value="${b.direccion}" onchange="actualizarBienData(${idx}, 'direccion', this.value)" placeholder="Ej: Calle Real, nº 33">
+                            </div>
+                            <div class="input-group">
+                                <label>Término municipal</label>
+                                <input type="text" value="${b.termino}" onchange="actualizarBienData(${idx}, 'termino', this.value)" placeholder="Ej: Olula del Río (Almería)">
+                            </div>
+                            <div class="input-group">
+                                <label>Superficie</label>
+                                <input type="text" value="${b.superficie}" onchange="actualizarBienData(${idx}, 'superficie', this.value)" placeholder="Ej: construida de 108 m²">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Descripción adicional</label>
+                            <textarea onchange="actualizarBienData(${idx}, 'descripcion', this.value)" placeholder="Ej: Vivienda tipo B)...">${b.descripcion}</textarea>
+                        </div>
+                        <div class="input-group">
+                            <label>Linderos</label>
+                            <textarea onchange="actualizarBienData(${idx}, 'linderos', this.value)" placeholder="Linda: Norte, con...">${b.linderos}</textarea>
+                        </div>
+                    ` : `
+                        <div class="grid">
+                            <div class="input-group">
+                                <label>Parcela</label>
+                                <input type="text" value="${b.parcela}" onchange="actualizarBienData(${idx}, 'parcela', this.value)" placeholder="Ej: 21">
+                            </div>
+                            <div class="input-group">
+                                <label>Polígono</label>
+                                <input type="text" value="${b.poligono}" onchange="actualizarBienData(${idx}, 'poligono', this.value)" placeholder="Ej: 1">
+                            </div>
+                            <div class="input-group">
+                                <label>Paraje</label>
+                                <input type="text" value="${b.paraje}" onchange="actualizarBienData(${idx}, 'paraje', this.value)" placeholder="Ej: La Esperilla">
+                            </div>
+                            <div class="input-group">
+                                <label>Término municipal</label>
+                                <input type="text" value="${b.termino}" onchange="actualizarBienData(${idx}, 'termino', this.value)" placeholder="Ej: Chercos (Almería)">
+                            </div>
+                            <div class="input-group">
+                                <label>Superficie</label>
+                                <input type="text" value="${b.superficie}" onchange="actualizarBienData(${idx}, 'superficie', this.value)" placeholder="Ej: 523 m²">
+                            </div>
+                            <div class="input-group">
+                                <label>Cultivo/Uso</label>
+                                <input type="text" value="${b.cultivo}" onchange="actualizarBienData(${idx}, 'cultivo', this.value)" placeholder="Ej: cereal secano">
+                            </div>
+                        </div>
+                    `}
+                    <div class="grid">
+                        <div class="input-group">
+                            <label>Inscripción registral</label>
+                            <input type="text" value="${b.inscripcion}" onchange="actualizarBienData(${idx}, 'inscripcion', this.value)" placeholder="Ej: Tomo 943, libro 44...">
+                        </div>
+                        <div class="input-group">
+                            <label>Título de adquisición</label>
+                            <input type="text" value="${b.titulo}" onchange="actualizarBienData(${idx}, 'titulo', this.value)" placeholder="Ej: Escritura de compraventa...">
+                        </div>
+                        <div class="input-group">
+                            <label>Referencia catastral *</label>
+                            <input type="text" value="${b.refCatastral}" onchange="actualizarBienData(${idx}, 'refCatastral', this.value)" placeholder="Ej: 2251645WG6325S0006AQ">
+                        </div>
+                        <div class="input-group">
+                            <label>Valor *</label>
+                            <input type="text" value="${b.valor}" onchange="actualizarBienData(${idx}, 'valor', this.value)" placeholder="Ej: CINCUENTA MIL EUROS">
+                        </div>
+                        <div class="input-group">
+                            <label>Carácter</label>
+                            <select onchange="actualizarBienData(${idx}, 'caracter', this.value)">
+                                <option value="ganancial" ${b.caracter === 'ganancial' ? 'selected' : ''}>Ganancial</option>
+                                <option value="privativo" ${b.caracter === 'privativo' ? 'selected' : ''}>Privativo</option>
+                            </select>
+                        </div>
+                        ${b.tipo === 'URBANA' ? `
+                            <div class="checkbox-container">
+                                <input type="checkbox" ${b.esViviendaHabitual ? 'checked' : ''} onchange="actualizarBienData(${idx}, 'esViviendaHabitual', this.checked)">
+                                <label style="font-weight: normal; font-size: 13px;">Vivienda habitual</label>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function eliminarBien(idx) {
+            bienes.splice(idx, 1);
+            renderBienes();
+        }
+
+        function actualizarBienData(idx, campo, valor) {
+            bienes[idx][campo] = valor;
+        }
+
+        // Cuentas
+        function agregarCuenta() {
+            cuentas.push({ banco: '', numeroCuenta: '', titulares: 1, saldo: '', proporcion: '100' });
+            renderCuentas();
+        }
+
+        function renderCuentas() {
+            const container = document.getElementById('cuentasContainer');
+            document.getElementById('cuentasEmpty').style.display = cuentas.length === 0 ? 'block' : 'none';
+            
+            container.innerHTML = cuentas.map((c, idx) => `
+                <div class="bien-card">
+                    <div class="bien-card-header">
+                        <h4>💳 Cuenta #${idx + 1}</h4>
+                        <button class="btn btn-danger" onclick="eliminarCuenta(${idx})">🗑️</button>
+                    </div>
+                    <div class="grid">
+                        <div class="input-group">
+                            <label>Banco/Entidad</label>
+                            <input type="text" value="${c.banco}" onchange="actualizarCuentaData(${idx}, 'banco', this.value)" placeholder="Ej: UNICAJA">
+                        </div>
+                        <div class="input-group">
+                            <label>Número de cuenta (IBAN)</label>
+                            <input type="text" value="${c.numeroCuenta}" onchange="actualizarCuentaData(${idx}, 'numeroCuenta', this.value)" placeholder="Ej: ES05 2103...">
+                        </div>
+                        <div class="input-group">
+                            <label>Nº de titulares</label>
+                            <input type="number" min="1" value="${c.titulares}" onchange="actualizarCuentaData(${idx}, 'titulares', this.value); renderCuentas();">
+                        </div>
+                        <div class="input-group">
+                            <label>Saldo total</label>
+                            <input type="text" value="${c.saldo}" onchange="actualizarCuentaData(${idx}, 'saldo', this.value)" placeholder="Ej: Doce mil euros">
+                        </div>
+                        ${parseInt(c.titulares) > 1 ? `
+                            <div class="input-group">
+                                <label>% del causante</label>
+                                <input type="text" value="${c.proporcion}" onchange="actualizarCuentaData(${idx}, 'proporcion', this.value)" placeholder="Ej: 33.33">
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function eliminarCuenta(idx) {
+            cuentas.splice(idx, 1);
+            renderCuentas();
+        }
+
+        function actualizarCuentaData(idx, campo, valor) {
+            cuentas[idx][campo] = valor;
+        }
+
+        // Vehículos
+        function agregarVehiculo() {
+            vehiculos.push({ marca: '', modelo: '', matricula: '', fechaMatriculacion: '', bastidor: '', valor: '' });
+            renderVehiculos();
+        }
+
+        function renderVehiculos() {
+            const container = document.getElementById('vehiculosContainer');
+            document.getElementById('vehiculosEmpty').style.display = vehiculos.length === 0 ? 'block' : 'none';
+            
+            container.innerHTML = vehiculos.map((v, idx) => `
+                <div class="bien-card">
+                    <div class="bien-card-header">
+                        <h4>🚗 Vehículo #${idx + 1}</h4>
+                        <button class="btn btn-danger" onclick="eliminarVehiculo(${idx})">🗑️</button>
+                    </div>
+                    <div class="grid">
+                        <div class="input-group">
+                            <label>Marca</label>
+                            <input type="text" value="${v.marca}" onchange="actualizarVehiculoData(${idx}, 'marca', this.value)" placeholder="Ej: AUDI">
+                        </div>
+                        <div class="input-group">
+                            <label>Modelo</label>
+                            <input type="text" value="${v.modelo}" onchange="actualizarVehiculoData(${idx}, 'modelo', this.value)" placeholder="Ej: 90, 2.2 INY">
+                        </div>
+                        <div class="input-group">
+                            <label>Matrícula</label>
+                            <input type="text" value="${v.matricula}" onchange="actualizarVehiculoData(${idx}, 'matricula', this.value)" placeholder="Ej: AL-8631-M">
+                        </div>
+                        <div class="input-group">
+                            <label>Fecha matriculación</label>
+                            <input type="text" value="${v.fechaMatriculacion}" onchange="actualizarVehiculoData(${idx}, 'fechaMatriculacion', this.value)" placeholder="Ej: 22/05/1989">
+                        </div>
+                        <div class="input-group">
+                            <label>Nº Bastidor</label>
+                            <input type="text" value="${v.bastidor}" onchange="actualizarVehiculoData(${idx}, 'bastidor', this.value)" placeholder="Ej: WAUZZZ89ZKA236470">
+                        </div>
+                        <div class="input-group">
+                            <label>Valor</label>
+                            <input type="text" value="${v.valor}" onchange="actualizarVehiculoData(${idx}, 'valor', this.value)" placeholder="Ej: DOS MIL EUROS">
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function eliminarVehiculo(idx) {
+            vehiculos.splice(idx, 1);
+            renderVehiculos();
+        }
+
+        function actualizarVehiculoData(idx, campo, valor) {
+            vehiculos[idx][campo] = valor;
+        }
+
+        // Generar documento
+        function generarDocumento() {
+            const datos = {
+                oficina: document.getElementById('oficina').value,
+                provincia: document.getElementById('provincia').value,
+                causanteNombre: document.getElementById('causanteNombre').value,
+                causanteDNI: document.getElementById('causanteDNI').value,
+                causanteFechaFallecimiento: document.getElementById('causanteFechaFallecimiento').value,
+                causanteLugarFallecimiento: document.getElementById('causanteLugarFallecimiento').value,
+                causanteUltimoDomicilio: document.getElementById('causanteUltimoDomicilio').value,
+                causanteEstadoCivil: document.getElementById('causanteEstadoCivil').value,
+                conyugeNombre: document.getElementById('conyugeNombre').value,
+                tieneTestamento: document.getElementById('tieneTestamento').checked,
+                testamentoFecha: document.getElementById('testamentoFecha').value,
+                testamentoLugar: document.getElementById('testamentoLugar').value,
+                testamentoNotario: document.getElementById('testamentoNotario').value,
+                testamentoNumero: document.getElementById('testamentoNumero').value,
+                declaracionFecha: document.getElementById('declaracionFecha').value,
+                declaracionLugar: document.getElementById('declaracionLugar').value,
+                declaracionNotario: document.getElementById('declaracionNotario').value,
+                declaracionNumero: document.getElementById('declaracionNumero').value,
+                protocoloFecha: document.getElementById('protocoloFecha').value,
+                protocoloNumero: document.getElementById('protocoloNumero').value,
+                tieneSeguros: document.getElementById('tieneSeguros').checked,
+                segurosInfo: document.getElementById('segurosInfoTexto').value,
+                patrimonioPreexistente: document.getElementById('patrimonioPreexistente').value,
+                fechaPresentacion: document.getElementById('fechaPresentacion').value
+            };
+
+            let doc = `A LA OFICINA LIQUIDADORA DEL IMPUESTO DE SUCESIONES Y DONACIONES DE ${datos.oficina} / ${datos.provincia}.----
+
+DON FRANCISCO JOSE JUSTO GUEVARA, mayor de edad, con N.I.F 27.525.993-F, con domicilio a efectos de notificaciones en 04860 Olula del Río/Almería, Avenida Almanzora, número 6, Local 2, comparece ante esa Oficina Liquidadora y, como mejor sea de proceder en Derecho, DICE:-------------------
+
+PRIMERO.- RELACION DE HECHOS.- Que en fecha ${datos.causanteFechaFallecimiento}, falleció en ${datos.causanteLugarFallecimiento}, ${datos.causanteNombre.toUpperCase()}, con D.N.I. ${datos.causanteDNI}, siendo su último domicilio y vivienda habitual en ${datos.causanteUltimoDomicilio}, en estado civil de ${datos.causanteEstadoCivil}${datos.conyugeNombre ? ` con ${datos.conyugeNombre.toUpperCase()}` : ''}`;
+
+            // Hijos
+            if (document.getElementById('tieneHijos').checked && hijos.length > 0) {
+                const hijosConNombre = hijos.filter(h => h.nombre.trim());
+                if (hijosConNombre.length > 0) {
+                    const numTexto = ['UN', 'DOS', 'TRES', 'CUATRO', 'CINCO'][hijosConNombre.length - 1] || hijosConNombre.length;
+                    doc += ` de cuyo matrimonio tuvo ${numTexto} hijos llamados: ${hijosConNombre.map(h => h.nombre.toUpperCase()).join(' Y ')}`;
+                }
+                
+                hijos.filter(h => h.fallecido && h.nombre.trim()).forEach(h => {
+                    doc += `, habiendo fallecido ${h.nombre}, el día ${h.fechaFallecimiento}${h.sinDescendencia ? ', soltero/a y sin descendencia' : ''}.---`;
+                });
+            }
+            
+            doc += '\n\n';
+
+            // Testamento o Declaración
+            if (datos.tieneTestamento) {
+                doc += `El causante falleció habiendo otorgado disposición testamentaria, el día ${datos.testamentoFecha}, en ${datos.testamentoLugar}, ante el Notario ${datos.testamentoNotario}, con el número ${datos.testamentoNumero} de su protocolo.------------------------
+
+(Se adjunta copia de la partida de defunción, certificado de últimas voluntades y testamento).-----------------------
+
+Que según se desprende del citado testamento, se relacionan a continuación los herederos y su parentesco con el causante:------------------------------------------------\n\n`;
+            } else {
+                doc += `La causante falleció sin otorgar disposición testamentaria alguna, habiéndose procedido a realizar Acta de Declaración de herederos otorgada en ${datos.declaracionLugar}, el día ${datos.declaracionFecha}, siendo protocolizado el Juicio de Notoriedad el día ${datos.protocoloFecha}, ante la Notario ${datos.declaracionNotario}, bajo los números ${datos.declaracionNumero} y ${datos.protocoloNumero}, respectivamente, de su protocolo (Copia de los mismos que se adjunta, junto con partida de defunción, certificado de últimas voluntades de la causante).---------------------
+
+Que según se desprende de la citada Acta de Declaración de Herederos, se relacionan a continuación los herederos, y su parentesco con el causante.-------------------------------\n\n`;
+            }
+
+            // Herederos
+            herederos.forEach(h => {
+                if (h.nombre.trim()) {
+                    const tipoTexto = h.tipo && h.tipo !== 'heredero' ? `, ${h.tipo}` : '';
+                    doc += `${h.nombre.toUpperCase()} (${h.parentesco}${tipoTexto}), con DNI. ${h.dni}.----------\n\n`;
+                }
+            });
+
+            // SEGUNDO - Bienes
+            doc += `SEGUNDO.- Que los bienes y derechos relictos del causante con carácter GANANCIAL/PRIVATIVO, eran los siguientes:-----\n\n`;
+
+            let num = 1;
+
+            // Bienes inmuebles
+            bienes.forEach(b => {
+                if (b.tipo === 'URBANA') {
+                    doc += `${num}) URBANA.- ${b.subtipo}.- ${b.descripcion}${b.direccion ? `, sita en ${b.direccion}` : ''}${b.termino ? `, del término de ${b.termino}` : ''}${b.superficie ? `, con superficie ${b.superficie}` : ''}${b.linderos ? `. ${b.linderos}` : ''}.-------\n\n`;
+                    if (b.inscripcion) doc += `Inscripción.- ${b.inscripcion}.------\n\n`;
+                    if (b.titulo) doc += `Título.- ${b.titulo}.------------\n\n`;
+                    doc += `Referencia catastral.- ${b.refCatastral}.-------------\n\n`;
+                    doc += `Valor.- ${b.valor}.-----\n\n`;
+                    doc += `Tiene carácter ${b.caracter}${b.esViviendaHabitual ? ' y constituye la vivienda habitual del causante' : ''}.------------------\n\n`;
+                    doc += `(Se adjunta copia escritura y recibo de contribución).-----\n\n`;
+                } else {
+                    doc += `${num}) RUSTICA.- Parcela ${b.parcela} del polígono ${b.poligono}, paraje ${b.paraje}, término de ${b.termino}, con una superficie de ${b.superficie}, destinados al cultivo de ${b.cultivo}.--------\n\n`;
+                    doc += `Referencia catastral.- ${b.refCatastral}.-------------\n\n`;
+                    doc += `Valor.- ${b.valor}.---------------\n\n`;
+                }
+                num++;
+            });
+
+            // Cuentas
+            cuentas.forEach(c => {
+                doc += `${num}) CUENTA DE ${c.banco.toUpperCase()}.---------------\n\n`;
+                doc += `Nº de cuenta: ${c.numeroCuenta}.--------------------\n\n`;
+                doc += `Nº de titulares: ${c.titulares}.--------------------------------------\n\n`;
+                doc += `Saldo: ${c.saldo}.----------------------------------------\n\n`;
+                if (parseInt(c.titulares) > 1) {
+                    doc += `A tener en cuenta ${c.proporcion}% del saldo.--------------------------------------------------\n\n`;
+                }
+                num++;
+            });
+
+            if (cuentas.length > 0) doc += `(Se aportan certificados bancarios).---\n\n`;
+
+            // Vehículos
+            vehiculos.forEach(v => {
+                doc += `${num}) VEHICULO.---------------------------------------------\n\n`;
+                doc += `Marca: ${v.marca.toUpperCase()}.---------------------------------------------\n\n`;
+                doc += `Modelo: ${v.modelo}.-------------------------------------\n\n`;
+                doc += `Matricula: ${v.matricula}.------------------------------------\n\n`;
+                doc += `Fecha matriculación: ${v.fechaMatriculacion}.--------------------------\n\n`;
+                doc += `Nº Bastidor: ${v.bastidor}.---------------------------\n\n`;
+                doc += `Valor: ${v.valor}.--------------------------\n\n`;
+                doc += `(Se aporta ficha técnica del vehículo).------------------\n\n`;
+                num++;
+            });
+
+            // Seguros
+            if (datos.tieneSeguros) {
+                doc += `Se adjunta copia de Certificado de contratos de seguros de cobertura de fallecimiento, ${datos.segurosInfo}.--------------------------------\n\n`;
+            } else {
+                doc += `Se adjunta copia de Certificado de contratos de seguros de cobertura de fallecimiento en el que consta que el causante no tenía ningún contrato.--------------------------------\n\n`;
+            }
+
+            // Final
+            doc += `A los efectos de los dispuesto en el Artículo 22 de la vigente Ley del Impuesto de Sucesiones y Donaciones, que los patrimonios preexistentes de los herederos no alcanzan los ${datos.patrimonioPreexistente} EUROS, que son mayores de veintiún años y que sus domicilios respectivos para citaciones y requerimientos será el consignado en los Modelos 650.--------------------------------------------\n\n`;
+
+            doc += `En virtud de lo expuesto---------------------------------\n\n`;
+
+            doc += `SE SOLICITA DE ESTA OFICINA LIQUIDADORA que, tenga por presentado este escrito con los documentos acompañados y sus Modelos 660 y 650 que se adjuntan, como liquidación definitiva de ${datos.causanteNombre.toUpperCase()}, por ser de hacer en Justicia que se pide en ${datos.oficina}, a ${datos.fechaPresentacion}.---------------------------------------------------\n\n`;
+
+            doc += `Fdo. Francisco José Justo Guevara\n\n`;
+
+            doc += `Iltre. Sr/a. Liquidador/a del Impuesto de Sucesiones y Donaciones de ${datos.oficina} (${datos.provincia}).`;
+
+            documentoGenerado = doc;
+            document.getElementById('preview').textContent = doc;
+            pasoActual = 8;
+            mostrarPaso(pasoActual);
+        }
+
+        // Copiar y descargar
+        function mostrarMensaje(texto, tipo) {
+            const el = document.getElementById('mensaje');
+            el.textContent = texto;
+            el.className = 'mensaje ' + tipo + ' show';
+            setTimeout(() => el.classList.remove('show'), 3000);
+        }
+
+        async function copiarAlPortapapeles() {
+            try {
+                await navigator.clipboard.writeText(documentoGenerado);
+                mostrarMensaje('¡Documento copiado al portapapeles!', 'success');
+            } catch (err) {
+                const textArea = document.createElement('textarea');
+                textArea.value = documentoGenerado;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    mostrarMensaje('¡Documento copiado al portapapeles!', 'success');
+                } catch (e) {
+                    mostrarMensaje('Error al copiar. Selecciona el texto manualmente.', 'error');
+                }
+                document.body.removeChild(textArea);
+            }
+        }
+
+        function descargarTXT() {
+            const nombre = document.getElementById('causanteNombre').value;
+            const nombreArchivo = nombre 
+                ? `Instancia_${nombre.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]/g, '').replace(/ /g, '_')}.txt`
+                : 'Instancia_Sucesiones.txt';
+            
+            const BOM = '\uFEFF';
+            const blob = new Blob([BOM + documentoGenerado], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = nombreArchivo;
+            link.click();
+            
+            setTimeout(() => URL.revokeObjectURL(url), 100);
+            mostrarMensaje(`Archivo "${nombreArchivo}" descargado`, 'success');
+        }
+    </script>
+</body>
+</html>
