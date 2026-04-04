@@ -141,11 +141,10 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
 @media(max-width:768px){.fg{grid-template-columns:1fr}.stats-row{grid-template-columns:repeat(2,1fr)}.detail-grid{grid-template-columns:1fr 1fr}.header{padding:10px 14px}.main{padding:0 14px 40px}.cal-day{min-height:50px}}
 @media print{body *{visibility:hidden}.recibo-box,.recibo-box *{visibility:visible}.recibo-box{position:absolute;left:0;top:0;border:2px solid #000}}
 .cal-head{text-align:center;font-size:11px;font-weight:700;color:var(--dim);padding:6px 0;text-transform:uppercase}
-.cal-day{min-height:90px;background:var(--white);border:1px solid var(--border-l);border-radius:4px;padding:4px 6px;font-size:12px;transition:background .1s}
+.cal-day{min-height:80px;background:var(--white);border:1px solid var(--border-l);border-radius:4px;padding:4px 6px;font-size:12px;cursor:pointer;transition:background .1s}
 .cal-day:hover{background:var(--accent-l)}.cal-day.today{border-color:var(--accent);border-width:2px}.cal-day.other{opacity:.3}
 .cal-num{font-weight:700;font-size:13px;margin-bottom:2px}
-.cal-ev{font-size:11px;font-weight:600;padding:2px 6px;border-radius:3px;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;transition:opacity .15s}
-.cal-ev:hover{opacity:.75}
+.cal-ev{font-size:10px;padding:1px 4px;border-radius:3px;margin-bottom:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cal-ev.firma{background:var(--accent-l);color:var(--accent)}.cal-ev.vto{background:var(--red-l);color:var(--red)}.cal-ev.vto-ok{background:var(--amber-l);color:var(--amber)}
 .contact-card{padding:12px 16px;background:var(--white);border:1px solid var(--border-l);border-radius:8px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
 .contact-card .cn{font-weight:700;font-size:14px}.contact-card .ct{font-size:12px;color:var(--dim)}
@@ -227,10 +226,11 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
   <div class="toolbar">
     <input class="search-input" id="sCli" placeholder="Buscar cliente, expediente...">
     <select class="flt" id="fPag"><option value="">Todos</option><option value="pend">Pago pendiente</option><option value="ok">Pagado / Finalizado</option></select>
+    <select class="flt" id="fFac"><option value="">Todas facturas</option><option value="pendiente">⏳ Pendiente</option><option value="listo">🔵 Listo para facturar</option><option value="facturado">📋 Facturado</option></select>
     <button class="btn btn-ghost btn-sm" onclick="exportCSV('cliente')">📥 Excel</button>
   </div>
   <div id="cliList"><div class="card table-card">
-    <table><thead><tr><th>Nº Exp.</th><th>Cliente</th><th>Gestión</th><th>Total Exp.</th><th>Total Pagado</th><th>Pendiente</th><th>Estado</th></tr></thead>
+    <table><thead><tr><th>Nº Exp.</th><th>Cliente</th><th>Gestión</th><th>Total Exp.</th><th>Total Pagado</th><th>Pendiente</th><th>Estado</th><th>Factura</th></tr></thead>
     <tbody id="tCli"></tbody></table>
   </div></div>
   <div id="cliDet" style="display:none"></div>
@@ -446,6 +446,7 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
 
       <div class="st">Estado</div>
       <div class="fi"><label>Estado</label><select id="c_finalizado"><option value="">En curso</option><option value="FINALIZADO">FINALIZADO</option></select></div>
+      <div class="fi"><label>Estado factura</label><select id="c_estadoFactura"><option value="pendiente">⏳ Pendiente</option><option value="listo">🔵 Listo para facturar</option><option value="facturado">📋 Facturado</option></select></div>
     </div>
   </div>
   <div class="modal-foot">
@@ -578,53 +579,23 @@ const CHECKLISTS={
   'DEFAULT':['DNI / NIE intervinientes','Escrituras previas','Nota simple registral','Certificado catastral','Documentación específica']
 };
 
-// ════════════ BANNER CARGA ════════════
-function mostrarBanner(msg){
-  let b=document.getElementById('_banner_carga');
-  if(!b){b=document.createElement('div');b.id='_banner_carga';
-    b.style.cssText='position:fixed;top:0;left:0;right:0;z-index:9999;background:var(--accent);color:#fff;text-align:center;padding:11px;font-size:13px;font-weight:600;font-family:inherit';
-    document.body.prepend(b);}
-  b.textContent=msg;
-}
-function ocultarBanner(){const b=document.getElementById('_banner_carga');if(b)b.remove();}
-
 // ════════════ INIT ════════════
-document.addEventListener('DOMContentLoaded',async ()=>{
+document.addEventListener('DOMContentLoaded',()=>{
   SURL=localStorage.getItem('surl')||'';
   document.getElementById('sheetUrl').value=SURL;
   updateConn();
-
-  // Registrar eventos primero
+  exps=JSON.parse(localStorage.getItem('exps')||'[]');
+  clis=JSON.parse(localStorage.getItem('clis')||'[]');
+  contacts=JSON.parse(localStorage.getItem('contacts')||'[]');
+  if(SURL)loadFromSheet();
+  renderAll();buildFacMeses();
   document.querySelectorAll('.tab-btn').forEach(t=>t.addEventListener('click',()=>goTab(t.dataset.tab)));
   ['sCtrl','fEst','fTip'].forEach(id=>document.getElementById(id).addEventListener('input',renderCtrl));
-  ['sCli','fPag'].forEach(id=>document.getElementById(id).addEventListener('input',renderCli));
+  ['sCli','fPag','fFac'].forEach(id=>document.getElementById(id).addEventListener('input',renderCli));
   ['sCont','fContTipo'].forEach(id=>document.getElementById(id).addEventListener('input',renderContacts));
   document.getElementById('fFacMes').addEventListener('change',renderFac);
   ['e_fechaFirma','e_fFallecimiento'].forEach(id=>document.getElementById(id).addEventListener('change',calcVtosForm));
   ['e_plusvalia','e_mod600','e_mod650','e_mod660'].forEach(id=>document.getElementById(id).addEventListener('change',calcVtosForm));
-
-  if(SURL){
-    // Siempre cargar de Sheets primero
-    mostrarBanner('⏳ Cargando datos desde Google Sheets...');
-    try{
-      await loadFromSheet();
-      ocultarBanner();
-    }catch(e){
-      ocultarBanner();
-      // Fallback a localStorage si falla la conexión
-      exps=JSON.parse(localStorage.getItem('exps')||'[]');
-      clis=JSON.parse(localStorage.getItem('clis')||'[]');
-      contacts=JSON.parse(localStorage.getItem('contacts')||'[]');
-      toast('⚠️ Sin conexión. Usando datos locales.','err');
-      renderAll();buildFacMeses();
-    }
-  } else {
-    // Sin URL configurada, usar localStorage
-    exps=JSON.parse(localStorage.getItem('exps')||'[]');
-    clis=JSON.parse(localStorage.getItem('clis')||'[]');
-    contacts=JSON.parse(localStorage.getItem('contacts')||'[]');
-    renderAll();buildFacMeses();
-  }
 });
 
 function goTab(tab){
@@ -784,18 +755,22 @@ function renderCtrl(){
 function renderCli(){
   const s=document.getElementById('sCli').value.toLowerCase();
   const fp=document.getElementById('fPag').value;
+  const ff=document.getElementById('fFac').value;
   const f=clis.filter(c=>{
     const ms=!s||[c.numExp,c.cliente,c.gestion].some(x=>(x||'').toLowerCase().includes(s))||exps.some(e=>e.numExp===c.numExp&&[e.otros||'',e.dni||'',e.obs||''].some(x=>x.toLowerCase().includes(s)));
     const totalPagado=sumPagos(c);const pend=pf(c.totalExp)-totalPagado;
     if(fp==='pend')return ms&&pend>0.01;
     if(fp==='ok')return ms&&(c.finalizado==='FINALIZADO'||pend<=0.01);
+    if(ff&&(c.estadoFactura||'pendiente')!==ff)return false;
     return ms;
   });
   const tb=document.getElementById('tCli');
-  if(!f.length){tb.innerHTML='<tr><td colspan="7"><div class="empty-msg">Sin datos</div></td></tr>';return;}
+  if(!f.length){tb.innerHTML='<tr><td colspan="8"><div class="empty-msg">Sin datos</div></td></tr>';return;}
   tb.innerHTML=f.map(c=>{
     const tp=sumPagos(c);const pend=pf(c.totalExp)-tp;
-    return `<tr class="rw" onclick="showCli('${esc(c.numExp)}')"><td><strong>${esc(c.numExp)}</strong></td><td>${esc(c.cliente)}</td><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis">${esc(c.gestion)}</td><td><strong>${mon(c.totalExp)}</strong></td><td>${mon(tp)}</td><td style="font-weight:700;${pend>0.01?'color:var(--red)':'color:var(--green)'}">${monF(pend)}</td><td>${c.finalizado==='FINALIZADO'?'<span class="badge b-green">Finalizado</span>':pend>0.01?'<span class="badge b-red">Pendiente</span>':'<span class="badge b-gray">En curso</span>'}</td></tr>`;
+    const ef=c.estadoFactura||'pendiente';
+    const badgeFac=ef==='facturado'?'<span class="badge b-blue">📋 Facturado</span>':ef==='listo'?'<span class="badge b-purple">🔵 Listo</span>':'<span class="badge b-amber">⏳ Pendiente</span>';
+    return `<tr class="rw" onclick="showCli('${esc(c.numExp)}')"><td><strong>${esc(c.numExp)}</strong></td><td>${esc(c.cliente)}</td><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis">${esc(c.gestion)}</td><td><strong>${mon(c.totalExp)}</strong></td><td>${mon(tp)}</td><td style="font-weight:700;${pend>0.01?'color:var(--red)':'color:var(--green)'}">${monF(pend)}</td><td>${c.finalizado==='FINALIZADO'?'<span class="badge b-green">Finalizado</span>':pend>0.01?'<span class="badge b-red">Pendiente</span>':'<span class="badge b-gray">En curso</span>'}</td><td>${badgeFac}</td></tr>`;
   }).join('');
 }
 
@@ -1084,6 +1059,7 @@ function openEditCli(){
   const cFields=['fraInfTec','asesoramiento','minuta','fraNotaria','presPlusvalia','valorDeclarar','pctITP','liqITP','mod600c','mod660c','mod650unit','mod650qty','mod650total','presLiqImp','presRecReg','provReg','honorarios','iva','otrosServ','totalExp'];
   cFields.forEach(f=>{const el=document.getElementById('c_'+f);if(el)el.value=c[f]||'';});
   document.getElementById('c_finalizado').value=c.finalizado||'';
+  document.getElementById('c_estadoFactura').value=c.estadoFactura||'pendiente';
   // Fra registro from control
   const e=exps.find(x=>x.numExp===c.numExp);
   document.getElementById('c_fraReg').value=e?e.totalFraReg||'':'';
@@ -1164,6 +1140,7 @@ function saveCli(){
   const cFields=['fraInfTec','asesoramiento','minuta','fraNotaria','presPlusvalia','valorDeclarar','pctITP','liqITP','mod600c','mod660c','mod650unit','mod650qty','mod650total','presLiqImp','presRecReg','provReg','honorarios','iva','otrosServ','totalExp'];
   cFields.forEach(f=>{c[f]=document.getElementById('c_'+f)?.value||'';});
   c.finalizado=document.getElementById('c_finalizado').value;
+  c.estadoFactura=document.getElementById('c_estadoFactura').value;
   c.pagos=collectPagos();
   const idx=clis.findIndex(x=>x.numExp===c.numExp);
   if(idx>=0)clis[idx]=c;else clis.push(c);
@@ -1568,33 +1545,17 @@ function renderCal(){
   const today=new Date();today.setHours(0,0,0,0);
   const events={};
   exps.forEach(e=>{
-    if(e.fhPrevista){
-      const d=new Date(e.fhPrevista);
-      const k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-      if(!events[k])events[k]=[];
-      events[k].push({type:'firma',text:'✍️ '+e.numExp+' '+e.cliente,numExp:e.numExp});
-    }
-    if(e.fechaFirma){
-      const d=new Date(e.fechaFirma);
-      const k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-      if(!events[k])events[k]=[];
-      events[k].push({type:'firma',text:'✅ '+e.numExp+' '+e.cliente,numExp:e.numExp});
-    }
-    getAlerts(e,true).forEach(a=>{
-      const k=a.fecha.getFullYear()+'-'+(a.fecha.getMonth()+1)+'-'+a.fecha.getDate();
-      if(!events[k])events[k]=[];
-      events[k].push({type:a.tipo==='exp'?'vto':a.tipo==='urg'?'vto-ok':'firma',text:'⏰ '+e.numExp+' '+a.label,numExp:e.numExp});
-    });
+    if(e.fhPrevista){const d=new Date(e.fhPrevista);const k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(!events[k])events[k]=[];events[k].push({type:'firma',text:'✍️ '+e.numExp+' '+e.cliente});}
+    if(e.fechaFirma){const d=new Date(e.fechaFirma);const k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(!events[k])events[k]=[];events[k].push({type:'firma',text:'✅ '+e.numExp});}
+    getAlerts(e,true).forEach(a=>{const k=a.fecha.getFullYear()+'-'+(a.fecha.getMonth()+1)+'-'+a.fecha.getDate();if(!events[k])events[k]=[];events[k].push({type:a.tipo==='exp'?'vto':a.tipo==='urg'?'vto-ok':'firma',text:'⏰ '+e.numExp+' '+a.label});});
   });
   for(let i=0;i<startDay;i++){const d=new Date(calYear,calMonth,-startDay+i+1);g.innerHTML+='<div class="cal-day other"><div class="cal-num">'+d.getDate()+'</div></div>';}
   for(let d=1;d<=last.getDate();d++){
     const dt=new Date(calYear,calMonth,d);const isToday=dt.getTime()===today.getTime();
     const k=calYear+'-'+(calMonth+1)+'-'+d;const evs=events[k]||[];
-    let html='<div class="cal-day'+(isToday?' today':'')+'"><div class="cal-num">'+d+'</div>';
-    evs.slice(0,3).forEach(ev=>{
-      html+='<div class="cal-ev '+ev.type+'" onclick="irAExpediente(\''+ev.numExp+'\')" title="'+esc(ev.text)+'">'+esc(ev.text)+'</div>';
-    });
-    if(evs.length>3)html+='<div class="cal-ev" style="color:var(--dim);cursor:default">+'+(evs.length-3)+' más</div>';
+    let html='<div class="cal-day'+(isToday?' today':'')+'"'+(evs.length?' onclick="calDayClick('+calYear+','+(calMonth+1)+','+d+')"':'')+'><div class="cal-num">'+d+'</div>';
+    evs.slice(0,3).forEach(ev=>html+='<div class="cal-ev '+ev.type+'">'+esc(ev.text)+'</div>');
+    if(evs.length>3)html+='<div class="cal-ev" style="color:var(--dim)">+'+(evs.length-3)+' más</div>';
     html+='</div>';g.innerHTML+=html;
   }
   const totalCells=startDay+last.getDate();const rem=7-(totalCells%7);
@@ -1602,11 +1563,7 @@ function renderCal(){
 }
 function calMove(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}renderCal();}
 function calToday(){calMonth=new Date().getMonth();calYear=new Date().getFullYear();renderCal();}
-function calDayClick(y,m,d){}
-function irAExpediente(numExp){
-  goTab('control');
-  setTimeout(()=>showCtrl(numExp),50);
-}
+function calDayClick(y,m,d){/* could show day detail - for now just toast */toast('Día '+d+'/'+m+'/'+y,'info');}
 
 // ════════════ FACTURACIÓN ════════════
 function buildFacMeses(){
@@ -1706,6 +1663,7 @@ async function loadFromSheet(){
     const r=await fetch(SURL);const d=await r.json();
     if(d.status==='ok'){
       if(d.exps&&d.exps.length){
+        // Reconstruct inmuebles and checklist from JSON if stored
         d.exps.forEach(e=>{
           if(typeof e.inmuebles_json==='string'&&e.inmuebles_json){try{e.inmuebles=JSON.parse(e.inmuebles_json);}catch(x){}}
           if(typeof e.checklist_json==='string'&&e.checklist_json){try{e.checklist=JSON.parse(e.checklist_json);}catch(x){}}
@@ -1723,19 +1681,14 @@ async function loadFromSheet(){
       if(d.contacts&&d.contacts.length){
         contacts=d.contacts;localStorage.setItem('contacts',JSON.stringify(contacts));
       }
-      renderAll();buildFacMeses();
-      toast('📥 Datos cargados de Sheets','ok');
+      renderAll();toast('📥 Datos cargados de Sheets','ok');
     }
-  }catch(e){console.log('Load error:',e);throw e;}
+  }catch(e){console.log('Load error:',e);}
 }
 async function syncToSheet(){
   if(!SURL)return;
-  // ⛔ Protección anti-borrado: no subir si todo está vacío
-  if(exps.length===0 && clis.length===0 && contacts.length===0){
-    console.warn('⛔ Subida cancelada: datos vacíos en memoria.');
-    return;
-  }
   try{
+    // Prepare exps with JSON fields for complex data
     const expsToSend=exps.map(e=>{
       const copy=Object.assign({},e);
       copy.inmuebles_json=JSON.stringify(e.inmuebles||[]);
