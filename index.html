@@ -1058,6 +1058,8 @@ function enviarVencimientos(d){
       vtos.push({fecha:d.vto660,tipo:'Mod. 660 (6 meses fallec.)',obs:`Fallec: ${fD(d.fFallecimiento)}`});
     if(d.fhPrevista)
       vtos.push({fecha:d.fhPrevista.slice(0,10),tipo:'Firma prevista',obs:d.notario||''});
+    if(d.fVto)
+      vtos.push({fecha:d.fVto,tipo:'Vto. manual',obs:d.gestion||''});
   }
 
   vtos.forEach(v=>{
@@ -1071,7 +1073,7 @@ function enviarVencimientos(d){
 
   // Si está cerrado, marcar como completados
   if(cerrado){
-    ['Plusvalía (1 mes firma)','Mod. 600 (2 meses firma)','Mod. 650 (6 meses fallec.)','Mod. 660 (6 meses fallec.)','Firma prevista'].forEach(tipo=>{
+    ['Plusvalía (1 mes firma)','Mod. 600 (2 meses firma)','Mod. 650 (6 meses fallec.)','Mod. 660 (6 meses fallec.)','Firma prevista','Vto. manual'].forEach(tipo=>{
       fetch(URL_VTO,{method:'POST',mode:'no-cors',body:JSON.stringify({
         action:'completar',app:'Escrituras',expediente:d.numExp,tipo
       })});
