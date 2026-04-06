@@ -314,7 +314,9 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
         </div>
       </div>
       <div class="fi"><label>Cliente *</label><input id="e_cliente"></div>
-      <div class="fi"><label>DNI / NIE</label><input id="e_dni"></div>
+      <div class="fi"><label>DNI / NIE</label><input id="e_dni" oninput="this.value=this.value.toUpperCase().replace(/-/g,'')">
+        <button type="button" onclick="buscarEnMaestroESC()" style="margin-top:4px;padding:4px 10px;border:1px solid #ccc;border-radius:6px;cursor:pointer;font-size:11px;background:#f9f9f9;font-family:inherit">🔍 Buscar en ClientesMAESTRO</button>
+      </div>
       <div class="fi full"><label>Otros clientes / intervinientes</label><input id="e_otros"></div>
 
       <div class="st">📄 Informe técnico</div>
@@ -1036,6 +1038,17 @@ function saveExp(){
   enviarVencimientos(d);
   saveLocal();closeOv('ovExp');renderAll();
   if(editMode==='edit')showCtrl(curExp);
+  // ── ClientesMAESTRO ──────────────────────────────────────
+  if (d.cliente || d.dni) {
+    const _p = (d.cliente||'').trim().split(/\s+/);
+    guardarEnMaestro({
+      DNI_NIE:   (d.dni||'').toUpperCase().replace(/-/g,''),
+      Nombre:    _p[0] || d.cliente || '',
+      Apellido1: _p[1] || '',
+      Apellido2: _p[2] || '',
+      Tipo: 'fisica'
+    });
+  }
 }
 
 // ════════════ VENCIMIENTOS CENTRALES ════════════
@@ -1807,6 +1820,30 @@ function imp600Badge(e){
 }
 function toast(m,t){const e=document.getElementById('toast');e.textContent=m;e.className='toast t-'+(t||'info')+' show';setTimeout(()=>e.classList.remove('show'),3500);}
 function copyScript(){navigator.clipboard.writeText(document.getElementById('scriptCode')?.textContent?.replace(/&lt;/g,'<').replace(/&gt;/g,'>')||'').then(()=>toast('Copiado','ok'));}
+
+// ═══ CLIENTESMAESTRO ══════════════════════════════════════════════════════
+const URL_MAESTRO_ESC = 'https://script.google.com/macros/s/AKfycbyVXypuTXm5tRvbP-xJu06q7ZsJ2qve790lCyvBLJpr6jTckZhc6wZ4kX5XPhVOWCVrww/exec';
+
+function guardarEnMaestro(datos) {
+  if (!datos.DNI_NIE && !datos.Nombre) return;
+  fetch(URL_MAESTRO_ESC, { method:'POST', mode:'no-cors', body: JSON.stringify({ action:'upsert', datos }) });
+}
+
+async function buscarEnMaestroESC() {
+  const dni = (document.getElementById('e_dni')?.value||'').trim().toUpperCase().replace(/-/g,'');
+  if (!dni || dni.length < 7) { toast('Escribe el DNI primero','err'); return; }
+  toast('🔍 Buscando en ClientesMAESTRO...','info');
+  try {
+    const r = await fetch(URL_MAESTRO_ESC + '?action=buscar&dni=' + encodeURIComponent(dni));
+    const d = await r.json();
+    if (!d || !d.encontrado) { toast('❌ No encontrado en ClientesMAESTRO','err'); return; }
+    const cli = d.cliente;
+    const set = (id, val) => { const el=document.getElementById(id); if(el && val) el.value = val; };
+    const nombre = cli.Razon_Social || [cli.Nombre, cli.Apellido1, cli.Apellido2].filter(Boolean).join(' ');
+    set('e_cliente', nombre);
+    toast('✅ Datos cargados desde ClientesMAESTRO','ok');
+  } catch(e) { toast('Error al conectar con ClientesMAESTRO','err'); }
+}
 </script>
 </body>
 </html>
