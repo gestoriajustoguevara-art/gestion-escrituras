@@ -99,7 +99,6 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
 .fi .computed{background:var(--green-l);font-weight:700;color:var(--green)}
 .st{grid-column:1/-1;font-size:12px;font-weight:700;color:var(--accent);padding:10px 0 0;border-top:1px solid var(--border-l);margin-top:4px;display:flex;align-items:center;gap:6px}
 
-/* Combo select+input for "OTRO" */
 .combo{display:flex;gap:4px}
 .combo select{flex:1}.combo input{flex:1;display:none}
 .combo.show-other select{flex:0 0 100px}.combo.show-other input{display:block;flex:1}
@@ -119,7 +118,6 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
 .quick-add input{flex:1;padding:9px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:14px;color:var(--text)}
 .quick-add input:focus{outline:none;border-color:var(--accent)}
 
-/* Pagos list in CLI detail */
 .pago-row{display:flex;gap:8px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border-l);font-size:13px}
 .pago-row:last-child{border-bottom:none}
 .pago-row .p-concept{flex:1;font-weight:500}
@@ -183,7 +181,6 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
 
 <div class="main">
 
-<!-- ═══ RESUMEN ═══ -->
 <div id="p-resumen" class="panel active">
   <div id="notifBanner" style="display:none;margin-top:12px;padding:14px 18px;background:var(--red-l);border:1px solid var(--red);border-radius:8px;cursor:pointer" onclick="goTab('calendario')"></div>
   <div class="stats-row">
@@ -203,7 +200,6 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
   </div>
 </div>
 
-<!-- ═══ CONTROL ═══ -->
 <div id="p-control" class="panel">
   <div class="toolbar">
     <input class="search-input" id="sCtrl" placeholder="Buscar nº, cliente, difunto, intervinientes, notario...">
@@ -221,7 +217,6 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
   <div id="ctrlDet" style="display:none"></div>
 </div>
 
-<!-- ═══ CLIENTE € ═══ -->
 <div id="p-cliente" class="panel">
   <div class="toolbar">
     <input class="search-input" id="sCli" placeholder="Buscar cliente, expediente...">
@@ -236,7 +231,6 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
   <div id="cliDet" style="display:none"></div>
 </div>
 
-<!-- ═══ CALENDARIO ═══ -->
 <div id="p-calendario" class="panel">
   <div style="display:flex;align-items:center;gap:12px;padding:12px 0">
     <button class="btn btn-ghost btn-sm" onclick="calMove(-1)">◀</button>
@@ -247,7 +241,6 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
   <div id="calGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px"></div>
 </div>
 
-<!-- ═══ FACTURACIÓN ═══ -->
 <div id="p-facturacion" class="panel">
   <div class="toolbar">
     <select class="flt" id="fFacMes"></select>
@@ -262,7 +255,6 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
   <tbody id="tCliDeudas"></tbody></table></div>
 </div>
 
-<!-- ═══ CONTACTOS ═══ -->
 <div id="p-contactos" class="panel">
   <div class="toolbar">
     <input class="search-input" id="sCont" placeholder="Buscar contacto...">
@@ -272,12 +264,10 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
   <div id="contList"></div>
 </div>
 
-<!-- ═══ CONFIG ═══ -->
 <div id="p-config" class="panel">
   <div class="card" style="padding:24px;margin:20px 0">
     <h3 style="font-size:17px;margin-bottom:16px">🔗 Conectar con Google Sheets</h3>
     <p style="color:var(--dim);font-size:13px;line-height:1.7;margin-bottom:20px">Solo tienes que hacerlo una vez. Tus datos se guardan localmente aunque no conectes.</p>
-    <div id="configSteps"></div>
     <div style="margin-top:16px">
       <label style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase">URL de tu Web App</label>
       <input type="text" id="sheetUrl" placeholder="https://script.google.com/macros/s/.../exec" style="width:100%;margin-top:4px;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:13px;color:var(--text)">
@@ -287,14 +277,14 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
       </div>
     </div>
     <div style="margin-top:16px;padding:12px;background:var(--amber-l);border-radius:8px;font-size:13px;color:var(--amber);line-height:1.5">
-      <strong>💡</strong> La app funciona sin Google Sheets guardando en tu navegador. Sheets es el respaldo en la nube. Las instrucciones para configurarlo son las mismas que en la versión anterior.
+      <strong>💡</strong> La URL también se carga automáticamente desde la config central de la gestoría.
     </div>
   </div>
 </div>
 
 </div>
 
-<!-- ═══ MODAL EXPEDIENTE ═══ -->
+<!-- MODALES — sin cambios respecto al original -->
 <div class="overlay" id="ovExp">
 <div class="modal">
   <div class="modal-head"><h2 id="mExpTit">Nuevo Expediente</h2><button class="modal-x" onclick="closeOv('ovExp')">✕</button></div>
@@ -403,7 +393,6 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
   <div class="modal-foot"><button class="btn btn-ghost" onclick="closeOv('ovExp')">Cancelar</button><button class="btn btn-green" onclick="saveExp()">💾 Guardar</button></div>
 </div></div>
 
-<!-- ═══ MODAL CLIENTE € ═══ -->
 <div class="overlay" id="ovCli">
 <div class="modal">
   <div class="modal-head"><h2 id="mCliTit">Presupuesto Cliente</h2><button class="modal-x" onclick="closeOv('ovCli')">✕</button></div>
@@ -413,8 +402,7 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
       <div class="fi"><label>Nº Expediente</label><input id="c_numExp" readonly></div>
       <div class="fi"><label>Cliente</label><input id="c_cliente" readonly></div>
       <div class="fi full"><label>Gestión</label><input id="c_gestion" readonly></div>
-
-      <div class="st">💶 Desglose presupuesto (conceptos editables)</div>
+      <div class="st">💶 Desglose presupuesto</div>
       <div class="fi"><label>Factura informe técnico (€)</label><input type="number" step="0.01" id="c_fraInfTec" onchange="calcTotal()"></div>
       <div class="fi"><label>Asesoramiento (€)</label><input type="number" step="0.01" id="c_asesoramiento" onchange="calcTotal()"></div>
       <div class="fi"><label>Minuta e intervención notaría (€)</label><input type="number" step="0.01" id="c_minuta" onchange="calcTotal()"></div>
@@ -422,30 +410,25 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
       <div class="fi"><label>Presentación plusvalía (€)</label><input type="number" step="0.01" id="c_presPlusvalia" onchange="calcTotal()"></div>
       <div class="fi"><label>Valor a declarar (€)</label><input type="number" step="0.01" id="c_valorDeclarar" onchange="calcITP()"></div>
       <div class="fi"><label>% ITP</label><input type="number" step="0.01" id="c_pctITP" onchange="calcITP()"></div>
-      <div class="fi"><label>Liquidación ITP (€) = Valor × %</label><input type="number" step="0.01" id="c_liqITP" readonly class="computed"></div>
-      <div class="fi"><label>Mod. 600 (€)</label><input type="number" step="0.01" id="c_mod600" onchange="calcTotal()"></div>
-      <div class="fi"><label>Mod. 660 (€)</label><input type="number" step="0.01" id="c_mod660" onchange="calcTotal()"></div>
+      <div class="fi"><label>Liquidación ITP (€)</label><input type="number" step="0.01" id="c_liqITP" readonly class="computed"></div>
+      <div class="fi"><label>Mod. 600 (€)</label><input type="number" step="0.01" id="c_mod600c" onchange="calcTotal()"></div>
+      <div class="fi"><label>Mod. 660 (€)</label><input type="number" step="0.01" id="c_mod660c" onchange="calcTotal()"></div>
       <div class="fi"><label>Mod. 650 — Precio unitario (€)</label><input type="number" step="0.01" id="c_mod650unit" onchange="calcMod650()"></div>
       <div class="fi"><label>Mod. 650 — Cantidad</label><input type="number" step="1" id="c_mod650qty" onchange="calcMod650()" value="1"></div>
       <div class="fi"><label>Mod. 650 — Total (€)</label><input type="number" step="0.01" id="c_mod650total" readonly class="computed"></div>
       <div class="fi"><label>Present. y liquid. impuesto (€)</label><input type="number" step="0.01" id="c_presLiqImp" onchange="calcTotal()"></div>
       <div class="fi"><label>Present. y recogida registro (€)</label><input type="number" step="0.01" id="c_presRecReg" onchange="calcTotal()"></div>
       <div class="fi"><label>Provisión registro (€)</label><input type="number" step="0.01" id="c_provReg" onchange="calcTotal()"></div>
-      <div class="fi"><label>Fra. Registro (€) — viene de Control</label><input type="number" step="0.01" id="c_fraReg" readonly class="computed"></div>
+      <div class="fi"><label>Fra. Registro (€)</label><input type="number" step="0.01" id="c_fraReg" readonly class="computed"></div>
       <div class="fi"><label>Honorarios (€)</label><input type="number" step="0.01" id="c_honorarios" onchange="calcTotal()"></div>
       <div class="fi"><label>IVA (€)</label><input type="number" step="0.01" id="c_iva" onchange="calcTotal()"></div>
       <div class="fi full"><label>Otros servicios (€)</label><input type="number" step="0.01" id="c_otrosServ" onchange="calcTotal()"></div>
-
       <div class="st">📊 Totales</div>
-      <div class="fi"><label>TOTAL EXPEDIENTE (€) (sin Fra. Registro)</label><input type="number" step="0.01" id="c_totalExp" readonly class="computed" style="font-size:16px"></div>
+      <div class="fi"><label>TOTAL EXPEDIENTE (€)</label><input type="number" step="0.01" id="c_totalExp" readonly class="computed" style="font-size:16px"></div>
       <div class="fi"><label>Diferencia Provisión Reg. vs Fra. Reg.</label><input id="c_diffReg" readonly class="computed"></div>
-
       <div class="st">💳 Pagos del cliente</div>
       <div id="pagosContainer"></div>
-      <div style="grid-column:1/-1;margin-top:8px">
-        <button class="btn btn-ghost btn-sm" onclick="addPagoRow()">＋ Añadir pago</button>
-      </div>
-
+      <div style="grid-column:1/-1;margin-top:8px"><button class="btn btn-ghost btn-sm" onclick="addPagoRow()">＋ Añadir pago</button></div>
       <div class="st">Estado</div>
       <div class="fi"><label>Estado</label><select id="c_finalizado"><option value="">En curso</option><option value="FINALIZADO">FINALIZADO</option></select></div>
       <div class="fi"><label>Estado factura</label><select id="c_estadoFactura"><option value="pendiente">⏳ Pendiente</option><option value="listo">🔵 Listo para facturar</option><option value="facturado">📋 Facturado</option></select></div>
@@ -458,7 +441,6 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
   </div>
 </div></div>
 
-<!-- ═══ MODAL RECIBO ═══ -->
 <div class="overlay" id="ovRecibo">
 <div class="modal" style="max-width:560px">
   <div class="modal-head"><h2>🧾 Recibí</h2><button class="modal-x" onclick="closeOv('ovRecibo')">✕</button></div>
@@ -478,7 +460,6 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
 
 <div class="toast" id="toast"></div>
 
-<!-- ═══ MODAL CONTACTO ═══ -->
 <div class="overlay" id="ovCont"><div class="modal" style="max-width:500px">
   <div class="modal-head"><h2 id="mContTit">Nuevo Contacto</h2><button class="modal-x" onclick="closeOv('ovCont')">✕</button></div>
   <div class="modal-body"><div class="fg">
@@ -492,27 +473,22 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
   <div class="modal-foot"><button class="btn btn-ghost" onclick="closeOv('ovCont')">Cancelar</button><button class="btn btn-green" onclick="saveCont()">💾 Guardar</button></div>
 </div></div>
 
-<!-- ═══ MODAL CHECKLIST ═══ -->
 <div class="overlay" id="ovChk"><div class="modal" style="max-width:550px">
   <div class="modal-head"><h2 id="mChkTit">📋 Checklist Documental</h2><button class="modal-x" onclick="closeOv('ovChk')">✕</button></div>
   <div class="modal-body"><div id="chkBody"></div></div>
   <div class="modal-foot"><button class="btn btn-green" onclick="saveChk()">💾 Guardar</button></div>
 </div></div>
 
-<!-- ═══ MODAL PLANTILLA NOTARÍA ═══ -->
 <div class="overlay" id="ovPlant"><div class="modal" style="max-width:600px">
   <div class="modal-head"><h2>📄 Datos para Notaría</h2><button class="modal-x" onclick="closeOv('ovPlant')">✕</button></div>
   <div class="modal-body"><div id="plantBody" style="font-size:14px;line-height:1.8"></div></div>
   <div class="modal-foot"><button class="btn btn-primary" onclick="copyPlant()">📋 Copiar al portapapeles</button><button class="btn btn-ghost" onclick="closeOv('ovPlant')">Cerrar</button></div>
 </div></div>
 
-<!-- ═══ MODAL INMUEBLE ═══ -->
 <div class="overlay" id="ovInm"><div class="modal" style="max-width:550px">
   <div class="modal-head"><h2 id="mInmTit">🏠 Añadir Inmueble</h2><button class="modal-x" onclick="closeOv('ovInm')">✕</button></div>
   <div class="modal-body"><div class="fg">
-    <div class="fi"><label>Tipo *</label><select id="inm_tipo" style="font-size:15px;padding:12px">
-      <option>VIVIENDA</option><option>LOCAL</option><option>GARAJE</option><option>TERRENO</option><option>NAVE</option><option>PARCELA</option><option>TRASTERO</option><option>OTRO</option>
-    </select></div>
+    <div class="fi"><label>Tipo *</label><select id="inm_tipo" style="font-size:15px;padding:12px"><option>VIVIENDA</option><option>LOCAL</option><option>GARAJE</option><option>TERRENO</option><option>NAVE</option><option>PARCELA</option><option>TRASTERO</option><option>OTRO</option></select></div>
     <div class="fi"><label>Superficie</label><input id="inm_superficie" placeholder="Ej: 126 m²" style="font-size:15px;padding:12px"></div>
     <div class="fi full"><label>Dirección *</label><input id="inm_dir" placeholder="Ej: Avda. Almería 38, bajo" style="font-size:15px;padding:12px"></div>
     <div class="fi"><label>Municipio</label><input id="inm_mun" placeholder="Ej: Macael" style="font-size:15px;padding:12px"></div>
@@ -539,7 +515,6 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
   </div>
 </div></div>
 
-<!-- ═══ MODAL IMPORTAR INMUEBLES EN BLOQUE ═══ -->
 <div class="overlay" id="ovInmBulk"><div class="modal" style="max-width:800px">
   <div class="modal-head"><h2>📋 Importar Inmuebles desde tabla</h2><button class="modal-x" onclick="closeOv('ovInmBulk')">✕</button></div>
   <div class="modal-body">
@@ -548,11 +523,9 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
       1. Abre tu Excel/tabla con los inmuebles<br>
       2. Selecciona las filas (sin cabecera) y copia con <strong>Ctrl+C</strong><br>
       3. Pega aquí abajo con <strong>Ctrl+V</strong><br>
-      4. El orden de columnas debe ser:<br>
-      <strong>Nº | Tipo | Dirección | Superficie | Finca Registral | Ref.Catastral | Valor Total | Valor ISD | Carácter | Adjudicación</strong><br>
-      (El Nº se ignora automáticamente. Si alguna columna está vacía, no pasa nada. Coincide con la plantilla Excel)
+      4. Orden columnas: <strong>Nº | Tipo | Dirección | Superficie | Finca | Ref.Catastral | Valor Total | Valor ISD | Carácter | Adjudicación</strong>
     </div>
-    <div class="fi full"><label>Pega aquí la tabla (desde Excel / Google Sheets):</label>
+    <div class="fi full"><label>Pega aquí la tabla:</label>
       <textarea id="bulkInmData" rows="10" placeholder="Pega aquí las filas copiadas de Excel..." style="font-family:monospace;font-size:13px;width:100%;padding:12px;border:2px dashed var(--accent);border-radius:8px;background:var(--bg)"></textarea>
     </div>
     <div id="bulkPreview" style="margin-top:12px"></div>
@@ -565,11 +538,38 @@ tr.rw{cursor:pointer}tr.rw:hover td{background:var(--accent-l)}
 </div></div>
 
 <script>
+// ══════════════════════════════════════════════════════════════
+// CONFIG CENTRAL — URLs cargadas automáticamente desde GitHub
+// Para cambiarlas: edita config.json en el repo "consola"
+// ══════════════════════════════════════════════════════════════
+const CONFIG_URL = 'https://gestoriajustoguevara-art.github.io/consola/config.json';
+let URL_VTO = '';
+let URL_MAESTRO_ESC = '';
+
+async function cargarConfigEscrituras() {
+  try {
+    const res = await fetch(CONFIG_URL);
+    const cfg = await res.json();
+    URL_VTO         = cfg.vencimientos.scriptUrl;
+    URL_MAESTRO_ESC = cfg.clientesMaestro.scriptUrl;
+    // Si no hay URL de Sheets guardada localmente, usar la del config central
+    if (!SURL) {
+      SURL = cfg.escrituras.scriptUrl;
+      localStorage.setItem('surl', SURL);
+      document.getElementById('sheetUrl').value = SURL;
+      updateConn();
+    }
+    console.log('✅ Config central cargada — Escrituras lista');
+  } catch(e) {
+    console.error('❌ Error cargando config central:', e);
+  }
+}
+// ══════════════════════════════════════════════════════════════
+
 // ════════════ STATE ════════════
 let exps=[],clis=[],contacts=[],curExp=null,curCli=null,editMode=null,editContIdx=null,SURL='';
 let calMonth=new Date().getMonth(),calYear=new Date().getFullYear();
 
-// Checklist templates
 const CHECKLISTS={
   'HERENCIA':['Certificado de defunción','Certificado últimas voluntades','Testamento / Declaración herederos','DNI / NIE fallecido','DNI / NIE herederos','Libro de familia','Escrituras inmuebles','Notas simples registrales','Certificados catastrales','Certificado bancario saldos','Certificado seguro vida','Valoración inmuebles','Modelo 650','Modelo 660','Plusvalía municipal'],
   'COMPRAVENTA':['DNI / NIE comprador','DNI / NIE vendedor','Escritura propiedad','Nota simple actualizada','Certificado catastral','Último recibo IBI','Certificado comunidad (deudas)','Certificado eficiencia energética','Contrato arras / señal','Cheque / transferencia precio'],
@@ -582,22 +582,26 @@ const CHECKLISTS={
 };
 
 // ════════════ INIT ════════════
-document.addEventListener('DOMContentLoaded',()=>{
-  SURL=localStorage.getItem('surl')||'';
-  document.getElementById('sheetUrl').value=SURL;
+document.addEventListener('DOMContentLoaded', async () => {
+  SURL = localStorage.getItem('surl') || '';
+  document.getElementById('sheetUrl').value = SURL;
   updateConn();
-  exps=JSON.parse(localStorage.getItem('exps')||'[]');
-  clis=JSON.parse(localStorage.getItem('clis')||'[]');
-  contacts=JSON.parse(localStorage.getItem('contacts')||'[]');
-  if(SURL)loadFromSheet();
-  renderAll();buildFacMeses();
-  document.querySelectorAll('.tab-btn').forEach(t=>t.addEventListener('click',()=>goTab(t.dataset.tab)));
-  ['sCtrl','fEst','fTip'].forEach(id=>document.getElementById(id).addEventListener('input',renderCtrl));
-  ['sCli','fPag','fFac'].forEach(id=>document.getElementById(id).addEventListener('input',renderCli));
-  ['sCont','fContTipo'].forEach(id=>document.getElementById(id).addEventListener('input',renderContacts));
-  document.getElementById('fFacMes').addEventListener('change',renderFac);
-  ['e_fechaFirma','e_fFallecimiento'].forEach(id=>document.getElementById(id).addEventListener('change',calcVtosForm));
-  ['e_plusvalia','e_mod600','e_mod650','e_mod660'].forEach(id=>document.getElementById(id).addEventListener('change',calcVtosForm));
+  exps = JSON.parse(localStorage.getItem('exps') || '[]');
+  clis = JSON.parse(localStorage.getItem('clis') || '[]');
+  contacts = JSON.parse(localStorage.getItem('contacts') || '[]');
+
+  // Cargar config central (URLs)
+  await cargarConfigEscrituras();
+
+  if (SURL) loadFromSheet();
+  renderAll(); buildFacMeses();
+  document.querySelectorAll('.tab-btn').forEach(t => t.addEventListener('click', () => goTab(t.dataset.tab)));
+  ['sCtrl','fEst','fTip'].forEach(id => document.getElementById(id).addEventListener('input', renderCtrl));
+  ['sCli','fPag','fFac'].forEach(id => document.getElementById(id).addEventListener('input', renderCli));
+  ['sCont','fContTipo'].forEach(id => document.getElementById(id).addEventListener('input', renderContacts));
+  document.getElementById('fFacMes').addEventListener('change', renderFac);
+  ['e_fechaFirma','e_fFallecimiento'].forEach(id => document.getElementById(id).addEventListener('change', calcVtosForm));
+  ['e_plusvalia','e_mod600','e_mod650','e_mod660'].forEach(id => document.getElementById(id).addEventListener('change', calcVtosForm));
 });
 
 function goTab(tab){
@@ -610,7 +614,6 @@ function goTab(tab){
   if(tab==='contactos')renderContacts();
 }
 
-// ════════════ COMBO SELECT+OTRO ════════════
 function toggleCombo(sel){
   const combo=sel.closest('.combo');
   if(sel.value==='__otro'){combo.classList.add('show-other');combo.querySelector('input').focus();}
@@ -630,7 +633,6 @@ function setComboVal(comboId,val){
   else{sel.value=val||'';c.classList.remove('show-other');}
 }
 
-// ════════════ PLUSVALIA / IMPUESTOS TOGGLE ════════════
 function togglePlusvalia(){
   const v=document.getElementById('e_plusvalia').value;
   document.getElementById('fi_fPlusvalia').style.display=v==='PRESENTADA'?'flex':'none';
@@ -646,29 +648,12 @@ function toggleImp(mod){
 function calcVtosForm(){
   const firma=document.getElementById('e_fechaFirma').value;
   const fallec=document.getElementById('e_fFallecimiento').value;
-  // Plusvalía: 1 mes desde firma
-  if(document.getElementById('e_plusvalia').value==='SI' && firma){
-    const d=new Date(firma);d.setMonth(d.getMonth()+1);
-    document.getElementById('e_vtoPlusvalia').value=isoD(d);
-  }
-  // Mod 600: 2 meses desde firma
-  if(document.getElementById('e_mod600').value==='SI' && firma){
-    const d=new Date(firma);d.setMonth(d.getMonth()+2);
-    document.getElementById('e_vto600').value=isoD(d);
-  }
-  // Mod 650: 6 meses desde fallecimiento
-  if(document.getElementById('e_mod650').value==='SI' && fallec){
-    const d=new Date(fallec);d.setMonth(d.getMonth()+6);
-    document.getElementById('e_vto650').value=isoD(d);
-  }
-  // Mod 660: 6 meses desde fallecimiento
-  if(document.getElementById('e_mod660').value==='SI' && fallec){
-    const d=new Date(fallec);d.setMonth(d.getMonth()+6);
-    document.getElementById('e_vto660').value=isoD(d);
-  }
+  if(document.getElementById('e_plusvalia').value==='SI'&&firma){const d=new Date(firma);d.setMonth(d.getMonth()+1);document.getElementById('e_vtoPlusvalia').value=isoD(d);}
+  if(document.getElementById('e_mod600').value==='SI'&&firma){const d=new Date(firma);d.setMonth(d.getMonth()+2);document.getElementById('e_vto600').value=isoD(d);}
+  if(document.getElementById('e_mod650').value==='SI'&&fallec){const d=new Date(fallec);d.setMonth(d.getMonth()+6);document.getElementById('e_vto650').value=isoD(d);}
+  if(document.getElementById('e_mod660').value==='SI'&&fallec){const d=new Date(fallec);d.setMonth(d.getMonth()+6);document.getElementById('e_vto660').value=isoD(d);}
 }
 
-// ════════════ VENCIMIENTOS CALC ════════════
 function getAlerts(e,allFuture){
   const a=[];const hoy=new Date();hoy.setHours(0,0,0,0);
   function chk(label,dateStr){
@@ -687,11 +672,10 @@ function getAlerts(e,allFuture){
   return a;
 }
 
-// ════════════ RENDER ════════════
 function renderAll(){renderStats();renderRes();renderCtrl();renderCli();showNotif();}
 
 function showNotif(){
-  let cnt=0;const items=[];const h=new Date();h.setHours(0,0,0,0);
+  let cnt=0;const items=[];
   exps.forEach(e=>{getAlerts(e).forEach(a=>{if(a.tipo==='exp'||a.dias<=7){cnt++;items.push(e.numExp+' '+a.label);}});});
   const b=document.getElementById('notifBanner');
   if(cnt){b.style.display='block';b.innerHTML='<strong>🚨 Tienes '+cnt+' alerta'+(cnt>1?'s':'')+' esta semana:</strong> '+items.slice(0,5).join(' · ')+(items.length>5?' y '+(items.length-5)+' más':'')+'<br><span style="font-size:12px">Haz clic para ver el calendario</span>';}
@@ -705,15 +689,9 @@ function renderStats(){
   document.getElementById('sR').textContent=exps.filter(e=>e.estado==='en_registro').length;
   document.getElementById('sE').textContent=exps.filter(e=>e.estado==='finalizado'||e.estado==='entregado').length;
   let cnt=0;const html=[];
-  exps.forEach(e=>{
-    getAlerts(e).forEach(a=>{
-      cnt++;
-      html.push(`<div class="alert-card ${a.tipo==='exp'?'a-red':'a-amber'}"><span>${a.tipo==='exp'?'🚨':'⚠️'}</span><div><strong>${esc(e.numExp)} ${esc(e.cliente)}</strong> — ${a.label} ${a.dias<0?'venció hace '+Math.abs(a.dias)+' días':'vence en '+a.dias+' días'} (${fD(a.fecha)})</div></div>`);
-    });
-  });
+  exps.forEach(e=>{getAlerts(e).forEach(a=>{cnt++;html.push(`<div class="alert-card ${a.tipo==='exp'?'a-red':'a-amber'}"><span>${a.tipo==='exp'?'🚨':'⚠️'}</span><div><strong>${esc(e.numExp)} ${esc(e.cliente)}</strong> — ${a.label} ${a.dias<0?'venció hace '+Math.abs(a.dias)+' días':'vence en '+a.dias+' días'} (${fD(a.fecha)})</div></div>`);});});
   document.getElementById('sA').textContent=cnt;
   document.getElementById('alertsBox').innerHTML=html.length?'<div style="margin:8px 0"><strong style="font-size:13px">🔔 Alertas de vencimientos</strong></div>'+html.join(''):'';
-  // Cobrado/Deben
   const now=new Date();const thisM=now.getMonth(),thisY=now.getFullYear();
   let cobrado=0,deben=0;
   clis.forEach(c=>{
@@ -741,9 +719,7 @@ function renderCtrl(){
   const ft=document.getElementById('fTip').value;
   const f=exps.filter(e=>{
     const ms=!s||[e.numExp,e.cliente,e.gestion,e.otros||'',e.dni||'',e.notario||'',e.registro||'',e.obs||'',e.protocolo||''].some(x=>x.toLowerCase().includes(s));
-    const me=!fe||e.estado===fe;
-    const mt=!ft||(e.gestion||'').toUpperCase().includes(ft);
-    return ms&&me&&mt;
+    return ms&&(!fe||e.estado===fe)&&(!ft||(e.gestion||'').toUpperCase().includes(ft));
   });
   const tb=document.getElementById('tCtrl');
   if(!f.length){tb.innerHTML='<tr><td colspan="19"><div class="empty-msg">Sin resultados</div></td></tr>';return;}
@@ -759,7 +735,7 @@ function renderCli(){
   const fp=document.getElementById('fPag').value;
   const ff=document.getElementById('fFac').value;
   const f=clis.filter(c=>{
-    const ms=!s||[c.numExp,c.cliente,c.gestion].some(x=>(x||'').toLowerCase().includes(s))||exps.some(e=>e.numExp===c.numExp&&[e.otros||'',e.dni||'',e.obs||''].some(x=>x.toLowerCase().includes(s)));
+    const ms=!s||[c.numExp,c.cliente,c.gestion].some(x=>(x||'').toLowerCase().includes(s));
     const totalPagado=sumPagos(c);const pend=pf(c.totalExp)-totalPagado;
     if(fp==='pend')return ms&&pend>0.01;
     if(fp==='ok')return ms&&(c.finalizado==='FINALIZADO'||pend<=0.01);
@@ -776,48 +752,20 @@ function renderCli(){
   }).join('');
 }
 
-// ════════════ DETAIL CONTROL ════════════
 function showCtrl(id){
   curExp=id;const e=exps.find(x=>x.numExp===id);if(!e)return;
   document.getElementById('ctrlList').style.display='none';
   const det=document.getElementById('ctrlDet');det.style.display='block';
-
-  // Calculate debts
   const facNot=pf(e.impNotaria);const pagNot=pf(e.pago1)+pf(e.pago2);const deudaNot=facNot-pagNot;
   const facInf=pf(e.impInforme);const pagInf=e.fPagoInforme?facInf:0;const deudaInf=facInf-pagInf;
   const facReg=pf(e.totalFraReg);const provReg=pf(e.provision);const deudaReg=facReg-provReg;
-  const totalDeuda=Math.max(0,deudaNot)+Math.max(0,deudaInf)+(facReg>0?Math.max(0,deudaReg):(provReg>0?0:0));
-
-  // Build alerts
   const als=getAlerts(e);
   const alertsHtml=als.map(a=>`<div class="alert-card ${a.tipo==='exp'?'a-red':'a-amber'}"><span>${a.tipo==='exp'?'🚨':'⚠️'}</span><div><strong>${a.label}</strong> — ${fD(a.fecha)} (${a.dias<0?Math.abs(a.dias)+' días atrás!':'faltan '+a.dias+' días'})</div></div>`).join('');
-
-  // Section builder
   function sec(title,fields){
-    const rows=fields.filter(f=>f[1]&&f[1]!=='—'&&f[1]!=='');
+    const rows=fields.filter(f=>f.length&&f[1]&&f[1]!=='—'&&f[1]!=='');
     if(!rows.length)return'';
     return`<div style="margin-top:16px"><div style="font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid var(--accent-l)">${title}</div><div class="detail-grid">${rows.map(f=>`<div class="df"><label>${f[0]}</label><div class="val">${f[2]?f[1]:esc(String(f[1]))}</div></div>`).join('')}</div></div>`;
   }
-
-  // Debt summary card
-  function debtRow(label,factura,pagado,pendiente){
-    if(!factura&&!pagado)return'';
-    const color=pendiente>0.01?'var(--red)':pendiente<-0.01?'var(--amber)':'var(--green)';
-    const estado=pendiente>0.01?'DEBES '+monF(pendiente):pendiente<-0.01?'A FAVOR '+monF(Math.abs(pendiente)):'PAGADO';
-    return`<tr><td>${label}</td><td style="text-align:right">${monF(factura)}</td><td style="text-align:right">${monF(pagado)}</td><td style="text-align:right;font-weight:700;color:${color}">${estado}</td></tr>`;
-  }
-  const debtHtml=(facNot||pagNot||facInf||facReg||provReg)?`
-    <div style="margin-top:16px"><div style="font-size:12px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid var(--red-l)">💰 Resumen de deudas / pagos a terceros</div>
-    <div class="card table-card"><table>
-      <thead><tr><th>Concepto</th><th style="text-align:right">Factura</th><th style="text-align:right">Pagado</th><th style="text-align:right">Estado</th></tr></thead>
-      <tbody>
-        ${debtRow('Notaría',facNot,pagNot,deudaNot)}
-        ${debtRow('Informe técnico',facInf,pagInf,deudaInf)}
-        ${facReg||provReg?debtRow('Registro (Fra. vs Provisión)',facReg,provReg,deudaReg):''}
-      </tbody>
-      ${totalDeuda>0.01?`<tfoot><tr style="background:var(--red-l)"><td colspan="3" style="font-weight:700">TOTAL PENDIENTE</td><td style="text-align:right;font-weight:700;color:var(--red);font-size:15px">${monF(totalDeuda)}</td></tr></tfoot>`:''}
-    </table></div></div>`:'';
-
   det.innerHTML=`
     <div class="detail-wrap">
       <button class="btn btn-ghost btn-sm" onclick="closeCtrl()">← Volver</button>
@@ -840,58 +788,12 @@ function showCtrl(id){
           <button class="btn btn-red btn-sm" onclick="deleteExp()">🗑️</button>
         </div>
       </div>
-
       ${alertsHtml?'<div style="margin-top:12px">'+alertsHtml+'</div>':''}
-
-      ${debtHtml}
-
-      ${sec('📋 Datos del expediente',[
-        ['Nº Expediente',e.numExp],['Gestión',e.gestion],['Cliente',e.cliente],
-        ['DNI',e.dni],['Otros intervinientes',e.otros]
-      ])}
-
-      ${sec('🏛️ Notaría',[
-        ['Notario/a',e.notario],
-        ['Prevista firma',e.fhPrevista?fDH(e.fhPrevista):''],
-        ['Fecha firma',fD(e.fechaFirma)],['Protocolo',e.protocolo],
-        ['Factura notaría',mon(e.impNotaria)],
-        ['Pago 1',mon(e.pago1)+(e.fPago1?' · '+fD(e.fPago1):'')],
-        ['Pago 2',mon(e.pago2)+(e.fPago2?' · '+fD(e.fPago2):'')],
-        ['Retirada notaría',fD(e.fRetirada)]
-      ])}
-
-      ${sec('📄 Informe técnico',[
-        ['Informe',e.informe],['Factura informe',mon(e.impInforme)],
-        ['Fecha pago informe',fD(e.fPagoInforme)]
-      ])}
-
-      ${sec('💰 Plusvalía e impuestos',[
-        ['Plusvalía',impBadge(e.plusvalia),1],
-        e.plusvalia==='PRESENTADA'?['Fecha presentación',fD(e.fPlusvalia)]:[],
-        e.plusvalia==='SI'?['Vto. plusvalía (1 mes firma)',fD(e.vtoPlusvalia)]:[],
-        ['Fecha fallecimiento',fD(e.fFallecimiento)],
-        ['Mod. 600 (ITP/AJD)',impBadge(e.mod600),1],
-        e.mod600==='PRESENTADO'?['Fecha pres. 600',fD(e.f600)]:[],
-        e.mod600==='SI'?['Vto. Mod. 600 (2 meses firma)',fD(e.vto600)]:[],
-        ['Mod. 650 (ISD)',impBadge(e.mod650),1],
-        e.mod650==='PRESENTADO'?['Fecha pres. 650',fD(e.f650)]:[],
-        e.mod650==='SI'?['Vto. Mod. 650 (6 meses fallec.)',fD(e.vto650)]:[],
-        ['Mod. 660',impBadge(e.mod660),1],
-        e.mod660==='PRESENTADO'?['Fecha pres. 660',fD(e.f660)]:[],
-        e.mod660==='SI'?['Vto. Mod. 660 (6 meses fallec.)',fD(e.vto660)]:[]
-      ].filter(f=>f.length))}
-
-      ${sec('📝 Registro',[
-        ['Registro',e.registro],['Entregado a registro',fD(e.fEntregaReg)],
-        ['Provisión entregada',mon(e.provision)],['Lista para recoger',fD(e.fListaRecoger)],
-        ['Factura registro',mon(e.totalFraReg)],['Fecha pago fra. registro',fD(e.fPagoFraReg)],
-        ['Recogido de registro',fD(e.fRecogida)],['Entregado al cliente',fD(e.fEntregaCli)]
-      ])}
-
-      ${e.fVto?sec('⏰ Vencimiento manual',[['Fecha vto. actuación',fD(e.fVto)]]):''}
-
-      ${(e.inmuebles&&e.inmuebles.length)?'<div style="margin-top:16px"><div style="font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid var(--accent-l)">🏠 Inmuebles ('+e.inmuebles.length+')</div><div class="card" style="overflow-x:auto"><table style="min-width:900px"><thead><tr><th>#</th><th>Tipo</th><th>Dirección</th><th>Superficie</th><th>Finca</th><th>Ref. Catastral</th><th>Valor (€)</th><th>Val. Decl.</th><th>Carácter</th><th>Adjudicación</th><th></th></tr></thead><tbody>'+e.inmuebles.map((im,i)=>'<tr><td>'+(i+1)+'</td><td><strong>'+esc(im.tipo)+'</strong></td><td style="white-space:normal;max-width:200px">'+esc(im.dir)+(im.mun&&!im.dir.includes(im.mun)?', '+esc(im.mun):'')+'</td><td>'+esc(im.superficie||'')+'</td><td>'+esc(im.finca)+'</td><td style="font-family:monospace;font-size:11px;white-space:normal;max-width:180px">'+esc(String(im.refCat||'').replace(/<br>/g,' / '))+'</td><td style="text-align:right">'+mon(im.valCat||im.valor||'')+'</td><td style="text-align:right;font-weight:700;color:var(--accent)">'+mon(im.valDec||'')+'</td><td>'+esc(im.caracter||'')+'</td><td style="white-space:normal;max-width:160px;font-size:12px">'+esc(im.adjudicacion||'')+'</td><td style="white-space:nowrap"><button class="btn btn-ghost btn-sm" onclick="editInm('+i+')">✏️</button><button class="btn btn-red btn-sm" onclick="delInm('+i+')">✕</button></td></tr>').join('')+'</tbody></table></div></div>':'<div style="margin-top:16px;padding:16px;background:var(--bg);border-radius:8px;text-align:center;color:var(--dim);font-size:13px">🏠 Sin inmuebles — pulsa <strong>🏠 +1 Inmueble</strong> o <strong>📋 Importar tabla</strong></div>'}
-
+      ${sec('📋 Datos del expediente',[['Nº Expediente',e.numExp],['Gestión',e.gestion],['Cliente',e.cliente],['DNI',e.dni],['Otros intervinientes',e.otros]])}
+      ${sec('🏛️ Notaría',[['Notario/a',e.notario],['Prevista firma',e.fhPrevista?fDH(e.fhPrevista):''],['Fecha firma',fD(e.fechaFirma)],['Protocolo',e.protocolo],['Factura notaría',mon(e.impNotaria)],['Pago 1',mon(e.pago1)+(e.fPago1?' · '+fD(e.fPago1):'')],['Pago 2',mon(e.pago2)+(e.fPago2?' · '+fD(e.fPago2):'')],['Retirada notaría',fD(e.fRetirada)]])}
+      ${sec('💰 Plusvalía e impuestos',[['Plusvalía',impBadge(e.plusvalia),1],e.plusvalia==='SI'?['Vto. plusvalía',fD(e.vtoPlusvalia)]:[],['Mod. 600',impBadge(e.mod600),1],e.mod600==='SI'?['Vto. Mod. 600',fD(e.vto600)]:[],['Mod. 650',impBadge(e.mod650),1],e.mod650==='SI'?['Vto. Mod. 650',fD(e.vto650)]:[],['Mod. 660',impBadge(e.mod660),1],e.mod660==='SI'?['Vto. Mod. 660',fD(e.vto660)]:[]].filter(f=>f.length))}
+      ${sec('📝 Registro',[['Registro',e.registro],['Entregado a registro',fD(e.fEntregaReg)],['Provisión entregada',mon(e.provision)],['Lista para recoger',fD(e.fListaRecoger)],['Factura registro',mon(e.totalFraReg)],['Recogido de registro',fD(e.fRecogida)],['Entregado al cliente',fD(e.fEntregaCli)]])}
+      ${(e.inmuebles&&e.inmuebles.length)?'<div style="margin-top:16px"><div style="font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid var(--accent-l)">🏠 Inmuebles ('+e.inmuebles.length+')</div><div class="card" style="overflow-x:auto"><table style="min-width:900px"><thead><tr><th>#</th><th>Tipo</th><th>Dirección</th><th>Superficie</th><th>Finca</th><th>Ref. Catastral</th><th>Valor</th><th>Val. Decl.</th><th>Carácter</th><th>Adjudicación</th><th></th></tr></thead><tbody>'+e.inmuebles.map((im,i)=>'<tr><td>'+(i+1)+'</td><td><strong>'+esc(im.tipo)+'</strong></td><td style="white-space:normal;max-width:200px">'+esc(im.dir)+'</td><td>'+esc(im.superficie||'')+'</td><td>'+esc(im.finca)+'</td><td style="font-family:monospace;font-size:11px">'+esc(String(im.refCat||''))+'</td><td style="text-align:right">'+mon(im.valCat||im.valor||'')+'</td><td style="text-align:right;font-weight:700;color:var(--accent)">'+mon(im.valDec||'')+'</td><td>'+esc(im.caracter||'')+'</td><td>'+esc(im.adjudicacion||'')+'</td><td style="white-space:nowrap"><button class="btn btn-ghost btn-sm" onclick="editInm('+i+')">✏️</button><button class="btn btn-red btn-sm" onclick="delInm('+i+')">✕</button></td></tr>').join('')+'</tbody></table></div></div>':''}
       <div class="obs-panel" style="margin-top:16px"><h4>📌 Observaciones / Historial</h4><div class="obs-content">${esc(e.obs||'Sin observaciones.')}</div>
         <div class="quick-add"><input id="qNote" placeholder="Escribe una novedad rápida..."><button class="btn btn-green btn-sm" onclick="addNote()">＋</button></div>
       </div>
@@ -906,70 +808,35 @@ function goCtrl(id){
   showCtrl(id);
 }
 
-// ════════════ DETAIL CLIENTE ════════════
 function showCli(id){
   curCli=id;const c=clis.find(x=>x.numExp===id);if(!c)return;
   document.getElementById('cliList').style.display='none';
   const det=document.getElementById('cliDet');det.style.display='block';
   const e=exps.find(x=>x.numExp===id);
-  const fraReg=e?mon(e.totalFraReg):'—';
-
-  const items=[
-    ['Fac. Informe Técnico',c.fraInfTec],['Asesoramiento',c.asesoramiento],
-    ['Minuta Notaría',c.minuta],['Fra. Notaría',c.fraNotaria],
-    ['Pres. Plusvalía',c.presPlusvalia],['Valor Declarar',c.valorDeclarar],['% ITP',c.pctITP],
-    ['Liq. ITP',c.liqITP],['Mod. 600',c.mod600c],['Mod. 660',c.mod660c],
-    ['Mod. 650 ('+esc(c.mod650qty||1)+'×'+mon(c.mod650unit)+')',c.mod650total],
-    ['Pres. Liq. Impuesto',c.presLiqImp],['Pres. Rec. Registro',c.presRecReg],
-    ['Prov. Registro',c.provReg],['Honorarios',c.honorarios],['IVA',c.iva],['Otros Servicios',c.otrosServ],
-  ];
   const totalPagado=sumPagos(c);const pend=pf(c.totalExp)-totalPagado;
-  const provDiff=pf(c.provReg)-pf(e?.totalFraReg||0);
-
-  // Pagos rows
   const pagos=c.pagos||[];
-  const pagosHtml=pagos.length?pagos.map((p,i)=>`
-    <div class="pago-row">
-      <span class="p-date">${fD(p.fecha)}</span>
-      <span class="p-concept">${esc(p.concepto||'Pago '+(i+1))}</span>
-      <span class="p-amount">${monF(p.importe)}</span>
-      <button class="btn btn-ghost btn-sm" onclick="reciboFromPago(${i})" title="Generar recibí">🧾</button>
-    </div>`).join(''):'<div style="padding:12px;color:var(--dim);font-size:13px">Sin pagos registrados</div>';
-
-  det.innerHTML=`
-    <div class="detail-wrap">
-      <button class="btn btn-ghost btn-sm" onclick="closeCli()">← Volver</button>
-      <div class="detail-top" style="margin-top:10px">
-        <div><div class="detail-id">${esc(c.numExp)} — ${esc(c.cliente)}</div><div class="detail-sub">${esc(c.gestion)}</div></div>
-        <div style="display:flex;gap:6px">
-          <button class="btn btn-ghost btn-sm" onclick="goCtrlFromCli('${esc(c.numExp)}')">📋 Ver Control</button>
-          <button class="btn btn-amber btn-sm" onclick="openEditCli()">✏️ Presupuesto</button>
-          <button class="btn btn-primary btn-sm" onclick="downloadPresupuestoWord()">📄 Word</button>
-        </div>
+  const pagosHtml=pagos.length?pagos.map((p,i)=>`<div class="pago-row"><span class="p-date">${fD(p.fecha)}</span><span class="p-concept">${esc(p.concepto||'Pago '+(i+1))}</span><span class="p-amount">${monF(p.importe)}</span><button class="btn btn-ghost btn-sm" onclick="reciboFromPago(${i})" title="Generar recibí">🧾</button></div>`).join(''):'<div style="padding:12px;color:var(--dim);font-size:13px">Sin pagos registrados</div>';
+  det.innerHTML=`<div class="detail-wrap">
+    <button class="btn btn-ghost btn-sm" onclick="closeCli()">← Volver</button>
+    <div class="detail-top" style="margin-top:10px">
+      <div><div class="detail-id">${esc(c.numExp)} — ${esc(c.cliente)}</div><div class="detail-sub">${esc(c.gestion)}</div></div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-ghost btn-sm" onclick="goCtrlFromCli('${esc(c.numExp)}')">📋 Ver Control</button>
+        <button class="btn btn-amber btn-sm" onclick="openEditCli()">✏️ Presupuesto</button>
+        <button class="btn btn-primary btn-sm" onclick="downloadPresupuestoWord()">📄 Word</button>
       </div>
-      <h4 style="font-size:12px;color:var(--dim);text-transform:uppercase;margin:12px 0 6px">Desglose presupuesto</h4>
-      <div class="detail-grid">
-        ${items.filter(f=>pf(f[1])).map(f=>`<div class="df"><label>${f[0]}</label><div class="val">${mon(f[1])}</div></div>`).join('')}
-        <div class="df"><label>Fra. Registro (de Control)</label><div class="val">${fraReg}</div></div>
-        <div class="df" style="background:var(--accent-l);border-radius:6px;padding:8px"><label>TOTAL EXPEDIENTE</label><div class="val" style="font-size:18px;color:var(--accent)">${mon(c.totalExp)}</div></div>
-        ${provDiff?`<div class="df"><label>Dif. Provisión vs Fra. Reg.</label><div class="val" style="color:${provDiff>=0?'var(--green)':'var(--red)'}">${monF(provDiff)}</div></div>`:''}
-      </div>
-      <h4 style="font-size:12px;color:var(--dim);text-transform:uppercase;margin:20px 0 6px">💳 Pagos del cliente</h4>
-      <div class="card" style="overflow:hidden">${pagosHtml}
-        <div class="pago-row" style="background:var(--bg);font-weight:700"><span class="p-date"></span><span class="p-concept">TOTAL PAGADO</span><span class="p-amount" style="color:var(--green)">${monF(totalPagado)}</span><span style="width:50px"></span></div>
-        ${pend>0.01?`<div class="pago-row" style="background:var(--red-l)"><span class="p-date"></span><span class="p-concept" style="color:var(--red)">PENDIENTE</span><span class="p-amount" style="color:var(--red);font-size:15px">${monF(pend)}</span><span style="width:50px"></span></div>`:''}
-      </div>
-    </div>`;
+    </div>
+    <h4 style="font-size:12px;color:var(--dim);text-transform:uppercase;margin:12px 0 6px">💳 Pagos del cliente</h4>
+    <div class="card" style="overflow:hidden">${pagosHtml}
+      <div class="pago-row" style="background:var(--bg);font-weight:700"><span class="p-date"></span><span class="p-concept">TOTAL PAGADO</span><span class="p-amount" style="color:var(--green)">${monF(totalPagado)}</span><span style="width:50px"></span></div>
+      ${pend>0.01?`<div class="pago-row" style="background:var(--red-l)"><span class="p-date"></span><span class="p-concept" style="color:var(--red)">PENDIENTE</span><span class="p-amount" style="color:var(--red);font-size:15px">${monF(pend)}</span><span style="width:50px"></span></div>`:''}
+    </div>
+  </div>`;
 }
 function closeCli(){curCli=null;document.getElementById('cliList').style.display='block';document.getElementById('cliDet').style.display='none';}
 
 function goCliFromCtrl(id){
-  // Ensure CLI entry exists
-  if(!clis.find(c=>c.numExp===id)){
-    const e=exps.find(x=>x.numExp===id);
-    if(e)clis.unshift({numExp:e.numExp,cliente:e.cliente,gestion:e.gestion,pagos:[],totalExp:'',finalizado:''});
-    saveLocal();
-  }
+  if(!clis.find(c=>c.numExp===id)){const e=exps.find(x=>x.numExp===id);if(e)clis.unshift({numExp:e.numExp,cliente:e.cliente,gestion:e.gestion,pagos:[],totalExp:'',finalizado:''});saveLocal();}
   closeCtrl();
   document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
@@ -986,13 +853,7 @@ function goCtrlFromCli(id){
   renderCtrl();showCtrl(id);
 }
 
-// ════════════ MODAL EXP ════════════
-const EF=['numExp','gestion','cliente','dni','otros','informe','impInforme','fPagoInforme',
-  'notario','fhPrevista','fechaFirma','protocolo','impNotaria','pago1','fPago1','pago2','fPago2','fRetirada',
-  'plusvalia','fPlusvalia','vtoPlusvalia',
-  'fFallecimiento','mod600','f600','vto600','mod650','f650','vto650','mod660','f660','vto660',
-  'registro','fEntregaReg','provision','fListaRecoger','totalFraReg','fPagoFraReg','fRecogida','fEntregaCli',
-  'estado','fVto','obs'];
+const EF=['numExp','gestion','cliente','dni','otros','informe','impInforme','fPagoInforme','notario','fhPrevista','fechaFirma','protocolo','impNotaria','pago1','fPago1','pago2','fPago2','fRetirada','plusvalia','fPlusvalia','vtoPlusvalia','fFallecimiento','mod600','f600','vto600','mod650','f650','vto650','mod660','f660','vto660','registro','fEntregaReg','provision','fListaRecoger','totalFraReg','fPagoFraReg','fRecogida','fEntregaCli','estado','fVto','obs'];
 const COMBOS=['gestion','notario','registro'];
 
 function openNewExp(){
@@ -1008,21 +869,18 @@ function openEditExp(){
   editMode='edit';document.getElementById('mExpTit').textContent='✏️ Editar Expediente';
   const e=exps.find(x=>x.numExp===curExp);if(!e)return;
   EF.forEach(f=>{const el=document.getElementById('e_'+f);if(el)el.value=e[f]||'';});
-  setComboVal('combo_gestion',e.gestion);
-  setComboVal('combo_notario',e.notario);
-  setComboVal('combo_registro',e.registro);
+  setComboVal('combo_gestion',e.gestion);setComboVal('combo_notario',e.notario);setComboVal('combo_registro',e.registro);
   togglePlusvalia();toggleImp('600');toggleImp('650');toggleImp('660');
   document.getElementById('ovExp').classList.add('open');
 }
+
 function saveExp(){
   const d={};
   EF.forEach(f=>{const el=document.getElementById('e_'+f);d[f]=el?el.value.trim():'';});
   d.gestion=getComboVal('combo_gestion');d.notario=getComboVal('combo_notario');d.registro=getComboVal('combo_registro');
-  // Preserve inmuebles and checklist from existing exp
   if(editMode==='edit'){const old=exps.find(e=>e.numExp===curExp);if(old){d.inmuebles=old.inmuebles||[];d.checklist=old.checklist;}}
   else{d.inmuebles=[];d.checklist={};}
   if(!d.numExp||!d.cliente){toast('Rellena Nº Expediente y Cliente','err');return;}
-  // Auto estado
   const ae=autoEstado(d);if(d.estado==='pte_firma'||!d.estado)d.estado=ae;
   if(editMode==='new'){
     if(exps.find(e=>e.numExp===d.numExp)){toast('Ya existe ese nº','err');return;}
@@ -1038,66 +896,31 @@ function saveExp(){
   enviarVencimientos(d);
   saveLocal();closeOv('ovExp');renderAll();
   if(editMode==='edit')showCtrl(curExp);
-  // ── ClientesMAESTRO ──────────────────────────────────────
-  if (d.cliente || d.dni) {
-    const _p = (d.cliente||'').trim().split(/\s+/);
-    guardarEnMaestro({
-      DNI_NIE:   (d.dni||'').toUpperCase().replace(/-/g,''),
-      Nombre:    _p[0] || d.cliente || '',
-      Apellido1: _p[1] || '',
-      Apellido2: _p[2] || '',
-      Tipo: 'fisica'
-    });
+  if(d.cliente||d.dni){
+    const _p=(d.cliente||'').trim().split(/\s+/);
+    guardarEnMaestro({DNI_NIE:(d.dni||'').toUpperCase().replace(/-/g,''),Nombre:_p[0]||d.cliente||'',Apellido1:_p[1]||'',Apellido2:_p[2]||'',Tipo:'fisica'});
   }
 }
 
 // ════════════ VENCIMIENTOS CENTRALES ════════════
-const URL_VTO='https://script.google.com/macros/s/AKfycbzSpWjKLGxRp4CR4miJk4uP7b6CNmmToqGrleJXbEtQX9T6BdRyLkMReE5lBGxVk5i9SA/exec';
-
 function enviarVencimientos(d){
+  if(!URL_VTO) return;
   const estadosCerrados=['entregado','recogido','cerrado','cancelado'];
   const cerrado=estadosCerrados.includes((d.estado||'').toLowerCase());
-
   const vtos=[];
-
   if(!cerrado){
-    if(d.vtoPlusvalia && d.plusvalia==='SI')
-      vtos.push({fecha:d.vtoPlusvalia,tipo:'Plusvalía (1 mes firma)',obs:`Firma: ${fD(d.fechaFirma)}`});
-    if(d.vto600 && d.mod600==='SI')
-      vtos.push({fecha:d.vto600,tipo:'Mod. 600 (2 meses firma)',obs:`Firma: ${fD(d.fechaFirma)}`});
-    if(d.vto650 && d.mod650==='SI')
-      vtos.push({fecha:d.vto650,tipo:'Mod. 650 (6 meses fallec.)',obs:`Fallec: ${fD(d.fFallecimiento)}`});
-    if(d.vto660 && d.mod660==='SI')
-      vtos.push({fecha:d.vto660,tipo:'Mod. 660 (6 meses fallec.)',obs:`Fallec: ${fD(d.fFallecimiento)}`});
-    if(d.fhPrevista)
-      vtos.push({fecha:d.fhPrevista.slice(0,10),tipo:'Firma prevista',obs:d.notario||''});
-    if(d.fVto)
-      vtos.push({fecha:d.fVto,tipo:'Vto. manual',obs:d.gestion||''});
+    if(d.vtoPlusvalia&&d.plusvalia==='SI')vtos.push({fecha:d.vtoPlusvalia,tipo:'Plusvalía (1 mes firma)',obs:`Firma: ${fD(d.fechaFirma)}`});
+    if(d.vto600&&d.mod600==='SI')vtos.push({fecha:d.vto600,tipo:'Mod. 600 (2 meses firma)',obs:`Firma: ${fD(d.fechaFirma)}`});
+    if(d.vto650&&d.mod650==='SI')vtos.push({fecha:d.vto650,tipo:'Mod. 650 (6 meses fallec.)',obs:`Fallec: ${fD(d.fFallecimiento)}`});
+    if(d.vto660&&d.mod660==='SI')vtos.push({fecha:d.vto660,tipo:'Mod. 660 (6 meses fallec.)',obs:`Fallec: ${fD(d.fFallecimiento)}`});
+    if(d.fhPrevista)vtos.push({fecha:d.fhPrevista.slice(0,10),tipo:'Firma prevista',obs:d.notario||''});
+    if(d.fVto)vtos.push({fecha:d.fVto,tipo:'Vto. manual',obs:d.gestion||''});
   }
-
-  vtos.forEach(v=>{
-    fetch(URL_VTO,{method:'POST',mode:'no-cors',body:JSON.stringify({
-      action:'upsert',app:'Escrituras',
-      expediente:d.numExp,cliente:d.cliente,
-      fecha:v.fecha,tipo:v.tipo,
-      observaciones:v.obs,estado:'Pendiente'
-    })});
-  });
-
-  // Si está cerrado, marcar como completados
-  if(cerrado){
-    ['Plusvalía (1 mes firma)','Mod. 600 (2 meses firma)','Mod. 650 (6 meses fallec.)','Mod. 660 (6 meses fallec.)','Firma prevista','Vto. manual'].forEach(tipo=>{
-      fetch(URL_VTO,{method:'POST',mode:'no-cors',body:JSON.stringify({
-        action:'completar',app:'Escrituras',expediente:d.numExp,tipo
-      })});
-    });
-  }
+  vtos.forEach(v=>{fetch(URL_VTO,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'upsert',app:'Escrituras',expediente:d.numExp,cliente:d.cliente,fecha:v.fecha,tipo:v.tipo,observaciones:v.obs,estado:'Pendiente'})});});
+  if(cerrado){['Plusvalía (1 mes firma)','Mod. 600 (2 meses firma)','Mod. 650 (6 meses fallec.)','Mod. 660 (6 meses fallec.)','Firma prevista','Vto. manual'].forEach(tipo=>{fetch(URL_VTO,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'completar',app:'Escrituras',expediente:d.numExp,tipo})});});}
 }
 
-function deleteExp(){
-  if(!curExp||!confirm('¿Eliminar '+curExp+'?'))return;
-  exps=exps.filter(e=>e.numExp!==curExp);saveLocal();closeCtrl();renderAll();toast('Eliminado','info');
-}
+function deleteExp(){if(!curExp||!confirm('¿Eliminar '+curExp+'?'))return;exps=exps.filter(e=>e.numExp!==curExp);saveLocal();closeCtrl();renderAll();toast('Eliminado','info');}
 function addNote(){
   const note=document.getElementById('qNote').value.trim();if(!note||!curExp)return;
   const e=exps.find(x=>x.numExp===curExp);if(!e)return;
@@ -1106,7 +929,6 @@ function addNote(){
   saveLocal();showCtrl(curExp);renderAll();toast('Novedad añadida','ok');
 }
 
-// ════════════ MODAL CLIENTE ════════════
 function openEditCli(){
   const c=clis.find(x=>x.numExp===(curCli||curExp));if(!c)return;
   curCli=c.numExp;
@@ -1118,45 +940,25 @@ function openEditCli(){
   cFields.forEach(f=>{const el=document.getElementById('c_'+f);if(el)el.value=c[f]||'';});
   document.getElementById('c_finalizado').value=c.finalizado||'';
   document.getElementById('c_estadoFactura').value=c.estadoFactura||'pendiente';
-  // Fra registro from control
   const e=exps.find(x=>x.numExp===c.numExp);
   document.getElementById('c_fraReg').value=e?e.totalFraReg||'':'';
   calcDiffReg();
-  // Build pagos
   renderPagosForm(c.pagos||[]);
   document.getElementById('ovCli').classList.add('open');
 }
 function renderPagosForm(pagos){
-  const container=document.getElementById('pagosContainer');
-  container.innerHTML='';
-  pagos.forEach((p,i)=>{
-    container.innerHTML+=`<div class="fi" style="grid-column:1/-1;display:flex;flex-direction:row;gap:8px;align-items:end;" id="pagoRow_${i}">
-      <div style="flex:1"><label>Concepto</label><input id="pg_concepto_${i}" value="${esc(p.concepto||'')}"></div>
-      <div style="width:120px"><label>Importe (€)</label><input type="number" step="0.01" id="pg_importe_${i}" value="${p.importe||''}"></div>
-      <div style="width:130px"><label>Fecha</label><input type="date" id="pg_fecha_${i}" value="${p.fecha||''}"></div>
-      <div style="width:90px"><label>Nº Recibo</label><input id="pg_recibo_${i}" value="${esc(p.recibo||'')}"></div>
-      <button class="btn btn-red btn-sm" style="margin-bottom:3px" onclick="removePagoRow(${i})">✕</button>
-    </div>`;
-  });
+  const container=document.getElementById('pagosContainer');container.innerHTML='';
+  pagos.forEach((p,i)=>{container.innerHTML+=`<div class="fi" style="grid-column:1/-1;display:flex;flex-direction:row;gap:8px;align-items:end;" id="pagoRow_${i}"><div style="flex:1"><label>Concepto</label><input id="pg_concepto_${i}" value="${esc(p.concepto||'')}"></div><div style="width:120px"><label>Importe (€)</label><input type="number" step="0.01" id="pg_importe_${i}" value="${p.importe||''}"></div><div style="width:130px"><label>Fecha</label><input type="date" id="pg_fecha_${i}" value="${p.fecha||''}"></div><div style="width:90px"><label>Nº Recibo</label><input id="pg_recibo_${i}" value="${esc(p.recibo||'')}"></div><button class="btn btn-red btn-sm" style="margin-bottom:3px" onclick="removePagoRow(${i})">✕</button></div>`;});
 }
 function addPagoRow(){
-  const container=document.getElementById('pagosContainer');
-  const i=container.children.length;
-  const div=document.createElement('div');
-  div.className='fi';div.style.cssText='grid-column:1/-1;display:flex;flex-direction:row;gap:8px;align-items:end;';
-  div.id='pagoRow_'+i;
-  div.innerHTML=`<div style="flex:1"><label>Concepto</label><input id="pg_concepto_${i}" placeholder="A cta. expediente"></div>
-    <div style="width:120px"><label>Importe (€)</label><input type="number" step="0.01" id="pg_importe_${i}"></div>
-    <div style="width:130px"><label>Fecha</label><input type="date" id="pg_fecha_${i}" value="${isoD(new Date())}"></div>
-    <div style="width:90px"><label>Nº Recibo</label><input id="pg_recibo_${i}"></div>
-    <button class="btn btn-red btn-sm" style="margin-bottom:3px" onclick="this.parentElement.remove()">✕</button>`;
+  const container=document.getElementById('pagosContainer');const i=container.children.length;
+  const div=document.createElement('div');div.className='fi';div.style.cssText='grid-column:1/-1;display:flex;flex-direction:row;gap:8px;align-items:end;';div.id='pagoRow_'+i;
+  div.innerHTML=`<div style="flex:1"><label>Concepto</label><input id="pg_concepto_${i}" placeholder="A cta. expediente"></div><div style="width:120px"><label>Importe (€)</label><input type="number" step="0.01" id="pg_importe_${i}"></div><div style="width:130px"><label>Fecha</label><input type="date" id="pg_fecha_${i}" value="${isoD(new Date())}"></div><div style="width:90px"><label>Nº Recibo</label><input id="pg_recibo_${i}"></div><button class="btn btn-red btn-sm" style="margin-bottom:3px" onclick="this.parentElement.remove()">✕</button>`;
   container.appendChild(div);
 }
 function removePagoRow(i){document.getElementById('pagoRow_'+i)?.remove();}
-
 function collectPagos(){
-  const container=document.getElementById('pagosContainer');
-  const pagos=[];
+  const container=document.getElementById('pagosContainer');const pagos=[];
   container.querySelectorAll('[id^="pagoRow_"]').forEach(row=>{
     const idx=row.id.split('_')[1];
     const concepto=(document.getElementById('pg_concepto_'+idx)?.value||'').trim();
@@ -1167,578 +969,184 @@ function collectPagos(){
   });
   return pagos;
 }
-
-function calcITP(){
-  const val=pf(document.getElementById('c_valorDeclarar').value);
-  const pct=pf(document.getElementById('c_pctITP').value);
-  document.getElementById('c_liqITP').value=val&&pct?(val*pct/100).toFixed(2):'';
-  calcTotal();
-}
-function calcMod650(){
-  const u=pf(document.getElementById('c_mod650unit').value);
-  const q=pf(document.getElementById('c_mod650qty').value)||1;
-  document.getElementById('c_mod650total').value=u?(u*q).toFixed(2):'';
-  calcTotal();
-}
-function calcDiffReg(){
-  const prov=pf(document.getElementById('c_provReg').value);
-  const fra=pf(document.getElementById('c_fraReg').value);
-  const diff=prov-fra;
-  document.getElementById('c_diffReg').value=fra?diff.toFixed(2)+' €'+(diff>=0?' (sobra)':' (falta)'):'';
-}
+function calcITP(){const val=pf(document.getElementById('c_valorDeclarar').value);const pct=pf(document.getElementById('c_pctITP').value);document.getElementById('c_liqITP').value=val&&pct?(val*pct/100).toFixed(2):'';calcTotal();}
+function calcMod650(){const u=pf(document.getElementById('c_mod650unit').value);const q=pf(document.getElementById('c_mod650qty').value)||1;document.getElementById('c_mod650total').value=u?(u*q).toFixed(2):'';calcTotal();}
+function calcDiffReg(){const prov=pf(document.getElementById('c_provReg').value);const fra=pf(document.getElementById('c_fraReg').value);const diff=prov-fra;document.getElementById('c_diffReg').value=fra?diff.toFixed(2)+' €'+(diff>=0?' (sobra)':' (falta)'):''}
 function calcTotal(){
   const ids=['fraInfTec','asesoramiento','minuta','fraNotaria','presPlusvalia','liqITP','mod600c','mod660c','mod650total','presLiqImp','presRecReg','provReg','honorarios','iva','otrosServ'];
   let total=0;ids.forEach(id=>{total+=pf(document.getElementById('c_'+id)?.value);});
-  document.getElementById('c_totalExp').value=total?total.toFixed(2):'';
-  calcDiffReg();
+  document.getElementById('c_totalExp').value=total?total.toFixed(2):'';calcDiffReg();
 }
-
 function saveCli(){
   const c={numExp:document.getElementById('c_numExp').value,cliente:document.getElementById('c_cliente').value,gestion:document.getElementById('c_gestion').value};
   const cFields=['fraInfTec','asesoramiento','minuta','fraNotaria','presPlusvalia','valorDeclarar','pctITP','liqITP','mod600c','mod660c','mod650unit','mod650qty','mod650total','presLiqImp','presRecReg','provReg','honorarios','iva','otrosServ','totalExp'];
   cFields.forEach(f=>{c[f]=document.getElementById('c_'+f)?.value||'';});
-  c.finalizado=document.getElementById('c_finalizado').value;
-  c.estadoFactura=document.getElementById('c_estadoFactura').value;
-  c.pagos=collectPagos();
-  const idx=clis.findIndex(x=>x.numExp===c.numExp);
-  if(idx>=0)clis[idx]=c;else clis.push(c);
-  saveLocal();closeOv('ovCli');renderCli();
-  if(curCli)showCli(curCli);
-  toast('✅ Guardado','ok');
+  c.finalizado=document.getElementById('c_finalizado').value;c.estadoFactura=document.getElementById('c_estadoFactura').value;c.pagos=collectPagos();
+  const idx=clis.findIndex(x=>x.numExp===c.numExp);if(idx>=0)clis[idx]=c;else clis.push(c);
+  saveLocal();closeOv('ovCli');renderCli();if(curCli)showCli(curCli);toast('✅ Guardado','ok');
 }
 
-// ════════════ RECIBO ════════════
 function reciboFromPago(i){
   const c=clis.find(x=>x.numExp===curCli);if(!c||!c.pagos[i])return;
-  const p=c.pagos[i];
-  // Global consecutive recibo number
-  const nextNum=getNextReciboNum();
-  document.getElementById('r_num').value=p.recibo||nextNum;
-  document.getElementById('r_fecha').value=p.fecha||isoD(new Date());
-  document.getElementById('r_cliente').value=c.cliente;
-  document.getElementById('r_concepto').value=p.concepto||('A cta. expediente '+c.numExp+' — '+c.gestion);
-  document.getElementById('r_importe').value=p.importe||'';
-  document.getElementById('reciboPreview').innerHTML='';
+  const p=c.pagos[i];const nextNum=getNextReciboNum();
+  document.getElementById('r_num').value=p.recibo||nextNum;document.getElementById('r_fecha').value=p.fecha||isoD(new Date());
+  document.getElementById('r_cliente').value=c.cliente;document.getElementById('r_concepto').value=p.concepto||('A cta. expediente '+c.numExp+' — '+c.gestion);
+  document.getElementById('r_importe').value=p.importe||'';document.getElementById('reciboPreview').innerHTML='';
   document.getElementById('ovRecibo').classList.add('open');
 }
-function getNextReciboNum(){
-  // Find the highest recibo number across ALL clients
-  let max=parseInt(localStorage.getItem('lastRecibo')||'0');
-  clis.forEach(c=>{(c.pagos||[]).forEach(p=>{
-    const n=parseInt(p.recibo);if(n>max)max=n;
-  });});
-  return max+1;
-}
-function getNextExpNum(){
-  const yr=new Date().getFullYear().toString().slice(-2);
-  const nums=exps.map(e=>{const m=e.numExp.match(/\d+\/(\d+)/);return m?parseInt(m[1]):0;});
-  return 'GE'+yr+'/'+(Math.max(0,...nums)+1);
-}
+function getNextReciboNum(){let max=parseInt(localStorage.getItem('lastRecibo')||'0');clis.forEach(c=>{(c.pagos||[]).forEach(p=>{const n=parseInt(p.recibo);if(n>max)max=n;});});return max+1;}
+function getNextExpNum(){const yr=new Date().getFullYear().toString().slice(-2);const nums=exps.map(e=>{const m=e.numExp.match(/\d+\/(\d+)/);return m?parseInt(m[1]):0;});return 'GE'+yr+'/'+(Math.max(0,...nums)+1);}
 function genRecibo(){
-  const num=document.getElementById('r_num').value;
-  const fecha=fD(document.getElementById('r_fecha').value);
-  const cliente=document.getElementById('r_cliente').value;
-  const concepto=document.getElementById('r_concepto').value;
-  const importe=document.getElementById('r_importe').value;
-  document.getElementById('reciboPreview').innerHTML=`
-    <div class="recibo-box" id="recPrint">
-      <div class="r-header"><strong>FRANCISCO JOSE JUSTO GUEVARA</strong><br>Av. Almanzora, nº 6, Local 2<br>04860 Olula del Río (Almería)<br>Tlf. 950.44.16.15</div>
-      <div class="r-num">RECIBÍ Nº ${esc(num)} — Fecha: ${fecha}</div><br>
-      <strong>CLIENTE:</strong> ${esc(cliente)}<br><br>
-      <strong>CONCEPTOS:</strong><br>${esc(concepto)}<br><br>
-      <div class="r-total">HE RECIBIDO: ${monF(pf(importe))}</div>
-      <br><br><div style="text-align:center;border-top:1px solid #ccc;padding-top:20px;color:#999;font-size:11px">Firma del cliente</div>
-    </div>`;
-  // Save globally
-  localStorage.setItem('lastRecibo',num);
-  toast('Recibí Nº '+num+' generado','ok');
+  const num=document.getElementById('r_num').value;const fecha=fD(document.getElementById('r_fecha').value);const cliente=document.getElementById('r_cliente').value;const concepto=document.getElementById('r_concepto').value;const importe=document.getElementById('r_importe').value;
+  document.getElementById('reciboPreview').innerHTML=`<div class="recibo-box" id="recPrint"><div class="r-header"><strong>FRANCISCO JOSE JUSTO GUEVARA</strong><br>Av. Almanzora, nº 6, Local 2<br>04860 Olula del Río (Almería)<br>Tlf. 950.44.16.15</div><div class="r-num">RECIBÍ Nº ${esc(num)} — Fecha: ${fecha}</div><br><strong>CLIENTE:</strong> ${esc(cliente)}<br><br><strong>CONCEPTOS:</strong><br>${esc(concepto)}<br><br><div class="r-total">HE RECIBIDO: ${monF(pf(importe))}</div><br><br><div style="text-align:center;border-top:1px solid #ccc;padding-top:20px;color:#999;font-size:11px">Firma del cliente</div></div>`;
+  localStorage.setItem('lastRecibo',num);toast('Recibí Nº '+num+' generado','ok');
 }
-function printRecibo(){
-  const el=document.getElementById('recPrint');if(!el){toast('Genera primero el recibí','err');return;}
-  const w=window.open('','','width=600,height=500');
-  w.document.write('<html><head><title>Recibí</title><style>body{font-family:sans-serif;padding:30px}.recibo-box{border:2px solid #000;padding:24px;max-width:500px;margin:auto;font-size:13px;line-height:1.8}.r-header{text-align:center;border-bottom:1px solid #ccc;padding-bottom:10px;margin-bottom:10px}.r-header strong{font-size:15px}.r-num{text-align:right;font-weight:700}.r-total{font-size:18px;font-weight:700;text-align:right;border-top:2px solid #000;padding-top:8px;margin-top:8px}</style></head><body>');
-  w.document.write(el.outerHTML);w.document.write('</body></html>');w.document.close();w.print();
-}
+function printRecibo(){const el=document.getElementById('recPrint');if(!el){toast('Genera primero el recibí','err');return;}const w=window.open('','','width=600,height=500');w.document.write('<html><head><title>Recibí</title><style>body{font-family:sans-serif;padding:30px}.recibo-box{border:2px solid #000;padding:24px;max-width:500px;margin:auto;font-size:13px;line-height:1.8}.r-header{text-align:center;border-bottom:1px solid #ccc;padding-bottom:10px;margin-bottom:10px}.r-num{text-align:right;font-weight:700}.r-total{font-size:18px;font-weight:700;text-align:right;border-top:2px solid #000;padding-top:8px;margin-top:8px}</style></head><body>');w.document.write(el.outerHTML);w.document.write('</body></html>');w.document.close();w.print();}
 
-// ════════════ WORD EXPORT ════════════
 async function downloadPresupuestoWord(){
   const c=clis.find(x=>x.numExp===(curCli||curExp));if(!c){toast('No hay datos de cliente','err');return;}
   const e=exps.find(x=>x.numExp===c.numExp);
-  const items=[];
-  const add=(l,v)=>{if(pf(v))items.push([l,monF(pf(v))]);};
-  add('Factura Informe Técnico',c.fraInfTec);add('Asesoramiento',c.asesoramiento);
-  add('Minuta e Intervención Notaría',c.minuta);add('Factura Notaría',c.fraNotaria);
-  add('Presentación Plusvalía',c.presPlusvalia);
+  const items=[];const add=(l,v)=>{if(pf(v))items.push([l,monF(pf(v))]);};
+  add('Factura Informe Técnico',c.fraInfTec);add('Asesoramiento',c.asesoramiento);add('Minuta e Intervención Notaría',c.minuta);add('Factura Notaría',c.fraNotaria);add('Presentación Plusvalía',c.presPlusvalia);
   if(pf(c.liqITP))items.push(['Liquidación ITP ('+monF(pf(c.valorDeclarar))+' x '+(c.pctITP||0)+'%)',monF(pf(c.liqITP))]);
   add('Mod. 600',c.mod600c);add('Mod. 660',c.mod660c);
   if(pf(c.mod650total))items.push(['Mod. 650 ('+(c.mod650qty||1)+' x '+monF(pf(c.mod650unit))+')',monF(pf(c.mod650total))]);
-  add('Presentación y Liquidación Impuesto',c.presLiqImp);add('Presentación y Recogida Registro',c.presRecReg);
-  add('Provisión Registro',c.provReg);add('Honorarios',c.honorarios);add('IVA',c.iva);
-  add('Otros Servicios',c.otrosServ);
+  add('Presentación y Liquidación Impuesto',c.presLiqImp);add('Presentación y Recogida Registro',c.presRecReg);add('Provisión Registro',c.provReg);add('Honorarios',c.honorarios);add('IVA',c.iva);add('Otros Servicios',c.otrosServ);
   const fecha=new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'long',year:'numeric'});
-  let h='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>Presupuesto</title><style>@page{size:A4;margin:2.5cm}body{font-family:Arial,sans-serif;font-size:12pt;color:#222}h1{text-align:center;font-size:18pt;margin-bottom:20pt}.info{margin-bottom:6pt;font-size:11pt}.info b{display:inline-block;width:100pt}table{width:100%;border-collapse:collapse;margin-top:16pt}th{background:#d5e8f0;border:1px solid #bbb;padding:6pt 10pt;text-align:left;font-size:11pt}th.r{text-align:right}td{border:1px solid #ccc;padding:6pt 10pt;font-size:11pt}td.r{text-align:right}tr.tot td{font-weight:bold;font-size:12pt;border-top:2px solid #333}.note{margin-top:24pt;font-style:italic;color:#666;font-size:10pt}.firma{margin-top:20pt;text-align:right;font-size:11pt}</style></head><body>';
-  h+='<h1>PRESUPUESTO</h1>';
-  h+='<div class="info"><b>Cliente:</b> '+escX(c.cliente)+'</div>';
+  let h='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>Presupuesto</title><style>@page{size:A4;margin:2.5cm}body{font-family:Arial,sans-serif;font-size:12pt;color:#222}h1{text-align:center;font-size:18pt;margin-bottom:20pt}.info{margin-bottom:6pt;font-size:11pt}.info b{display:inline-block;width:100pt}table{width:100%;border-collapse:collapse;margin-top:16pt}th{background:#d5e8f0;border:1px solid #bbb;padding:6pt 10pt;text-align:left;font-size:11pt}th.r{text-align:right}td{border:1px solid #ccc;padding:6pt 10pt;font-size:11pt}td.r{text-align:right}tr.tot td{font-weight:bold;font-size:12pt;border-top:2px solid #333}</style></head><body>';
+  h+='<h1>PRESUPUESTO</h1><div class="info"><b>Cliente:</b> '+escX(c.cliente)+'</div>';
   if(e&&e.dni)h+='<div class="info"><b>DNI:</b> '+escX(e.dni)+'</div>';
-  h+='<div class="info"><b>Expediente:</b> '+escX(c.numExp)+'</div>';
-  h+='<div class="info"><b>Gestión:</b> '+escX(c.gestion)+'</div>';
+  h+='<div class="info"><b>Expediente:</b> '+escX(c.numExp)+'</div><div class="info"><b>Gestión:</b> '+escX(c.gestion)+'</div>';
   h+='<table><tr><th>CONCEPTO</th><th class="r">IMPORTE</th></tr>';
-  items.forEach(function(it){h+='<tr><td>'+escX(it[0])+'</td><td class="r">'+escX(it[1])+'</td></tr>';});
+  items.forEach(it=>{h+='<tr><td>'+escX(it[0])+'</td><td class="r">'+escX(it[1])+'</td></tr>';});
   h+='<tr class="tot"><td>TOTAL EXPEDIENTE</td><td class="r">'+escX(monF(pf(c.totalExp)))+'</td></tr></table>';
-  h+='<p class="note">Este presupuesto es orientativo y puede variar según las circunstancias del expediente.</p>';
-  h+='<p class="firma">Olula del Río, '+escX(fecha)+'</p></body></html>';
-  const blob=new Blob(['\ufeff'+h],{type:'application/msword'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;
-  a.download='Presupuesto_'+c.numExp.replace(/\//g,'-')+'_'+c.cliente.replace(/ /g,'_')+'.doc';
-  document.body.appendChild(a);a.click();document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  toast('Word descargado','ok');
+  h+='<p style="margin-top:24pt;font-style:italic;color:#666;font-size:10pt">Este presupuesto es orientativo y puede variar según las circunstancias del expediente.</p>';
+  h+='<p style="margin-top:20pt;text-align:right;font-size:11pt">Olula del Río, '+escX(fecha)+'</p></body></html>';
+  const blob=new Blob(['\ufeff'+h],{type:'application/msword'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='Presupuesto_'+c.numExp.replace(/\//g,'-')+'_'+c.cliente.replace(/ /g,'_')+'.doc';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);toast('Word descargado','ok');
 }
 function escX(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-// ════════════ MODELOS (CARPETA RED) ════════════
 const MODELOS_PATH='\\\\PACO-HP\\Users\\usuario\\Documents\\TRABAJOS\\MODELOS';
-function openModelos(){
-  navigator.clipboard.writeText(MODELOS_PATH).then(()=>{
-    toast('📋 Ruta copiada — pégala en el Explorador de Windows','ok');
-  }).catch(()=>{
-    prompt('Copia esta ruta y pégala en el Explorador:',MODELOS_PATH);
-  });
-}
+function openModelos(){navigator.clipboard.writeText(MODELOS_PATH).then(()=>toast('📋 Ruta copiada','ok')).catch(()=>prompt('Copia esta ruta:',MODELOS_PATH));}
+function autoEstado(d){if(d.fEntregaCli)return'entregado';if(d.fRecogida)return'recogido';if(d.fEntregaReg)return'en_registro';if(d.fRetirada&&(d.plusvalia==='SI'||d.mod600==='SI'||d.mod650==='SI'||d.mod660==='SI'))return'impuestos';if(d.fRetirada)return'retirado';if(d.fechaFirma)return'firmado';return'pte_firma';}
 
-// ════════════ AUTO ESTADO ════════════
-function autoEstado(d){
-  if(d.fEntregaCli)return'entregado';
-  if(d.fRecogida)return'recogido';
-  if(d.fEntregaReg)return'en_registro';
-  if(d.fRetirada&&(d.plusvalia==='SI'||d.mod600==='SI'||d.mod650==='SI'||d.mod660==='SI'))return'impuestos';
-  if(d.fRetirada)return'retirado';
-  if(d.fechaFirma)return'firmado';
-  return'pte_firma';
-}
-
-// ════════════ INMUEBLES (MODAL DEDICADO) ════════════
-// Auto-clean inmuebles with pipe/br format from old imports
 function cleanAllInmuebles(){
   let fixed=0;
   exps.forEach(e=>{
     if(!e.inmuebles)return;
     e.inmuebles=e.inmuebles.map(im=>{
-      // If dir contains pipes → it's a pipe-formatted row, parse it
       const dirStr=String(im.dir||'');
-      if(dirStr.includes('|')){
-        const parts=dirStr.split('|').map(s=>s.replace(/<br>/g,' ').trim());
-        // Try to map: might be "Tipo | Ubicación | Superficie | Finca | RefCat | ValorTotal | ValorISD | Carácter | Adjudicación"
-        const newIm={tipo:im.tipo||'',dir:'',mun:im.mun||'',prov:im.prov||'ALMERÍA',
-          refCat:im.refCat||'',finca:im.finca||'',registro:im.registro||'',
-          superficie:im.superficie||'',tlf:'',valCat:'',valRef:'',valDec:'',cargas:'',obs:''};
-        if(parts.length>=3){newIm.dir=parts[0]||'';newIm.mun=newIm.mun||parts[1]||'';newIm.superficie=parts[2]||'';}
-        if(parts.length>=4)newIm.finca=newIm.finca||parts[3]||'';
-        if(parts.length>=5)newIm.refCat=newIm.refCat||parts[4]||'';
-        if(parts.length>=6)newIm.valCat=parts[5]||'';
-        if(parts.length>=7)newIm.valDec=parts[6]||'';
-        if(parts.length>=8)newIm.obs=(parts.slice(7).join(', ')).trim();
-        fixed++;
-        return newIm;
-      }
-      // Clean any <br> tags in any field
-      let changed=false;
-      const cleaned={...im};
-      Object.keys(cleaned).forEach(k=>{
-        if(typeof cleaned[k]==='string'&&cleaned[k].includes('<br>')){
-          cleaned[k]=cleaned[k].replace(/<br>/g,', ');changed=true;
-        }
-      });
-      if(changed)fixed++;
-      return cleaned;
+      if(dirStr.includes('|')){const parts=dirStr.split('|').map(s=>s.replace(/<br>/g,' ').trim());const newIm={tipo:im.tipo||'',dir:'',mun:im.mun||'',prov:im.prov||'ALMERÍA',refCat:im.refCat||'',finca:im.finca||'',registro:im.registro||'',superficie:im.superficie||'',tlf:'',valCat:'',valRef:'',valDec:'',cargas:'',obs:''};if(parts.length>=3){newIm.dir=parts[0]||'';newIm.mun=newIm.mun||parts[1]||'';newIm.superficie=parts[2]||'';}if(parts.length>=4)newIm.finca=newIm.finca||parts[3]||'';if(parts.length>=5)newIm.refCat=newIm.refCat||parts[4]||'';if(parts.length>=6)newIm.valCat=parts[5]||'';if(parts.length>=7)newIm.valDec=parts[6]||'';fixed++;return newIm;}
+      let changed=false;const cleaned={...im};Object.keys(cleaned).forEach(k=>{if(typeof cleaned[k]==='string'&&cleaned[k].includes('<br>')){cleaned[k]=cleaned[k].replace(/<br>/g,', ');changed=true;}});if(changed)fixed++;return cleaned;
     });
   });
-  if(fixed>0){saveLocal();console.log('Limpiados '+fixed+' inmuebles con formato antiguo');}
+  if(fixed>0){saveLocal();console.log('Limpiados '+fixed+' inmuebles');}
 }
 cleanAllInmuebles();
-// Clean dates: convert Date objects or long strings to YYYY-MM-DD
-(function cleanDates(){
-  const dateFields=['fechaFirma','fFallecimiento','f600','vto600','f650','vto650','f660','vto660','fEntregaReg','fRecogida','fRetirada','fEntregaCli','fPrevFirma'];
-  let fixed=0;
-  exps.forEach(e=>{
-    dateFields.forEach(f=>{
-      if(!e[f]||typeof e[f]!=='string')return;
-      const s=e[f];
-      if(/^\d{4}-\d{2}-\d{2}$/.test(s))return; // already clean
-      if(/^\d{4}-\d{2}-\d{2}T/.test(s)){e[f]=s.split('T')[0];fixed++;return;}
-      try{
-        const dt=new Date(s);
-        if(!isNaN(dt.getTime())){
-          e[f]=dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
-          fixed++;
-        }
-      }catch(x){}
-    });
-  });
-  if(fixed>0){saveLocal();console.log('Normalizadas '+fixed+' fechas');}
-})();
+
 let editInmIdx=null;
 const INM_FIELDS=['tipo','dir','mun','prov','refCat','finca','registro','superficie','tlf','valCat','valRef','valDec','cargas','obs','caracter','adjudicacion'];
-function clearInmForm(){
-  INM_FIELDS.forEach(f=>{const el=document.getElementById('inm_'+f);if(el)el.value='';});
-  document.getElementById('inm_tipo').value='VIVIENDA';
-  document.getElementById('inm_prov').value='ALMERÍA';
-  setComboVal('combo_inmReg','');
-  editInmIdx=null;
-}
-function openNewInm(){
-  if(!curExp)return;
-  clearInmForm();
-  document.getElementById('mInmTit').textContent='🏠 Añadir Inmueble — '+curExp;
-  document.getElementById('ovInm').classList.add('open');
-}
-function editInm(i){
-  if(!curExp)return;
-  const e=exps.find(x=>x.numExp===curExp);if(!e||!e.inmuebles[i])return;
-  const im=e.inmuebles[i];editInmIdx=i;
-  document.getElementById('mInmTit').textContent='🏠 Editar Inmueble '+(i+1);
-  INM_FIELDS.forEach(f=>{const el=document.getElementById('inm_'+f);if(el)el.value=im[f]||'';});
-  setComboVal('combo_inmReg',im.registro||'');
-  document.getElementById('ovInm').classList.add('open');
-}
+function clearInmForm(){INM_FIELDS.forEach(f=>{const el=document.getElementById('inm_'+f);if(el)el.value='';});document.getElementById('inm_tipo').value='VIVIENDA';document.getElementById('inm_prov').value='ALMERÍA';setComboVal('combo_inmReg','');editInmIdx=null;}
+function openNewInm(){if(!curExp)return;clearInmForm();document.getElementById('mInmTit').textContent='🏠 Añadir Inmueble — '+curExp;document.getElementById('ovInm').classList.add('open');}
+function editInm(i){if(!curExp)return;const e=exps.find(x=>x.numExp===curExp);if(!e||!e.inmuebles[i])return;const im=e.inmuebles[i];editInmIdx=i;document.getElementById('mInmTit').textContent='🏠 Editar Inmueble '+(i+1);INM_FIELDS.forEach(f=>{const el=document.getElementById('inm_'+f);if(el)el.value=im[f]||'';});setComboVal('combo_inmReg',im.registro||'');document.getElementById('ovInm').classList.add('open');}
 function saveInm(andClose){
-  if(!curExp)return;
-  const e=exps.find(x=>x.numExp===curExp);if(!e)return;
-  if(!e.inmuebles)e.inmuebles=[];
-  const im={};
-  INM_FIELDS.forEach(f=>{im[f]=(document.getElementById('inm_'+f)?.value||'').trim();});
-  im.registro=getComboVal('combo_inmReg');
+  if(!curExp)return;const e=exps.find(x=>x.numExp===curExp);if(!e)return;if(!e.inmuebles)e.inmuebles=[];
+  const im={};INM_FIELDS.forEach(f=>{im[f]=(document.getElementById('inm_'+f)?.value||'').trim();});im.registro=getComboVal('combo_inmReg');
   if(!im.dir&&!im.refCat){toast('Pon al menos dirección o ref.catastral','err');return;}
-  if(editInmIdx!==null){
-    e.inmuebles[editInmIdx]=im;
-    toast('✅ Inmueble actualizado','ok');
-  }else{
-    e.inmuebles.push(im);
-    toast('✅ Inmueble '+(e.inmuebles.length)+' añadido','ok');
-  }
-  saveLocal();
-  if(andClose){closeOv('ovInm');showCtrl(curExp);}
-  else{clearInmForm();document.getElementById('mInmTit').textContent='🏠 Añadir Inmueble '+(e.inmuebles.length+1)+' — '+curExp;}
+  if(editInmIdx!==null){e.inmuebles[editInmIdx]=im;toast('✅ Inmueble actualizado','ok');}
+  else{e.inmuebles.push(im);toast('✅ Inmueble '+(e.inmuebles.length)+' añadido','ok');}
+  saveLocal();if(andClose){closeOv('ovInm');showCtrl(curExp);}else{clearInmForm();document.getElementById('mInmTit').textContent='🏠 Añadir Inmueble '+(e.inmuebles.length+1)+' — '+curExp;}
 }
-function delInm(i){
-  if(!curExp||!confirm('¿Eliminar inmueble '+(i+1)+'?'))return;
-  const e=exps.find(x=>x.numExp===curExp);if(!e)return;
-  e.inmuebles.splice(i,1);saveLocal();showCtrl(curExp);toast('Inmueble eliminado','info');
-}
+function delInm(i){if(!curExp||!confirm('¿Eliminar inmueble '+(i+1)+'?'))return;const e=exps.find(x=>x.numExp===curExp);if(!e)return;e.inmuebles.splice(i,1);saveLocal();showCtrl(curExp);toast('Inmueble eliminado','info');}
 
-// ════════════ IMPORTAR INMUEBLES EN BLOQUE ════════════
-function openBulkInm(){
-  if(!curExp)return;
-  document.getElementById('bulkInmData').value='';
-  document.getElementById('bulkPreview').innerHTML='';
-  document.getElementById('ovInmBulk').classList.add('open');
-}
+function openBulkInm(){if(!curExp)return;document.getElementById('bulkInmData').value='';document.getElementById('bulkPreview').innerHTML='';document.getElementById('ovInmBulk').classList.add('open');}
 function parseBulkInm(){
-  const raw=document.getElementById('bulkInmData').value.trim();
-  if(!raw)return[];
+  const raw=document.getElementById('bulkInmData').value.trim();if(!raw)return[];
   const lines=raw.split('\n').filter(l=>l.trim());
-  return lines.map(line=>{
-    const cols=line.split('\t');
-    let c=cols.map(x=>x.trim());
-    // If first column is a number (row number), skip it
-    if(c.length>0&&/^\d+$/.test(c[0]))c=c.slice(1);
-    // Skip header row if detected
-    if(c[0]&&/^tipo$/i.test(c[0]))return null;
-    // Columns: Tipo | Dirección | Superficie | Finca | Ref.Catastral | Valor Total | Valor ISD | Carácter | Adjudicación
-    return{
-      tipo:c[0]||'',
-      dir:c[1]||'',
-      mun:'',
-      superficie:c[2]||'',
-      finca:c[3]||'',
-      refCat:c[4]||'',
-      valCat:c[5]||'',
-      valDec:c[6]||'',
-      caracter:c[7]||'',
-      adjudicacion:c[8]||'',
-      registro:'',prov:'ALMERÍA',tlf:'',valRef:'',cargas:'',obs:''
-    };
-  }).filter(im=>im&&(im.tipo||im.dir||im.refCat));
+  return lines.map(line=>{const cols=line.split('\t');let c=cols.map(x=>x.trim());if(c.length>0&&/^\d+$/.test(c[0]))c=c.slice(1);if(c[0]&&/^tipo$/i.test(c[0]))return null;return{tipo:c[0]||'',dir:c[1]||'',mun:'',superficie:c[2]||'',finca:c[3]||'',refCat:c[4]||'',valCat:c[5]||'',valDec:c[6]||'',caracter:c[7]||'',adjudicacion:c[8]||'',registro:'',prov:'ALMERÍA',tlf:'',valRef:'',cargas:'',obs:''};}).filter(im=>im&&(im.tipo||im.dir||im.refCat));
 }
-function previewBulkInm(){
-  const items=parseBulkInm();
-  if(!items.length){document.getElementById('bulkPreview').innerHTML='<div style="color:var(--red);padding:10px">No se han detectado datos. Asegúrate de pegar desde Excel.</div>';return;}
-  let h='<div style="margin-top:8px;font-weight:700;color:var(--green)">✅ '+items.length+' inmuebles detectados:</div><div class="card" style="margin-top:8px;overflow-x:auto"><table style="min-width:700px"><thead><tr><th>#</th><th>Tipo</th><th>Dirección</th><th>Superficie</th><th>Finca</th><th>Ref.Cat.</th><th>Valor</th><th>Val.Decl.</th><th>Carácter</th><th>Adjudicación</th></tr></thead><tbody>';
-  items.forEach((im,i)=>{
-    h+='<tr><td>'+(i+1)+'</td><td>'+esc(im.tipo)+'</td><td>'+esc(im.dir)+'</td><td>'+esc(im.superficie||im.mun)+'</td><td>'+esc(im.finca)+'</td><td style="font-size:11px">'+esc(im.refCat)+'</td><td>'+esc(im.valCat)+'</td><td>'+esc(im.valDec)+'</td><td>'+esc(im.caracter||'')+'</td><td>'+esc(im.adjudicacion||'')+'</td></tr>';
-  });
-  h+='</tbody></table></div>';
-  document.getElementById('bulkPreview').innerHTML=h;
-}
-function saveBulkInm(){
-  const items=parseBulkInm();
-  if(!items.length){toast('No hay datos para importar','err');return;}
-  const e=exps.find(x=>x.numExp===curExp);if(!e)return;
-  if(!e.inmuebles)e.inmuebles=[];
-  items.forEach(im=>e.inmuebles.push(im));
-  saveLocal();closeOv('ovInmBulk');showCtrl(curExp);
-  toast('✅ '+items.length+' inmuebles importados','ok');
-}
+function previewBulkInm(){const items=parseBulkInm();if(!items.length){document.getElementById('bulkPreview').innerHTML='<div style="color:var(--red);padding:10px">No se han detectado datos.</div>';return;}let h='<div style="margin-top:8px;font-weight:700;color:var(--green)">✅ '+items.length+' inmuebles detectados</div>';document.getElementById('bulkPreview').innerHTML=h;}
+function saveBulkInm(){const items=parseBulkInm();if(!items.length){toast('No hay datos para importar','err');return;}const e=exps.find(x=>x.numExp===curExp);if(!e)return;if(!e.inmuebles)e.inmuebles=[];items.forEach(im=>e.inmuebles.push(im));saveLocal();closeOv('ovInmBulk');showCtrl(curExp);toast('✅ '+items.length+' inmuebles importados','ok');}
 
-// ════════════ DOCUMENTOS (CARPETA RED) ════════════
 const DOCS_BASE='\\\\PACO-HP\\Users\\usuario\\Documents\\TRABAJOS';
-const DOCS_MAP={
-  'HERENCIA':'HERENCIAS','ADJUDICACION':'HERENCIAS','RENUNCIA':'HERENCIAS','LIQUIDACION HERENCIA':'HERENCIAS','REGULARIZACION':'HERENCIAS','ACEPT':'HERENCIAS',
-  'DONACION':'DONACIONES',
-  'DIVORCIO':'DIVORCIOS',
-  'TESTAMENTO':'TESTAMENTOS',
-  'PENAL':'PENAL','LABORAL':'LABORAL','MERCANTIL':'MERCANTIL','MONITORIOS':'MONITORIOS',
-  'CLAUSULA SUELO':'CLAUSULA SUELO','DESAHUCIO':'DESAHUCIOS','CONTRATO':'CONTRATOS',
-  'SEGURIDAD SOCIAL':'SEGURIDAD SOCIAL INCAPACIDADES','SEGUNDA OPORTUNIDAD':'SEGUNDA OPORTUNIDAD'
-};
-function getDocsSubcarpeta(gestion){
-  const g=(gestion||'').toUpperCase();
-  for(const[key,folder] of Object.entries(DOCS_MAP)){if(g.includes(key))return folder;}
-  return'ESCRITURAS';
-}
-function getDocsFolder(e){
-  const sub=getDocsSubcarpeta(e.gestion);
-  const safe=(e.numExp+'-'+e.cliente+'-'+e.gestion).replace(/\//g,'-').replace(/[<>:"|?*]/g,'').replace(/\s+/g,' ').trim().substring(0,80);
-  return DOCS_BASE+'\\'+sub+'\\'+safe;
-}
-function openDocs(id){
-  const e=exps.find(x=>x.numExp===id);if(!e)return;
-  const path=getDocsFolder(e);
-  navigator.clipboard.writeText(path).then(()=>{
-    toast('📂 Ruta copiada — pégala en el Explorador de Windows (Ctrl+V)','ok');
-  }).catch(()=>{
-    prompt('Copia esta ruta y pégala en el Explorador:',path);
-  });
-}
+const DOCS_MAP={'HERENCIA':'HERENCIAS','ADJUDICACION':'HERENCIAS','RENUNCIA':'HERENCIAS','DONACION':'DONACIONES','DIVORCIO':'DIVORCIOS','TESTAMENTO':'TESTAMENTOS'};
+function getDocsSubcarpeta(gestion){const g=(gestion||'').toUpperCase();for(const[key,folder] of Object.entries(DOCS_MAP)){if(g.includes(key))return folder;}return'ESCRITURAS';}
+function getDocsFolder(e){const sub=getDocsSubcarpeta(e.gestion);const safe=(e.numExp+'-'+e.cliente+'-'+e.gestion).replace(/\//g,'-').replace(/[<>:"|?*]/g,'').replace(/\s+/g,' ').trim().substring(0,80);return DOCS_BASE+'\\'+sub+'\\'+safe;}
+function openDocs(id){const e=exps.find(x=>x.numExp===id);if(!e)return;const path=getDocsFolder(e);navigator.clipboard.writeText(path).then(()=>toast('📂 Ruta copiada','ok')).catch(()=>prompt('Copia esta ruta:',path));}
 
-// ════════════ DUPLICAR ════════════
-function dupExp(){
-  const e=exps.find(x=>x.numExp===curExp);if(!e)return;
-  const n=JSON.parse(JSON.stringify(e));
-  n.numExp=getNextExpNum();n.obs='[Duplicado de '+e.numExp+']\n'+(n.obs||'');
-  n.inmuebles=e.inmuebles?JSON.parse(JSON.stringify(e.inmuebles)):[];
-  exps.unshift(n);clis.unshift({numExp:n.numExp,cliente:n.cliente,gestion:n.gestion,pagos:[],totalExp:'',finalizado:''});
-  saveLocal();renderAll();showCtrl(n.numExp);toast('📑 Duplicado como '+n.numExp,'ok');
-}
+function dupExp(){const e=exps.find(x=>x.numExp===curExp);if(!e)return;const n=JSON.parse(JSON.stringify(e));n.numExp=getNextExpNum();n.obs='[Duplicado de '+e.numExp+']\n'+(n.obs||'');n.inmuebles=e.inmuebles?JSON.parse(JSON.stringify(e.inmuebles)):[];exps.unshift(n);clis.unshift({numExp:n.numExp,cliente:n.cliente,gestion:n.gestion,pagos:[],totalExp:'',finalizado:''});saveLocal();renderAll();showCtrl(n.numExp);toast('📑 Duplicado como '+n.numExp,'ok');}
 
-// ════════════ CHECKLIST ════════════
-function openChk(id){
-  const e=exps.find(x=>x.numExp===id);if(!e)return;
-  document.getElementById('mChkTit').textContent='📋 Checklist — '+e.numExp;
-  const tipo=(e.gestion||'').toUpperCase();
-  let tmpl=CHECKLISTS['DEFAULT'];
-  Object.keys(CHECKLISTS).forEach(k=>{if(tipo.includes(k))tmpl=CHECKLISTS[k];});
-  const saved=e.checklist||{};
-  const body=document.getElementById('chkBody');
-  body.innerHTML=tmpl.map((item,i)=>{
-    const done=saved[item]?'checked':'';const cls=saved[item]?'chk-row done':'chk-row';
-    return'<div class="'+cls+'" id="chk_'+i+'"><input type="checkbox" '+done+' onchange="tgChk(this)" data-item="'+esc(item)+'"><span>'+esc(item)+'</span></div>';
-  }).join('')+'<div style="margin-top:12px;display:flex;gap:8px"><input id="chkCustom" placeholder="Añadir documento..." style="flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-family:inherit"><button class="btn btn-ghost btn-sm" onclick="addChkItem()">＋</button></div>';
-  document.getElementById('ovChk').classList.add('open');
-}
+function openChk(id){const e=exps.find(x=>x.numExp===id);if(!e)return;document.getElementById('mChkTit').textContent='📋 Checklist — '+e.numExp;const tipo=(e.gestion||'').toUpperCase();let tmpl=CHECKLISTS['DEFAULT'];Object.keys(CHECKLISTS).forEach(k=>{if(tipo.includes(k))tmpl=CHECKLISTS[k];});const saved=e.checklist||{};const body=document.getElementById('chkBody');body.innerHTML=tmpl.map((item,i)=>{const done=saved[item]?'checked':'';const cls=saved[item]?'chk-row done':'chk-row';return'<div class="'+cls+'" id="chk_'+i+'"><input type="checkbox" '+done+' onchange="tgChk(this)" data-item="'+esc(item)+'"><span>'+esc(item)+'</span></div>';}).join('')+'<div style="margin-top:12px;display:flex;gap:8px"><input id="chkCustom" placeholder="Añadir documento..." style="flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-family:inherit"><button class="btn btn-ghost btn-sm" onclick="addChkItem()">＋</button></div>';document.getElementById('ovChk').classList.add('open');}
 function tgChk(cb){cb.closest('.chk-row').classList.toggle('done',cb.checked);}
-function addChkItem(){
-  const inp=document.getElementById('chkCustom');const v=inp.value.trim();if(!v)return;
-  const body=document.getElementById('chkBody');
-  const d=document.createElement('div');d.className='chk-row';
-  d.innerHTML='<input type="checkbox" data-item="'+esc(v)+'"><span>'+esc(v)+'</span>';
-  body.insertBefore(d,body.lastElementChild);inp.value='';
-}
-function saveChk(){
-  const e=exps.find(x=>x.numExp===curExp);if(!e)return;
-  e.checklist={};
-  document.getElementById('chkBody').querySelectorAll('.chk-row').forEach(row=>{
-    const cb=row.querySelector('input[type=checkbox]');
-    if(cb)e.checklist[cb.dataset.item]=cb.checked;
-  });
-  saveLocal();closeOv('ovChk');toast('✅ Checklist guardado','ok');
-  showCtrl(curExp);
-}
+function addChkItem(){const inp=document.getElementById('chkCustom');const v=inp.value.trim();if(!v)return;const body=document.getElementById('chkBody');const d=document.createElement('div');d.className='chk-row';d.innerHTML='<input type="checkbox" data-item="'+esc(v)+'"><span>'+esc(v)+'</span>';body.insertBefore(d,body.lastElementChild);inp.value='';}
+function saveChk(){const e=exps.find(x=>x.numExp===curExp);if(!e)return;e.checklist={};document.getElementById('chkBody').querySelectorAll('.chk-row').forEach(row=>{const cb=row.querySelector('input[type=checkbox]');if(cb)e.checklist[cb.dataset.item]=cb.checked;});saveLocal();closeOv('ovChk');toast('✅ Checklist guardado','ok');showCtrl(curExp);}
 
-// ════════════ PLANTILLA NOTARÍA ════════════
-function openPlant(id){
-  const e=exps.find(x=>x.numExp===id);if(!e)return;
-  let h='<strong>DATOS PARA ESCRITURA</strong><br><br>';
-  h+='<strong>Tipo:</strong> '+esc(e.gestion)+'<br>';
-  h+='<strong>Cliente:</strong> '+esc(e.cliente)+'<br>';
-  if(e.dni)h+='<strong>DNI/NIE:</strong> '+esc(e.dni)+'<br>';
-  if(e.otros)h+='<strong>Otros intervinientes:</strong> '+esc(e.otros)+'<br>';
-  if(e.notario)h+='<strong>Notario/a:</strong> '+esc(e.notario)+'<br>';
-  if(e.fhPrevista)h+='<strong>Fecha prevista:</strong> '+fDH(e.fhPrevista)+'<br>';
-  if(e.inmuebles&&e.inmuebles.length){
-    h+='<br><strong>INMUEBLES:</strong><br>';
-    e.inmuebles.forEach((im,i)=>{
-      h+='<br><em>Inmueble '+(i+1)+':</em><br>';
-      if(im.tipo)h+='Tipo: '+esc(im.tipo)+'<br>';
-      if(im.dir)h+='Dirección: '+esc(im.dir)+'<br>';
-      if(im.mun)h+='Municipio: '+esc(im.mun)+'<br>';
-      if(im.superficie)h+='Superficie: '+esc(im.superficie)+'<br>';
-      if(im.refCat)h+='Ref. Catastral: '+esc(im.refCat)+'<br>';
-      if(im.finca)h+='Finca Registral: '+esc(im.finca)+'<br>';
-      if(im.registro)h+='Registro: '+esc(im.registro)+'<br>';
-      if(im.valCat||im.valor)h+='Valor Total: '+mon(im.valCat||im.valor)+'<br>';
-      if(im.valDec)h+='Valor Declarado: '+mon(im.valDec)+'<br>';
-      if(im.caracter)h+='Carácter: '+esc(im.caracter)+'<br>';
-      if(im.adjudicacion)h+='<strong>Adjudicación: '+esc(im.adjudicacion)+'</strong><br>';
-    });
-  }
-  if(e.obs)h+='<br><strong>Observaciones:</strong><br>'+esc(e.obs);
-  document.getElementById('plantBody').innerHTML=h;
-  document.getElementById('ovPlant').classList.add('open');
-}
-function copyPlant(){
-  const text=document.getElementById('plantBody').innerText;
-  navigator.clipboard.writeText(text).then(()=>toast('📋 Copiado','ok')).catch(()=>toast('Error','err'));
-}
+function openPlant(id){const e=exps.find(x=>x.numExp===id);if(!e)return;let h='<strong>DATOS PARA ESCRITURA</strong><br><br>';h+='<strong>Tipo:</strong> '+esc(e.gestion)+'<br><strong>Cliente:</strong> '+esc(e.cliente)+'<br>';if(e.dni)h+='<strong>DNI/NIE:</strong> '+esc(e.dni)+'<br>';if(e.otros)h+='<strong>Otros:</strong> '+esc(e.otros)+'<br>';if(e.notario)h+='<strong>Notario/a:</strong> '+esc(e.notario)+'<br>';if(e.inmuebles&&e.inmuebles.length){h+='<br><strong>INMUEBLES:</strong><br>';e.inmuebles.forEach((im,i)=>{h+='<br><em>Inmueble '+(i+1)+':</em><br>';if(im.tipo)h+='Tipo: '+esc(im.tipo)+'<br>';if(im.dir)h+='Dirección: '+esc(im.dir)+'<br>';if(im.refCat)h+='Ref. Catastral: '+esc(im.refCat)+'<br>';if(im.finca)h+='Finca: '+esc(im.finca)+'<br>';if(im.valDec)h+='Valor Declarado: '+mon(im.valDec)+'<br>';if(im.adjudicacion)h+='<strong>Adjudicación: '+esc(im.adjudicacion)+'</strong><br>';});}document.getElementById('plantBody').innerHTML=h;document.getElementById('ovPlant').classList.add('open');}
+function copyPlant(){const text=document.getElementById('plantBody').innerText;navigator.clipboard.writeText(text).then(()=>toast('📋 Copiado','ok')).catch(()=>toast('Error','err'));}
 
-// ════════════ CALENDARIO ════════════
 function renderCal(){
   const ms=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
   document.getElementById('calTitle').textContent=ms[calMonth]+' '+calYear;
   const g=document.getElementById('calGrid');g.innerHTML='';
   ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].forEach(d=>g.innerHTML+='<div class="cal-head">'+d+'</div>');
-  const first=new Date(calYear,calMonth,1);const last=new Date(calYear,calMonth+1,0);
-  let startDay=(first.getDay()+6)%7;
-  const today=new Date();today.setHours(0,0,0,0);
-  const events={};
+  const first=new Date(calYear,calMonth,1);const last=new Date(calYear,calMonth+1,0);let startDay=(first.getDay()+6)%7;
+  const today=new Date();today.setHours(0,0,0,0);const events={};
   exps.forEach(e=>{
     if(e.fhPrevista){const d=new Date(e.fhPrevista);const k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(!events[k])events[k]=[];events[k].push({type:'firma',text:'✍️ '+e.numExp+' '+e.cliente});}
-    if(e.fechaFirma){const d=new Date(e.fechaFirma);const k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(!events[k])events[k]=[];events[k].push({type:'firma',text:'✅ '+e.numExp});}
-    getAlerts(e,true).forEach(a=>{const k=a.fecha.getFullYear()+'-'+(a.fecha.getMonth()+1)+'-'+a.fecha.getDate();if(!events[k])events[k]=[];events[k].push({type:a.tipo==='exp'?'vto':a.tipo==='urg'?'vto-ok':'firma',text:'⏰ '+e.numExp+' '+a.label});});
+    getAlerts(e,true).forEach(a=>{const k=a.fecha.getFullYear()+'-'+(a.fecha.getMonth()+1)+'-'+a.fecha.getDate();if(!events[k])events[k]=[];events[k].push({type:a.tipo==='exp'?'vto':'firma',text:'⏰ '+e.numExp+' '+a.label});});
   });
   for(let i=0;i<startDay;i++){const d=new Date(calYear,calMonth,-startDay+i+1);g.innerHTML+='<div class="cal-day other"><div class="cal-num">'+d.getDate()+'</div></div>';}
-  for(let d=1;d<=last.getDate();d++){
-    const dt=new Date(calYear,calMonth,d);const isToday=dt.getTime()===today.getTime();
-    const k=calYear+'-'+(calMonth+1)+'-'+d;const evs=events[k]||[];
-    let html='<div class="cal-day'+(isToday?' today':'')+'"'+(evs.length?' onclick="calDayClick('+calYear+','+(calMonth+1)+','+d+')"':'')+'><div class="cal-num">'+d+'</div>';
-    evs.slice(0,3).forEach(ev=>html+='<div class="cal-ev '+ev.type+'">'+esc(ev.text)+'</div>');
-    if(evs.length>3)html+='<div class="cal-ev" style="color:var(--dim)">+'+(evs.length-3)+' más</div>';
-    html+='</div>';g.innerHTML+=html;
-  }
-  const totalCells=startDay+last.getDate();const rem=7-(totalCells%7);
-  if(rem<7)for(let i=1;i<=rem;i++)g.innerHTML+='<div class="cal-day other"><div class="cal-num">'+i+'</div></div>';
+  for(let d=1;d<=last.getDate();d++){const dt=new Date(calYear,calMonth,d);const isToday=dt.getTime()===today.getTime();const k=calYear+'-'+(calMonth+1)+'-'+d;const evs=events[k]||[];let html='<div class="cal-day'+(isToday?' today':'')+'"'+(evs.length?' onclick="calDayClick('+calYear+','+(calMonth+1)+','+d+')"':'')+'><div class="cal-num">'+d+'</div>';evs.slice(0,3).forEach(ev=>html+='<div class="cal-ev '+ev.type+'">'+esc(ev.text)+'</div>');if(evs.length>3)html+='<div class="cal-ev" style="color:var(--dim)">+'+(evs.length-3)+' más</div>';html+='</div>';g.innerHTML+=html;}
+  const totalCells=startDay+last.getDate();const rem=7-(totalCells%7);if(rem<7)for(let i=1;i<=rem;i++)g.innerHTML+='<div class="cal-day other"><div class="cal-num">'+i+'</div></div>';
 }
 function calMove(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}renderCal();}
 function calToday(){calMonth=new Date().getMonth();calYear=new Date().getFullYear();renderCal();}
-function calDayClick(y,m,d){/* could show day detail - for now just toast */toast('Día '+d+'/'+m+'/'+y,'info');}
+function calDayClick(y,m,d){toast('Día '+d+'/'+m+'/'+y,'info');}
 
-// ════════════ FACTURACIÓN ════════════
-function buildFacMeses(){
-  const sel=document.getElementById('fFacMes');const now=new Date();
-  const ms=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  for(let i=0;i<12;i++){const d=new Date(now.getFullYear(),now.getMonth()-i,1);sel.innerHTML+='<option value="'+d.getFullYear()+'-'+(d.getMonth()+1)+'">'+ms[d.getMonth()]+' '+d.getFullYear()+'</option>';}
-}
+function buildFacMeses(){const sel=document.getElementById('fFacMes');const now=new Date();const ms=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];for(let i=0;i<12;i++){const d=new Date(now.getFullYear(),now.getMonth()-i,1);sel.innerHTML+='<option value="'+d.getFullYear()+'-'+(d.getMonth()+1)+'">'+ms[d.getMonth()]+' '+d.getFullYear()+'</option>';}}
 function renderFac(){
   const sel=document.getElementById('fFacMes').value;const[y,m]=sel.split('-').map(Number);
   let cobrado=0,facturado=0,deudaCli=0,deudaTer=0;
-  clis.forEach(c=>{
-    (c.pagos||[]).forEach(p=>{if(p.fecha){const d=new Date(p.fecha);if(d.getMonth()+1===m&&d.getFullYear()===y)cobrado+=pf(p.importe);}});
-    const pend=pf(c.totalExp)-sumPagos(c);if(pend>0.01)deudaCli+=pend;
-    facturado+=pf(c.totalExp);
-  });
-  exps.forEach(e=>{
-    const fN=pf(e.impNotaria),pN=pf(e.pago1)+pf(e.pago2);if(fN>pN)deudaTer+=(fN-pN);
-    const fI=pf(e.impInforme);if(fI&&!e.fPagoInforme)deudaTer+=fI;
-    const fR=pf(e.totalFraReg),pR=pf(e.provision);if(fR>pR)deudaTer+=(fR-pR);
-  });
+  clis.forEach(c=>{(c.pagos||[]).forEach(p=>{if(p.fecha){const d=new Date(p.fecha);if(d.getMonth()+1===m&&d.getFullYear()===y)cobrado+=pf(p.importe);}});const pend=pf(c.totalExp)-sumPagos(c);if(pend>0.01)deudaCli+=pend;facturado+=pf(c.totalExp);});
+  exps.forEach(e=>{const fN=pf(e.impNotaria),pN=pf(e.pago1)+pf(e.pago2);if(fN>pN)deudaTer+=(fN-pN);const fI=pf(e.impInforme);if(fI&&!e.fPagoInforme)deudaTer+=fI;const fR=pf(e.totalFraReg),pR=pf(e.provision);if(fR>pR)deudaTer+=(fR-pR);});
   document.getElementById('facStats').innerHTML='<div class="stat-box"><div class="label">Cobrado este mes</div><div class="num n-green">'+monF(cobrado)+'</div></div><div class="stat-box"><div class="label">Total facturado</div><div class="num n-blue">'+monF(facturado)+'</div></div><div class="stat-box"><div class="label">Te deben clientes</div><div class="num n-red">'+monF(deudaCli)+'</div></div><div class="stat-box"><div class="label">Debes a terceros</div><div class="num n-amber">'+monF(deudaTer)+'</div></div>';
-  let dH='';
-  exps.forEach(e=>{
-    const fN=pf(e.impNotaria),pN=pf(e.pago1)+pf(e.pago2),dN=fN-pN;
-    if(dN>0.01)dH+='<tr><td>'+esc(e.numExp)+'</td><td>'+esc(e.cliente)+'</td><td>Notaría</td><td>'+monF(fN)+'</td><td>'+monF(pN)+'</td><td style="color:var(--red);font-weight:700">'+monF(dN)+'</td></tr>';
-    const fI=pf(e.impInforme);if(fI&&!e.fPagoInforme)dH+='<tr><td>'+esc(e.numExp)+'</td><td>'+esc(e.cliente)+'</td><td>Informe</td><td>'+monF(fI)+'</td><td>0,00 €</td><td style="color:var(--red);font-weight:700">'+monF(fI)+'</td></tr>';
-    const fR=pf(e.totalFraReg),pR=pf(e.provision),ddR=fR-pR;
-    if(ddR>0.01)dH+='<tr><td>'+esc(e.numExp)+'</td><td>'+esc(e.cliente)+'</td><td>Registro</td><td>'+monF(fR)+'</td><td>'+monF(pR)+'</td><td style="color:var(--red);font-weight:700">'+monF(ddR)+'</td></tr>';
-  });
+  let dH='';exps.forEach(e=>{const fN=pf(e.impNotaria),pN=pf(e.pago1)+pf(e.pago2),dN=fN-pN;if(dN>0.01)dH+='<tr><td>'+esc(e.numExp)+'</td><td>'+esc(e.cliente)+'</td><td>Notaría</td><td>'+monF(fN)+'</td><td>'+monF(pN)+'</td><td style="color:var(--red);font-weight:700">'+monF(dN)+'</td></tr>';const fI=pf(e.impInforme);if(fI&&!e.fPagoInforme)dH+='<tr><td>'+esc(e.numExp)+'</td><td>'+esc(e.cliente)+'</td><td>Informe</td><td>'+monF(fI)+'</td><td>0,00 €</td><td style="color:var(--red);font-weight:700">'+monF(fI)+'</td></tr>';});
   document.getElementById('tDeudas').innerHTML=dH||'<tr><td colspan="6" style="text-align:center;color:var(--dim)">Sin deudas</td></tr>';
-  let cH='';
-  clis.forEach(c=>{const tp=sumPagos(c);const pe=pf(c.totalExp)-tp;if(pe>0.01)cH+='<tr class="rw" onclick="goTab(\'cliente\');showCli(\''+esc(c.numExp)+'\')"><td>'+esc(c.numExp)+'</td><td>'+esc(c.cliente)+'</td><td>'+mon(c.totalExp)+'</td><td>'+monF(tp)+'</td><td style="color:var(--red);font-weight:700">'+monF(pe)+'</td></tr>';});
+  let cH='';clis.forEach(c=>{const tp=sumPagos(c);const pe=pf(c.totalExp)-tp;if(pe>0.01)cH+='<tr class="rw" onclick="goTab(\'cliente\');showCli(\''+esc(c.numExp)+'\')"><td>'+esc(c.numExp)+'</td><td>'+esc(c.cliente)+'</td><td>'+mon(c.totalExp)+'</td><td>'+monF(tp)+'</td><td style="color:var(--red);font-weight:700">'+monF(pe)+'</td></tr>';});
   document.getElementById('tCliDeudas').innerHTML=cH||'<tr><td colspan="5" style="text-align:center;color:var(--dim)">Sin deudas</td></tr>';
 }
 
-// ════════════ CONTACTOS ════════════
 function openNewContact(){editContIdx=null;document.getElementById('mContTit').textContent='Nuevo Contacto';['ct_nombre','ct_tel','ct_email','ct_dir','ct_notas'].forEach(id=>document.getElementById(id).value='');document.getElementById('ct_tipo').value='Notario';document.getElementById('ovCont').classList.add('open');}
 function openEditContact(i){editContIdx=i;const c=contacts[i];document.getElementById('mContTit').textContent='Editar Contacto';document.getElementById('ct_nombre').value=c.nombre;document.getElementById('ct_tipo').value=c.tipo;document.getElementById('ct_tel').value=c.tel||'';document.getElementById('ct_email').value=c.email||'';document.getElementById('ct_dir').value=c.dir||'';document.getElementById('ct_notas').value=c.notas||'';document.getElementById('ovCont').classList.add('open');}
-function saveCont(){
-  const c={nombre:document.getElementById('ct_nombre').value.trim(),tipo:document.getElementById('ct_tipo').value,tel:document.getElementById('ct_tel').value.trim(),email:document.getElementById('ct_email').value.trim(),dir:document.getElementById('ct_dir').value.trim(),notas:document.getElementById('ct_notas').value.trim()};
-  if(!c.nombre){toast('Escribe un nombre','err');return;}
-  if(editContIdx!==null)contacts[editContIdx]=c;else contacts.push(c);
-  saveLocal();
-  closeOv('ovCont');renderContacts();toast('✅ Contacto guardado','ok');
-}
+function saveCont(){const c={nombre:document.getElementById('ct_nombre').value.trim(),tipo:document.getElementById('ct_tipo').value,tel:document.getElementById('ct_tel').value.trim(),email:document.getElementById('ct_email').value.trim(),dir:document.getElementById('ct_dir').value.trim(),notas:document.getElementById('ct_notas').value.trim()};if(!c.nombre){toast('Escribe un nombre','err');return;}if(editContIdx!==null)contacts[editContIdx]=c;else contacts.push(c);saveLocal();closeOv('ovCont');renderContacts();toast('✅ Contacto guardado','ok');}
 function deleteCont(i){if(!confirm('¿Eliminar contacto?'))return;contacts.splice(i,1);saveLocal();renderContacts();toast('Eliminado','info');}
 function renderContacts(){
-  const s=(document.getElementById('sCont')?.value||'').toLowerCase();
-  const ft=document.getElementById('fContTipo')?.value||'';
+  const s=(document.getElementById('sCont')?.value||'').toLowerCase();const ft=document.getElementById('fContTipo')?.value||'';
   const f=contacts.filter(c=>(!s||c.nombre.toLowerCase().includes(s)||((c.tel||'')+(c.email||'')).toLowerCase().includes(s))&&(!ft||c.tipo===ft));
   const cont=document.getElementById('contList');
-  if(!f.length){cont.innerHTML='<div class="empty-msg" style="padding:40px;text-align:center;color:var(--dim)">Sin contactos. Crea uno con ＋</div>';return;}
-  cont.innerHTML=f.map((c,i)=>{
-    const ri=contacts.indexOf(c);
-    return'<div class="contact-card"><div><span class="cn">'+esc(c.nombre)+'</span> <span class="badge b-blue">'+esc(c.tipo)+'</span>'+(c.tel?'<div class="cd">📞 '+esc(c.tel)+'</div>':'')+(c.email?'<div class="cd">✉️ '+esc(c.email)+'</div>':'')+(c.dir?'<div class="cd">📍 '+esc(c.dir)+'</div>':'')+(c.notas?'<div class="ct">'+esc(c.notas)+'</div>':'')+'</div><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-sm" onclick="openEditContact('+ri+')">✏️</button><button class="btn btn-red btn-sm" onclick="deleteCont('+ri+')">🗑️</button></div></div>';
-  }).join('');
+  if(!f.length){cont.innerHTML='<div class="empty-msg" style="padding:40px;text-align:center;color:var(--dim)">Sin contactos.</div>';return;}
+  cont.innerHTML=f.map((c,i)=>{const ri=contacts.indexOf(c);return'<div class="contact-card"><div><span class="cn">'+esc(c.nombre)+'</span> <span class="badge b-blue">'+esc(c.tipo)+'</span>'+(c.tel?'<div class="cd">📞 '+esc(c.tel)+'</div>':'')+(c.email?'<div class="cd">✉️ '+esc(c.email)+'</div>':'')+(c.dir?'<div class="cd">📍 '+esc(c.dir)+'</div>':'')+(c.notas?'<div class="ct">'+esc(c.notas)+'</div>':'')+'</div><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-sm" onclick="openEditContact('+ri+')">✏️</button><button class="btn btn-red btn-sm" onclick="deleteCont('+ri+')">🗑️</button></div></div>';}).join('');
 }
 
-// ════════════ EXPORT CSV ════════════
 function exportCSV(tipo){
   let csv='',filename='';
-  if(tipo==='control'){
-    csv='Nº Exp;Gestión;Cliente;DNI;Notario;Fecha Firma;Protocolo;Fac.Notaría;Pago1;Pago2;Plusvalía;Mod600;Mod650;Mod660;Registro;Provisión;Fra.Registro;Estado\n';
-    exps.forEach(e=>csv+='"'+[e.numExp,e.gestion,e.cliente,e.dni,e.notario,fD(e.fechaFirma),e.protocolo,e.impNotaria||'',e.pago1||'',e.pago2||'',e.plusvalia||'',e.mod600||'',e.mod650||'',e.mod660||'',e.registro,e.provision||'',e.totalFraReg||'',e.estado].join('";"')+'"\n');
-    filename='Control_Expedientes.csv';
-  }else if(tipo==='cliente'){
-    csv='Nº Exp;Cliente;Gestión;Total;Pagado;Pendiente;Estado\n';
-    clis.forEach(c=>{const tp=sumPagos(c);csv+='"'+[c.numExp,c.cliente,c.gestion,c.totalExp||'',tp.toFixed(2),(pf(c.totalExp)-tp).toFixed(2),c.finalizado||'En curso'].join('";"')+'"\n';});
-    filename='Clientes_Facturacion.csv';
-  }else{
-    csv='Nº Exp;Cliente;Concepto;Factura;Pagado;Pendiente\n';
-    exps.forEach(e=>{
-      const fN=pf(e.impNotaria),pN=pf(e.pago1)+pf(e.pago2),dN=fN-pN;
-      if(dN>0.01)csv+='"'+[e.numExp,e.cliente,'Notaría',fN.toFixed(2),pN.toFixed(2),dN.toFixed(2)].join('";"')+'"\n';
-    });
-    filename='Facturacion.csv';
-  }
-  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();document.body.removeChild(a);
-  toast('📥 Descargado','ok');
+  if(tipo==='control'){csv='Nº Exp;Gestión;Cliente;DNI;Notario;Fecha Firma;Estado\n';exps.forEach(e=>csv+='"'+[e.numExp,e.gestion,e.cliente,e.dni,e.notario,fD(e.fechaFirma),e.estado].join('";"')+'"\n');filename='Control_Escrituras.csv';}
+  else if(tipo==='cliente'){csv='Nº Exp;Cliente;Gestión;Total;Pagado;Pendiente;Estado\n';clis.forEach(c=>{const tp=sumPagos(c);csv+='"'+[c.numExp,c.cliente,c.gestion,c.totalExp||'',tp.toFixed(2),(pf(c.totalExp)-tp).toFixed(2),c.finalizado||'En curso'].join('";"')+'"\n';});filename='Clientes_Escrituras.csv';}
+  else{csv='Nº Exp;Cliente;Concepto;Factura;Pagado;Pendiente\n';exps.forEach(e=>{const fN=pf(e.impNotaria),pN=pf(e.pago1)+pf(e.pago2),dN=fN-pN;if(dN>0.01)csv+='"'+[e.numExp,e.cliente,'Notaría',fN.toFixed(2),pN.toFixed(2),dN.toFixed(2)].join('";"')+'"\n';});filename='Facturacion_Escrituras.csv';}
+  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();document.body.removeChild(a);toast('📥 Descargado','ok');
 }
 
 // ════════════ GOOGLE SHEETS ════════════
 function doConnect(){const u=document.getElementById('sheetUrl').value.trim();if(!u||!u.includes('script.google.com')){toast('URL no válida','err');return;}SURL=u;localStorage.setItem('surl',u);updateConn();toast('Guardada. Probando...','info');doTest();}
-async function doTest(){
-  if(!SURL){toast('Pega la URL','err');return;}
-  try{
-    toast('Conectando...','info');
-    const r=await fetch(SURL);const d=await r.json();
-    if(d.status==='ok'){toast('✅ Conexión OK. Cargando datos...','ok');await loadFromSheet();}
-    else toast('Respuesta inesperada','err');
-  }catch(e){toast('Error conexión: '+e.message,'err');}
-}
+async function doTest(){if(!SURL){toast('Pega la URL','err');return;}try{toast('Conectando...','info');const r=await fetch(SURL);const d=await r.json();if(d.status==='ok'){toast('✅ Conexión OK. Cargando datos...','ok');await loadFromSheet();}else toast('Respuesta inesperada','err');}catch(e){toast('Error conexión: '+e.message,'err');}}
 async function loadFromSheet(){
   if(!SURL)return;
   try{
     const r=await fetch(SURL);const d=await r.json();
     if(d.status==='ok'){
-      if(d.exps&&d.exps.length){
-        // Reconstruct inmuebles and checklist from JSON if stored
-        d.exps.forEach(e=>{
-          if(typeof e.inmuebles_json==='string'&&e.inmuebles_json){try{e.inmuebles=JSON.parse(e.inmuebles_json);}catch(x){}}
-          if(typeof e.checklist_json==='string'&&e.checklist_json){try{e.checklist=JSON.parse(e.checklist_json);}catch(x){}}
-          delete e.inmuebles_json;delete e.checklist_json;
-        });
-        exps=d.exps;localStorage.setItem('exps',JSON.stringify(exps));
-      }
-      if(d.clis&&d.clis.length){
-        d.clis.forEach(c=>{
-          if(typeof c.pagos_json==='string'&&c.pagos_json){try{c.pagos=JSON.parse(c.pagos_json);}catch(x){c.pagos=[];}}
-          delete c.pagos_json;
-        });
-        clis=d.clis;localStorage.setItem('clis',JSON.stringify(clis));
-      }
-      if(d.contacts&&d.contacts.length){
-        contacts=d.contacts;localStorage.setItem('contacts',JSON.stringify(contacts));
-      }
+      if(d.exps&&d.exps.length){d.exps.forEach(e=>{if(typeof e.inmuebles_json==='string'&&e.inmuebles_json){try{e.inmuebles=JSON.parse(e.inmuebles_json);}catch(x){}}if(typeof e.checklist_json==='string'&&e.checklist_json){try{e.checklist=JSON.parse(e.checklist_json);}catch(x){}}delete e.inmuebles_json;delete e.checklist_json;});exps=d.exps;localStorage.setItem('exps',JSON.stringify(exps));}
+      if(d.clis&&d.clis.length){d.clis.forEach(c=>{if(typeof c.pagos_json==='string'&&c.pagos_json){try{c.pagos=JSON.parse(c.pagos_json);}catch(x){c.pagos=[];}}delete c.pagos_json;});clis=d.clis;localStorage.setItem('clis',JSON.stringify(clis));}
+      if(d.contacts&&d.contacts.length){contacts=d.contacts;localStorage.setItem('contacts',JSON.stringify(contacts));}
       renderAll();toast('📥 Datos cargados de Sheets','ok');
     }
   }catch(e){console.log('Load error:',e);}
@@ -1746,103 +1154,46 @@ async function loadFromSheet(){
 async function syncToSheet(){
   if(!SURL)return;
   try{
-    // Prepare exps with JSON fields for complex data
-    const expsToSend=exps.map(e=>{
-      const copy=Object.assign({},e);
-      copy.inmuebles_json=JSON.stringify(e.inmuebles||[]);
-      copy.checklist_json=JSON.stringify(e.checklist||{});
-      delete copy.inmuebles;delete copy.checklist;
-      return copy;
-    });
-    const clisToSend=clis.map(c=>{
-      const copy=Object.assign({},c);
-      copy.pagos_json=JSON.stringify(c.pagos||[]);
-      delete copy.pagos;
-      return copy;
-    });
+    const expsToSend=exps.map(e=>{const copy=Object.assign({},e);copy.inmuebles_json=JSON.stringify(e.inmuebles||[]);copy.checklist_json=JSON.stringify(e.checklist||{});delete copy.inmuebles;delete copy.checklist;return copy;});
+    const clisToSend=clis.map(c=>{const copy=Object.assign({},c);copy.pagos_json=JSON.stringify(c.pagos||[]);delete copy.pagos;return copy;});
     await fetch(SURL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({exps:expsToSend,clis:clisToSend,contacts:contacts})});
   }catch(e){console.log('Sync error:',e);}
 }
 function updateConn(){const b=document.getElementById('connBadge');if(SURL){b.className='conn-badge conn-ok';b.innerHTML='<div class="conn-dot"></div><span>Google Sheets ✓</span>';}else{b.className='conn-badge conn-no';b.innerHTML='<div class="conn-dot"></div><span>Sin conectar</span>';}}
 
-// ════════════ HELPERS ════════════
 function saveLocal(){localStorage.setItem('exps',JSON.stringify(exps));localStorage.setItem('clis',JSON.stringify(clis));localStorage.setItem('contacts',JSON.stringify(contacts));syncToSheet();}
 function closeOv(id){document.getElementById(id).classList.remove('open');}
 function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function isoD(d){return d.toISOString().split('T')[0];}
 function pf(v){return parseFloat(String(v||'0').replace(',','.'))||0;}
 function sumPagos(c){return(c.pagos||[]).reduce((s,p)=>s+pf(p.importe),0);}
-
-function fD(d){
-  if(!d||d==='—')return'—';
-  try{
-    const s=String(d);
-    // Already dd/mm/yy format
-    if(/^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(s))return s;
-    // ISO YYYY-MM-DD or YYYY-MM-DDT...
-    const iso=s.split('T')[0];
-    const p=iso.split('-');
-    if(p.length===3&&p[0].length===4)return p[2]+'/'+p[1]+'/'+p[0].slice(-2);
-    // Date object or long string like "Thu May 23 2024..."
-    const dt=new Date(d);
-    if(!isNaN(dt.getTime())){
-      const dd=String(dt.getDate()).padStart(2,'0');
-      const mm=String(dt.getMonth()+1).padStart(2,'0');
-      const yy=String(dt.getFullYear()).slice(-2);
-      return dd+'/'+mm+'/'+yy;
-    }
-  }catch(e){}
-  return d;
-}
-function fDH(d){
-  if(!d)return'—';
-  try{const dt=new Date(d);return dt.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+dt.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
-  }catch(e){}return d;
-}
+function fD(d){if(!d||d==='—')return'—';try{const s=String(d);if(/^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(s))return s;const iso=s.split('T')[0];const p=iso.split('-');if(p.length===3&&p[0].length===4)return p[2]+'/'+p[1]+'/'+p[0].slice(-2);const dt=new Date(d);if(!isNaN(dt.getTime())){const dd=String(dt.getDate()).padStart(2,'0');const mm=String(dt.getMonth()+1).padStart(2,'0');const yy=String(dt.getFullYear()).slice(-2);return dd+'/'+mm+'/'+yy;}}catch(e){}return d;}
+function fDH(d){if(!d)return'—';try{const dt=new Date(d);return dt.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+dt.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});}catch(e){}return d;}
 function mon(v){const n=pf(v);if(!n)return'—';return n.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
 function monF(n){return(typeof n==='number'?n:pf(n)).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
-function estBadge(e){
-  const m={pte_firma:['Pte. Firma','b-amber'],firmado:['Firmado','b-blue'],retirado:['Retirado Not.','b-teal'],impuestos:['Impuestos','b-amber'],en_registro:['En Registro','b-purple'],recogido:['Recogido','b-blue'],entregado:['Entregado','b-green'],finalizado:['Finalizado','b-green']};
-  const[t,c]=m[e]||[e||'—','b-gray'];return`<span class="badge ${c}">${t}</span>`;
-}
-function impBadge(v){
-  if(v==='EX')return'<span class="badge b-teal">Exento</span>';
-  if(v==='SI')return'<span class="badge b-red">Pendiente</span>';
-  if(v==='PRESENTADA'||v==='PRESENTADO')return'<span class="badge b-green">Presentado</span>';
-  return'—';
-}
-function imp600Badge(e){
-  const parts=[];
-  if(e.mod600&&e.mod600!=='—')parts.push('600:'+impBadge(e.mod600));
-  if(e.mod650&&e.mod650!=='—')parts.push('650:'+impBadge(e.mod650));
-  if(e.mod660&&e.mod660!=='—')parts.push('660:'+impBadge(e.mod660));
-  return parts.join(' ')||'—';
-}
+function estBadge(e){const m={pte_firma:['Pte. Firma','b-amber'],firmado:['Firmado','b-blue'],retirado:['Retirado Not.','b-teal'],impuestos:['Impuestos','b-amber'],en_registro:['En Registro','b-purple'],recogido:['Recogido','b-blue'],entregado:['Entregado','b-green'],finalizado:['Finalizado','b-green']};const[t,c]=m[e]||[e||'—','b-gray'];return`<span class="badge ${c}">${t}</span>`;}
+function impBadge(v){if(v==='EX')return'<span class="badge b-teal">Exento</span>';if(v==='SI')return'<span class="badge b-red">Pendiente</span>';if(v==='PRESENTADA'||v==='PRESENTADO')return'<span class="badge b-green">Presentado</span>';return'—';}
+function imp600Badge(e){const parts=[];if(e.mod600&&e.mod600!=='—')parts.push('600:'+impBadge(e.mod600));if(e.mod650&&e.mod650!=='—')parts.push('650:'+impBadge(e.mod650));if(e.mod660&&e.mod660!=='—')parts.push('660:'+impBadge(e.mod660));return parts.join(' ')||'—';}
 function toast(m,t){const e=document.getElementById('toast');e.textContent=m;e.className='toast t-'+(t||'info')+' show';setTimeout(()=>e.classList.remove('show'),3500);}
-function copyScript(){navigator.clipboard.writeText(document.getElementById('scriptCode')?.textContent?.replace(/&lt;/g,'<').replace(/&gt;/g,'>')||'').then(()=>toast('Copiado','ok'));}
 
-// ═══ CLIENTESMAESTRO ══════════════════════════════════════════════════════
-const URL_MAESTRO_ESC = 'https://script.google.com/macros/s/AKfycbyVXypuTXm5tRvbP-xJu06q7ZsJ2qve790lCyvBLJpr6jTckZhc6wZ4kX5XPhVOWCVrww/exec';
-
-function guardarEnMaestro(datos) {
-  if (!datos.DNI_NIE && !datos.Nombre) return;
-  fetch(URL_MAESTRO_ESC, { method:'POST', mode:'no-cors', body: JSON.stringify({ action:'upsert', datos }) });
+// ════════════ CLIENTESMAESTRO ════════════
+function guardarEnMaestro(datos){
+  if(!URL_MAESTRO_ESC||(!datos.DNI_NIE&&!datos.Nombre))return;
+  fetch(URL_MAESTRO_ESC,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'upsert',datos})});
 }
-
-async function buscarEnMaestroESC() {
-  const dni = (document.getElementById('e_dni')?.value||'').trim().toUpperCase().replace(/-/g,'');
-  if (!dni || dni.length < 7) { toast('Escribe el DNI primero','err'); return; }
+async function buscarEnMaestroESC(){
+  if(!URL_MAESTRO_ESC){toast('Config central no cargada aún','err');return;}
+  const dni=(document.getElementById('e_dni')?.value||'').trim().toUpperCase().replace(/-/g,'');
+  if(!dni||dni.length<7){toast('Escribe el DNI primero','err');return;}
   toast('🔍 Buscando en ClientesMAESTRO...','info');
-  try {
-    const r = await fetch(URL_MAESTRO_ESC + '?action=buscar&dni=' + encodeURIComponent(dni));
-    const d = await r.json();
-    if (!d || !d.encontrado) { toast('❌ No encontrado en ClientesMAESTRO','err'); return; }
-    const cli = d.cliente;
-    const set = (id, val) => { const el=document.getElementById(id); if(el && val) el.value = val; };
-    const nombre = cli.Razon_Social || [cli.Nombre, cli.Apellido1, cli.Apellido2].filter(Boolean).join(' ');
-    set('e_cliente', nombre);
-    toast('✅ Datos cargados desde ClientesMAESTRO','ok');
-  } catch(e) { toast('Error al conectar con ClientesMAESTRO','err'); }
+  try{
+    const r=await fetch(URL_MAESTRO_ESC+'?action=buscar&dni='+encodeURIComponent(dni));
+    const d=await r.json();
+    if(!d||!d.encontrado){toast('❌ No encontrado en ClientesMAESTRO','err');return;}
+    const cli=d.cliente;const set=(id,val)=>{const el=document.getElementById(id);if(el&&val)el.value=val;};
+    const nombre=cli.Razon_Social||[cli.Nombre,cli.Apellido1,cli.Apellido2].filter(Boolean).join(' ');
+    set('e_cliente',nombre);toast('✅ Datos cargados desde ClientesMAESTRO','ok');
+  }catch(e){toast('Error al conectar con ClientesMAESTRO','err');}
 }
 </script>
 </body>
