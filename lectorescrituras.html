@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lector de Escrituras Notariales · Gestoría Justo Guevara</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<style>
+:root{--navy:#0f1f3d;--navy2:#1a3260;--gold:#c8972a;--gold2:#e8b84b;--white:#fafaf8;--gray:#2a2a3a;--text:#e8e5df;--green:#1a7a4a;--red:#c0392b;--shadow:0 4px 24px rgba(0,0,0,0.3)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1117;color:var(--text);min-height:100vh}
+header{background:var(--navy);padding:16px 24px;display:flex;align-items:center;gap:16px;border-bottom:3px solid var(--gold)}
+header h1{font-size:1.3rem;color:var(--white);font-weight:700}
+header h1 span{color:var(--gold)}
+.cfg-bar{padding:8px 24px;background:#161b22;display:flex;align-items:center;gap:12px;font-size:13px;flex-wrap:wrap}
+.cfg-bar .badge{padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600}
+.badge-warn{background:#fef3c7;color:#92400e}
+.badge-ok{background:#d1fae5;color:#065f46}
+.cfg-btn{background:var(--navy);color:var(--gold);border:1px solid var(--gold);padding:5px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600}
+.cfg-btn:hover{background:var(--gold);color:var(--navy)}
+.cfg-panel{display:none;padding:16px 24px;background:#1c2333;border-bottom:1px solid #333}
+.cfg-panel.visible{display:block}
+.cfg-panel input{background:#0d1117;border:1px solid #444;color:var(--text);padding:8px 12px;border-radius:8px;width:400px;font-size:13px}
+.cfg-panel button{margin-left:8px}
+main{max-width:1100px;margin:0 auto;padding:24px}
+.drop-zone{border:2px dashed #444;border-radius:16px;padding:60px 40px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:24px}
+.drop-zone:hover,.drop-zone.dragover{border-color:var(--gold);background:rgba(200,154,42,.05)}
+.drop-zone .icon{font-size:48px;margin-bottom:12px}
+.drop-zone h3{color:var(--gold);font-size:1.1rem;margin-bottom:6px}
+.drop-zone p{color:#888;font-size:13px}
+.drop-zone input{display:none}
+.progress{display:none;margin-bottom:24px;background:#1c2333;border-radius:12px;padding:20px;border:1px solid #333}
+.progress.active{display:block}
+.progress-bar{height:8px;background:#333;border-radius:4px;overflow:hidden;margin:12px 0}
+.progress-fill{height:100%;background:var(--gold);border-radius:4px;transition:width .3s;width:0}
+.progress-text{font-size:13px;color:#aaa}
+.results{display:none}
+.results.active{display:block}
+.section{background:#1c2333;border:1px solid #333;border-radius:12px;margin-bottom:16px;overflow:hidden}
+.section-head{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.section-head h3{font-size:14px;color:var(--gold);font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.section-head .toggle{color:#888;font-size:18px}
+.section-body{padding:16px 20px}
+.section-body.collapsed{display:none}
+.data-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.data-item{background:#0d1117;border:1px solid #333;border-radius:8px;padding:10px 14px}
+.data-item label{font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:3px}
+.data-item span{font-size:14px;color:var(--text);font-weight:500}
+.finca-card{background:#0d1117;border:1px solid var(--gold);border-radius:10px;padding:16px;margin-bottom:12px}
+.finca-card h4{color:var(--gold);font-size:14px;margin-bottom:10px;border-bottom:1px solid #333;padding-bottom:6px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--navy);color:var(--gold);padding:8px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+td{padding:8px 12px;border-bottom:1px solid #333;color:var(--text)}
+tr:hover{background:rgba(200,154,42,.03)}
+.btn-row{display:flex;gap:10px;margin:20px 0;flex-wrap:wrap}
+.btn{padding:10px 20px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn-gold{background:var(--gold);color:var(--navy)}.btn-gold:hover{background:var(--gold2)}
+.btn-outline{background:transparent;color:var(--gold);border:1px solid var(--gold)}.btn-outline:hover{background:var(--navy2)}
+.btn-green{background:var(--green);color:white}.btn-green:hover{background:#155d38}
+.btn-gray{background:#333;color:#aaa}.btn-gray:hover{background:#444}
+.tipo-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;background:var(--gold);color:var(--navy);margin-left:8px}
+.json-view{display:none;background:#0d1117;border:1px solid #333;border-radius:8px;padding:16px;max-height:400px;overflow:auto;font-family:monospace;font-size:12px;white-space:pre-wrap;word-break:break-all;color:#aaa;margin-top:12px}
+.json-view.active{display:block}
+.interviniente-row{display:grid;grid-template-columns:1fr auto;gap:8px;padding:8px 0;border-bottom:1px solid #222}
+.interviniente-row:last-child{border-bottom:none}
+.int-name{font-weight:600;color:var(--text)}
+.int-role{font-size:12px;padding:2px 8px;border-radius:10px;background:var(--navy);color:var(--gold)}
+.int-detail{font-size:12px;color:#888;margin-top:2px}
+.especifico-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:768px){.data-grid,.especifico-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<div style="width:38px;height:38px;background:var(--gold);display:grid;place-items:center;font-size:20px;clip-path:polygon(10% 0%,90% 0%,100% 10%,100% 90%,90% 100%,10% 100%,0% 90%,0% 10%)">📜</div>
+<h1>Lector de <span>Escrituras Notariales</span></h1>
+</header>
+<div class="cfg-bar">
+<span id="api-status" class="badge badge-warn">⚠️ Sin clave API</span>
+<button class="cfg-btn" onclick="toggleCfg()">⚙️ Configurar IA</button>
+<span style="color:#666">Gemini = gratis · Claude = de pago</span>
+</div>
+<div class="cfg-panel" id="cfg-panel">
+<div style="margin-bottom:12px">
+<div style="font-size:13px;color:var(--gold);margin-bottom:6px">Proveedor de IA</div>
+<select id="ai-provider" onchange="toggleProvider()" style="background:#0d1117;border:1px solid #444;color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:12px">
+<option value="openai">OpenAI (GPT-4o) — recomendado para privacidad</option>
+<option value="gemini">Google Gemini — gratis</option>
+</select>
+</div>
+<div id="cfg-openai">
+<div style="font-size:13px;color:var(--gold);margin-bottom:4px">Clave API de OpenAI (platform.openai.com > API keys)</div>
+<input type="password" id="openai-key" placeholder="sk-...">
+</div>
+<div id="cfg-gemini" style="display:none">
+<div style="font-size:13px;color:var(--gold);margin-bottom:4px">Clave API de Gemini (aistudio.google.com/apikey)</div>
+<input type="password" id="gemini-key" placeholder="Pega tu clave de Gemini...">
+</div>
+<button class="cfg-btn" onclick="saveKey()" style="margin-top:8px">💾 Guardar</button>
+</div>
+
+<main>
+<div class="drop-zone" id="drop-zone">
+<div class="icon">📜</div>
+<h3>Arrastra aquí el PDF de la escritura</h3>
+<p>Escrituras escaneadas · Hasta 60 páginas · Se envían a Gemini para análisis</p>
+<button class="btn btn-gold" onclick="document.getElementById('file-input').click()">Elegir archivo</button>
+<span style="color:#666;margin-left:8px" id="file-name">Ningún archivo seleccionado</span>
+<input type="file" id="file-input" accept=".pdf">
+</div>
+
+<div class="btn-row">
+<button class="btn btn-gold" onclick="analizar()" id="btn-analizar" disabled>🔍 Analizar escritura</button>
+</div>
+
+<div class="progress" id="progress">
+<div style="font-weight:600;color:var(--gold)" id="prog-title">Analizando escritura...</div>
+<div class="progress-bar"><div class="progress-fill" id="prog-fill"></div></div>
+<div class="progress-text" id="prog-text">Preparando páginas...</div>
+</div>
+
+<div class="results" id="results"></div>
+
+<div class="btn-row" id="action-btns" style="display:none">
+<button class="btn btn-gold" onclick="copiarExcel()">📋 Copiar para Excel</button>
+<button class="btn btn-outline" onclick="toggleJson()">{ } Ver JSON</button>
+<button class="btn btn-gray" disabled title="Próximamente">💾 Guardar en App Escrituras</button>
+</div>
+<div class="json-view" id="json-view"></div>
+</main>
+
+<script>
+let provider=localStorage.getItem('ai_provider')||'openai';
+let openaiKey=localStorage.getItem('openai_api_key')||'';
+let geminiKey=localStorage.getItem('gemini_api_key')||'';
+let currentFile=null, lastResult=null;
+
+function toggleCfg(){document.getElementById('cfg-panel').classList.toggle('visible')}
+function toggleProvider(){
+  const p=document.getElementById('ai-provider').value;
+  document.getElementById('cfg-openai').style.display=p==='openai'?'block':'none';
+  document.getElementById('cfg-gemini').style.display=p==='gemini'?'block':'none';
+}
+function saveKey(){
+  provider=document.getElementById('ai-provider').value;
+  localStorage.setItem('ai_provider',provider);
+  if(provider==='openai'){openaiKey=document.getElementById('openai-key').value.trim();localStorage.setItem('openai_api_key',openaiKey);}
+  else{geminiKey=document.getElementById('gemini-key').value.trim();localStorage.setItem('gemini_api_key',geminiKey);}
+  checkKey();toggleCfg();
+}
+function getActiveKey(){return provider==='openai'?openaiKey:geminiKey;}
+function checkKey(){
+  const el=document.getElementById('api-status');
+  const k=getActiveKey();
+  if(k){el.className='badge badge-ok';el.textContent='✅ '+(provider==='openai'?'OpenAI':'Gemini')+' configurado';}
+  else{el.className='badge badge-warn';el.textContent='⚠️ Sin clave API';}
+}
+// Init UI
+document.getElementById('ai-provider').value=provider;
+toggleProvider();
+if(openaiKey)document.getElementById('openai-key').value=openaiKey;
+if(geminiKey)document.getElementById('gemini-key').value=geminiKey;
+checkKey();
+
+// File handling
+const dropZone=document.getElementById('drop-zone');
+const fileInput=document.getElementById('file-input');
+dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('dragover');});
+dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('dragover');if(e.dataTransfer.files[0])setFile(e.dataTransfer.files[0]);});
+fileInput.addEventListener('change',e=>{if(e.target.files[0])setFile(e.target.files[0]);});
+function setFile(f){currentFile=f;document.getElementById('file-name').textContent=f.name+' ('+Math.round(f.size/1024)+' KB)';document.getElementById('btn-analizar').disabled=false;}
+
+async function analizar(){
+  if(!getActiveKey()){alert('Configura la clave API primero');return;}
+  if(!currentFile){alert('Selecciona un PDF primero');return;}
+  const prog=document.getElementById('progress');prog.classList.add('active');
+  document.getElementById('results').classList.remove('active');
+  document.getElementById('action-btns').style.display='none';
+  try{
+    setProg(5,'Leyendo PDF...');
+    const bytes=await currentFile.arrayBuffer();
+    const pdf=await PDFLib.PDFDocument.load(bytes);
+    const numPages=pdf.getPageCount();
+    setProg(10,'PDF cargado: '+numPages+' páginas. Convirtiendo a imágenes...');
+    
+    // Convert pages to images using canvas
+    const images=[];
+    const maxPages=Math.min(numPages,60);
+    for(let i=0;i<maxPages;i++){
+      setProg(10+Math.round(i/maxPages*30),'Convirtiendo página '+(i+1)+'/'+maxPages+'...');
+      const singlePdf=await PDFLib.PDFDocument.create();
+      const[page]=await singlePdf.copyPages(pdf,[i]);
+      singlePdf.addPage(page);
+      const pdfBytes=await singlePdf.save();
+      const base64=btoa(String.fromCharCode(...new Uint8Array(pdfBytes)));
+      images.push({base64,mime:'application/pdf'});
+    }
+    
+    setProg(45,'Enviando a '+(provider==='openai'?'OpenAI GPT-4o':'Gemini')+' para análisis...');
+    const result=provider==='openai'?await callOpenAI(images,maxPages):await callGemini(images,maxPages);
+    lastResult=result;
+    setProg(95,'Procesando resultados...');
+    renderResults(result);
+    setProg(100,'¡Análisis completado!');
+    setTimeout(()=>prog.classList.remove('active'),1500);
+    document.getElementById('results').classList.add('active');
+    document.getElementById('action-btns').style.display='flex';
+  }catch(e){
+    setProg(0,'❌ Error: '+e.message);
+    setTimeout(()=>prog.classList.remove('active'),3000);
+  }
+}
+
+function setProg(pct,text){
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-text').textContent=text;
+}
+
+const PROMPT_ESCRITURA=`Eres un experto en derecho notarial español. Analiza esta escritura notarial escaneada y extrae TODOS los datos de forma estructurada.
+
+INSTRUCCIONES:
+1. Primero identifica el TIPO de escritura
+2. Extrae todos los datos aplicables
+3. Devuelve SOLO un JSON válido (sin markdown, sin backticks)
+
+TIPOS RECONOCIDOS: HERENCIA, DECLARACION_HEREDEROS, TESTAMENTO, COMPRAVENTA, COMPRAVENTA_HIPOTECA, DONACION, OBRA_NUEVA, DIVISION_HORIZONTAL, EXTINCION_CONDOMINIO, PERMUTA, HIPOTECA, CANCELACION_HIPOTECA, PODER_NOTARIAL, CAPITULACIONES, CONSTITUCION_SOCIEDAD, OTRO
+
+ESTRUCTURA JSON:
+{
+  "tipo": "TIPO_ESCRITURA",
+  "protocolo": "número",
+  "fecha": "DD/MM/AAAA",
+  "notario": {"nombre":"","localidad":""},
+  "intervinientes": [{"nombre":"","dni":"","rol":"","estadoCivil":"","regimenMatrimonial":"","domicilio":"","cuota":""}],
+  "causante": {"nombre":"","dni":"","fechaFallecimiento":"","lugarFallecimiento":"","ultimoDomicilio":"","tituloSucesorio":"","fechaTestamento":"","notarioTestamento":""},
+  "fincas": [{"numero":1,"descripcion":"","referenciaCatastral":"","fincaRegistral":"","tomo":"","libro":"","folio":"","inscripcion":"","registro":"","tituloPrevio":"","valorDeclarado":"","adjudicatario":"","cargas":"","superficieSuelo":"","superficieConstruida":"","uso":""}],
+  "legados": [{"legatario":"","descripcion":"","valor":""}],
+  "precio": {"total":"","formaPago":"","mediosPago":"","retencion":""},
+  "hipoteca": {"entidad":"","capital":"","interes":"","tipoInteres":"","diferencial":"","indiceReferencia":"","plazo":"","cuotaMensual":"","comisiones":""},
+  "donacion": {"valor":"","reservaUsufructo":"","tipoUsufructo":"","condiciones":""},
+  "obraNueva": {"superficieParcela":"","superficieConstruida":"","plantas":"","distribucion":"","licenciaObras":"","fechaLicencia":"","ayuntamiento":"","certificadoFinObra":""},
+  "poder": {"tipo":"","facultades":[""],"limitaciones":"","duracion":""},
+  "gananciales": {"descripcion":"","adjudicacion":""},
+  "observaciones": ""
+}
+
+REGLAS: Solo incluye secciones aplicables. Si hay varias fincas/herederos, incluye todos. Campos no encontrados: null. Importes: "123.456,78 €". Fechas: DD/MM/AAAA. Lee TODAS las páginas.`;
+
+async function callOpenAI(pages,numPages){
+  const content=[{type:'text',text:PROMPT_ESCRITURA+'\n\nEsta escritura tiene '+numPages+' páginas.'}];
+  pages.forEach(p=>{
+    content.push({type:'image_url',image_url:{url:'data:'+p.mime+';base64,'+p.base64,detail:'high'}});
+  });
+  const resp=await fetch('https://api.openai.com/v1/chat/completions',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+openaiKey},
+    body:JSON.stringify({model:'gpt-4o',messages:[{role:'user',content}],temperature:0.1,max_tokens:16000})
+  });
+  const data=await resp.json();
+  if(data.error)throw new Error(data.error.message);
+  let text=data.choices?.[0]?.message?.content||'';
+  text=text.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+  return JSON.parse(text);
+}
+
+async function callGemini(pages,numPages){
+  const parts=[];
+  // Send all pages as inline_data
+  pages.forEach((p,i)=>{
+    parts.push({inline_data:{mime_type:p.mime,data:p.base64}});
+  });
+  
+  parts.push({text:PROMPT_ESCRITURA+'\n\nEsta escritura tiene '+numPages+' páginas.'});
+
+  const url='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+geminiKey;
+  const resp=await fetch(url,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({contents:[{parts}],generationConfig:{temperature:0.1,maxOutputTokens:16000}})
+  });
+  const data=await resp.json();
+  if(data.error)throw new Error(data.error.message);
+  let text=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+  // Clean markdown fences
+  text=text.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+  return JSON.parse(text);
+}
+
+function renderResults(r){
+  let html='';
+  // General info
+  html+='<div class="section"><div class="section-head" onclick="toggleSection(this)"><h3>📋 Datos generales<span class="tipo-badge">'+r.tipo+'</span></h3><span class="toggle">▼</span></div><div class="section-body"><div class="data-grid">';
+  html+=dataItem('Protocolo',r.protocolo);
+  html+=dataItem('Fecha',r.fecha);
+  html+=dataItem('Notario',r.notario?.nombre);
+  html+=dataItem('Localidad',r.notario?.localidad);
+  html+=dataItem('Tipo',r.tipo);
+  html+='</div></div></div>';
+
+  // Causante (herencias)
+  if(r.causante&&r.causante.nombre){
+    html+='<div class="section"><div class="section-head" onclick="toggleSection(this)"><h3>⚰️ Causante</h3><span class="toggle">▼</span></div><div class="section-body"><div class="data-grid">';
+    html+=dataItem('Nombre',r.causante.nombre);
+    html+=dataItem('DNI',r.causante.dni);
+    html+=dataItem('Fecha fallecimiento',r.causante.fechaFallecimiento);
+    html+=dataItem('Lugar',r.causante.lugarFallecimiento);
+    html+=dataItem('Último domicilio',r.causante.ultimoDomicilio);
+    html+=dataItem('Título sucesorio',r.causante.tituloSucesorio);
+    if(r.causante.fechaTestamento)html+=dataItem('Fecha testamento',r.causante.fechaTestamento);
+    if(r.causante.notarioTestamento)html+=dataItem('Notario testamento',r.causante.notarioTestamento);
+    html+='</div></div></div>';
+  }
+
+  // Intervinientes
+  if(r.intervinientes?.length){
+    html+='<div class="section"><div class="section-head" onclick="toggleSection(this)"><h3>👥 Intervinientes ('+r.intervinientes.length+')</h3><span class="toggle">▼</span></div><div class="section-body">';
+    html+='<table><thead><tr><th>Nombre</th><th>DNI/NIF</th><th>Rol</th><th>Estado civil</th><th>Cuota</th><th>Domicilio</th></tr></thead><tbody>';
+    r.intervinientes.forEach(i=>{
+      html+='<tr><td style="font-weight:600">'+esc(i.nombre||'')+'</td><td>'+esc(i.dni||'')+'</td><td><span class="int-role">'+esc(i.rol||'')+'</span></td><td>'+esc(i.estadoCivil||'')+'</td><td>'+esc(i.cuota||'')+'</td><td style="font-size:12px;color:#888">'+esc(i.domicilio||'')+'</td></tr>';
+    });
+    html+='</tbody></table></div></div>';
+  }
+
+  // Fincas
+  if(r.fincas?.length){
+    html+='<div class="section"><div class="section-head" onclick="toggleSection(this)"><h3>🏠 Fincas ('+r.fincas.length+')</h3><span class="toggle">▼</span></div><div class="section-body">';
+    r.fincas.forEach((f,i)=>{
+      html+='<div class="finca-card"><h4>Finca '+(f.numero||i+1)+'</h4><div class="data-grid">';
+      html+=dataItem('Descripción',f.descripcion);
+      html+=dataItem('Ref. catastral',f.referenciaCatastral);
+      html+=dataItem('Finca registral',f.fincaRegistral);
+      html+=dataItem('Tomo/Libro/Folio',[f.tomo,f.libro,f.folio].filter(Boolean).join(' / '));
+      html+=dataItem('Inscripción',f.inscripcion);
+      html+=dataItem('Registro',f.registro);
+      html+=dataItem('Título previo',f.tituloPrevio);
+      html+=dataItem('Valor declarado',f.valorDeclarado);
+      html+=dataItem('Adjudicatario',f.adjudicatario);
+      html+=dataItem('Cargas',f.cargas);
+      if(f.superficieSuelo)html+=dataItem('Sup. suelo',f.superficieSuelo);
+      if(f.superficieConstruida)html+=dataItem('Sup. construida',f.superficieConstruida);
+      if(f.uso)html+=dataItem('Uso',f.uso);
+      html+='</div></div>';
+    });
+    html+='</div></div>';
+  }
+
+  // Legados
+  if(r.legados?.length){
+    html+='<div class="section"><div class="section-head" onclick="toggleSection(this)"><h3>🎁 Legados</h3><span class="toggle">▼</span></div><div class="section-body">';
+    r.legados.forEach(l=>{html+='<div class="data-grid">'+dataItem('Legatario',l.legatario)+dataItem('Descripción',l.descripcion)+dataItem('Valor',l.valor)+'</div>';});
+    html+='</div></div>';
+  }
+
+  // Precio (compraventas)
+  if(r.precio&&r.precio.total){
+    html+='<div class="section"><div class="section-head" onclick="toggleSection(this)"><h3>💰 Precio</h3><span class="toggle">▼</span></div><div class="section-body"><div class="data-grid">';
+    html+=dataItem('Total',r.precio.total);
+    html+=dataItem('Forma de pago',r.precio.formaPago);
+    html+=dataItem('Medios de pago',r.precio.mediosPago);
+    html+='</div></div></div>';
+  }
+
+  // Hipoteca
+  if(r.hipoteca&&r.hipoteca.entidad){
+    html+='<div class="section"><div class="section-head" onclick="toggleSection(this)"><h3>🏦 Hipoteca</h3><span class="toggle">▼</span></div><div class="section-body"><div class="data-grid">';
+    html+=dataItem('Entidad',r.hipoteca.entidad);
+    html+=dataItem('Capital',r.hipoteca.capital);
+    html+=dataItem('Interés',r.hipoteca.interes);
+    html+=dataItem('Tipo',r.hipoteca.tipoInteres);
+    html+=dataItem('Plazo',r.hipoteca.plazo);
+    html+=dataItem('Cuota',r.hipoteca.cuotaMensual);
+    html+='</div></div></div>';
+  }
+
+  // Donación
+  if(r.donacion&&r.donacion.valor){
+    html+='<div class="section"><div class="section-head" onclick="toggleSection(this)"><h3>🎁 Donación</h3><span class="toggle">▼</span></div><div class="section-body"><div class="data-grid">';
+    html+=dataItem('Valor',r.donacion.valor);
+    html+=dataItem('Reserva usufructo',r.donacion.reservaUsufructo);
+    html+=dataItem('Tipo usufructo',r.donacion.tipoUsufructo);
+    html+=dataItem('Condiciones',r.donacion.condiciones);
+    html+='</div></div></div>';
+  }
+
+  // Poder
+  if(r.poder&&r.poder.tipo){
+    html+='<div class="section"><div class="section-head" onclick="toggleSection(this)"><h3>📝 Poder notarial</h3><span class="toggle">▼</span></div><div class="section-body"><div class="data-grid">';
+    html+=dataItem('Tipo',r.poder.tipo);
+    html+=dataItem('Facultades',(r.poder.facultades||[]).join(', '));
+    html+=dataItem('Limitaciones',r.poder.limitaciones);
+    html+=dataItem('Duración',r.poder.duracion);
+    html+='</div></div></div>';
+  }
+
+  // Obra nueva
+  if(r.obraNueva&&r.obraNueva.superficieConstruida){
+    html+='<div class="section"><div class="section-head" onclick="toggleSection(this)"><h3>🏗️ Obra nueva</h3><span class="toggle">▼</span></div><div class="section-body"><div class="data-grid">';
+    html+=dataItem('Superficie parcela',r.obraNueva.superficieParcela);
+    html+=dataItem('Superficie construida',r.obraNueva.superficieConstruida);
+    html+=dataItem('Plantas',r.obraNueva.plantas);
+    html+=dataItem('Distribución',r.obraNueva.distribucion);
+    html+=dataItem('Licencia obras',r.obraNueva.licenciaObras);
+    html+=dataItem('Ayuntamiento',r.obraNueva.ayuntamiento);
+    html+='</div></div></div>';
+  }
+
+  // Gananciales
+  if(r.gananciales&&r.gananciales.descripcion){
+    html+='<div class="section"><div class="section-head" onclick="toggleSection(this)"><h3>💍 Liquidación de gananciales</h3><span class="toggle">▼</span></div><div class="section-body"><div class="data-grid">';
+    html+=dataItem('Descripción',r.gananciales.descripcion);
+    html+=dataItem('Adjudicación',r.gananciales.adjudicacion);
+    html+='</div></div></div>';
+  }
+
+  // Observaciones
+  if(r.observaciones){
+    html+='<div class="section"><div class="section-head" onclick="toggleSection(this)"><h3>📝 Observaciones</h3><span class="toggle">▼</span></div><div class="section-body"><p style="line-height:1.7">'+esc(r.observaciones)+'</p></div></div>';
+  }
+
+  document.getElementById('results').innerHTML=html;
+  document.getElementById('json-view').textContent=JSON.stringify(r,null,2);
+}
+
+function dataItem(label,value){
+  if(!value||value==='null')return'';
+  return'<div class="data-item"><label>'+label+'</label><span>'+esc(String(value))+'</span></div>';
+}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function toggleSection(el){el.nextElementSibling.classList.toggle('collapsed');el.querySelector('.toggle').textContent=el.nextElementSibling.classList.contains('collapsed')?'▶':'▼';}
+function toggleJson(){document.getElementById('json-view').classList.toggle('active');}
+
+function copiarExcel(){
+  if(!lastResult)return;
+  const r=lastResult;
+  let text='LECTOR DE ESCRITURAS - DATOS EXTRAÍDOS\n\n';
+  text+='TIPO\t'+r.tipo+'\n';
+  text+='PROTOCOLO\t'+r.protocolo+'\n';
+  text+='FECHA\t'+r.fecha+'\n';
+  text+='NOTARIO\t'+(r.notario?.nombre||'')+'\n';
+  text+='LOCALIDAD\t'+(r.notario?.localidad||'')+'\n\n';
+  if(r.causante?.nombre){
+    text+='CAUSANTE\n';
+    text+='Nombre\t'+r.causante.nombre+'\n';
+    text+='DNI\t'+(r.causante.dni||'')+'\n';
+    text+='Fallecimiento\t'+(r.causante.fechaFallecimiento||'')+'\n\n';
+  }
+  if(r.intervinientes?.length){
+    text+='INTERVINIENTES\nNombre\tDNI\tRol\tEstado civil\tCuota\tDomicilio\n';
+    r.intervinientes.forEach(i=>{text+=(i.nombre||'')+'\t'+(i.dni||'')+'\t'+(i.rol||'')+'\t'+(i.estadoCivil||'')+'\t'+(i.cuota||'')+'\t'+(i.domicilio||'')+'\n';});
+    text+='\n';
+  }
+  if(r.fincas?.length){
+    text+='FINCAS\nNº\tDescripción\tRef.Catastral\tFinca Reg.\tValor\tAdjudicatario\tCargas\n';
+    r.fincas.forEach(f=>{text+=(f.numero||'')+'\t'+(f.descripcion||'')+'\t'+(f.referenciaCatastral||'')+'\t'+(f.fincaRegistral||'')+'\t'+(f.valorDeclarado||'')+'\t'+(f.adjudicatario||'')+'\t'+(f.cargas||'')+'\n';});
+  }
+  navigator.clipboard.writeText(text).then(()=>alert('✅ Datos copiados. Pega en Excel con Ctrl+V')).catch(()=>{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();alert('✅ Copiado');});
+}
+</script>
+</body>
+</html>
